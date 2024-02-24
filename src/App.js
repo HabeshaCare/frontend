@@ -1,6 +1,9 @@
+import Register from './pages/auth/signup'
+
+
 function App() {
   return (
-   <div className="text-red-700">hello Hakime</div>
+   <div><Register/></div>
   );
 }
 

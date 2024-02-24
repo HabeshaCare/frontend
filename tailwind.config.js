@@ -1,12 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './src/**/*.{js,jsx}',
-  ],
+  content: ['./src/**/*.html', './src/**/*.jsx'],
   prefix: "",
   theme: {
     container: {
@@ -18,19 +13,21 @@ module.exports = {
     },
     extend: {
       colors: {
+        primary: {
+          DEFAULT: "rgba(9, 95, 175, 1)",
+          75: "rgba(9, 95, 175, 0.6)",
+          50: "rgba(9, 95, 175, 0.51)",
+          25: "rgba(9, 95, 175, 0.25)",
+          0: "rgba(9, 95, 175, 0.07)",
+        },
+        secondary: "#000000",
+        background: "#FFFFFF",
+        shadow: { DEFAULT: "#EEEEEE", 100: "#757474", 200: "#333333" },
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
