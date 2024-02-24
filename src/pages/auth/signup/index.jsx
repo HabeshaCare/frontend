@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { FormProvider, useForm } from "react-hook-form";
 import UserInfoForm from '../../../components/auth/UserInfoForm';
 import { Button } from '../../../components/ui/button';
+import RoleInfoForm from '../../../components/auth/RoleInfoForm';
 // import { Link } from 'react-router-dom';
 
 const Register = () => {
   const methods = useForm();
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(50);
   const [isLoading, setIsLoading] = useState(false);
 
   const formSteps = 50;
@@ -18,7 +19,7 @@ const Register = () => {
 
 
 
-    setProgress(() => progress + formSteps);
+    // setProgress(() => progress + formSteps);
   };
 
   return (
@@ -35,7 +36,7 @@ const Register = () => {
             className="flex flex-col justify-center items-center gap-6 w-full">
               {progress === 0 && <UserInfoForm />}
 
-              {progress === 0 && <UserInfoForm />}
+              {progress === 50 && <RoleInfoForm />}
 
               <Button className="mt-2 w-full md:w-[40%] md:mt-4 text-white"> 
               {progress <= 50 ? "Next" : isLoading ? "Loading..." : "Register"}
