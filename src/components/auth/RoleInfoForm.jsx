@@ -1,17 +1,20 @@
-import React from "react";
+// RoleInfoForm.js
+import React, { useState } from "react";
 import InputField from "./InputField";
 import OptionField from "./OptionField";
-import DatePickerDemo from '../ui/dataPicker'
 import { Label } from "../ui/label";
 
-
 const RoleInfoForm = () => {
+  const [selectedRole, setSelectedRole] = useState(null);
+
+  const handleRoleChange = (selectedValue) => {
+    setSelectedRole(selectedValue);
+  };
+
   return (
     <>
-
-      {/* phone number */}
       <InputField
-        name="nantionalId"
+        name="nationalId"
         label="National ID"
         placeholder="Type your National ID"
         type="text"
@@ -27,13 +30,6 @@ const RoleInfoForm = () => {
           },
         }}
       />
-       <div>
-        <Label htmlFor = "birthdate">Date of birth</Label>
-        <DatePickerDemo/>
-       </div>
-
-      {/* Gender */}
-
       <OptionField
         name="role"
         label="Select your role"
@@ -47,9 +43,61 @@ const RoleInfoForm = () => {
           { id: "3", text: "Pharmacy Admin", value: "pharmacy" },
           { id: "4", text: "Health Center Admin", value: "hospital" },
           { id: "5", text: "Labratory Admin", value: "laboratory" },
-
         ]}
+        onChange={handleRoleChange} // Pass handleRoleChange function
       />
+      {/* Render paragraph based on selected role */}
+
+      {selectedRole === "patient" && (
+        <>
+        <InputField
+        name="hight"
+        label="Hight"
+        placeholder="Enter your hight"
+        type="number"
+        rules={{
+          required: "Hight required",
+        }}
+      />
+
+        <InputField
+        name="weight"
+        label="Weight"
+        placeholder="Enter your weight"
+        type="number"
+        rules={{
+          required: "weight required",
+        }}
+      />
+
+      </>
+
+      )}
+      {selectedRole === "doctor" && (
+        <>
+        <InputField
+        name="experiance"
+        label="Year of Experiance"
+        placeholder="Enter your year of Experiance"
+        type="number"
+        rules={{
+          required: "Experiance required",
+        }}
+      />
+
+
+        <InputField
+        name="specialization"
+        label="Specialization"
+        placeholder="Type your specialization"
+        type="text"
+        rules={{ required: "specialization required", maxLength: 50 }}
+      />
+
+
+      </>
+      )}
+      {/* Add similar condition for other roles if needed */}
     </>
   );
 };

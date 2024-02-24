@@ -1,6 +1,6 @@
 import React from "react";
 import { Label } from "../ui/label";
-import {useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 const OptionField = ({
   name,
@@ -8,6 +8,7 @@ const OptionField = ({
   placeholder,
   rules,
   data,
+  onChange, 
 }) => {
   const {
     register,
@@ -31,6 +32,7 @@ const OptionField = ({
       <select
         {...register(name, rules)}
         id={name}
+        onChange={(e) => onChange(e.target.value)}
         className="border-primary border-none text-sm p-2"
       >
         <>
