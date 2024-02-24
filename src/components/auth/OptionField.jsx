@@ -8,7 +8,7 @@ const OptionField = ({
   placeholder,
   rules,
   data,
-  onChange, 
+  onChange = () => {},
 }) => {
   const {
     register,

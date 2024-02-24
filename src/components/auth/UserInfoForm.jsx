@@ -4,12 +4,6 @@ import OptionField from "./OptionField";
 
 const UserInfoForm = () => {
 
-  const [selectedRole, setSelectedRole] = useState(null);
-
-  const handleRoleChange = (selectedValue) => {
-    setSelectedRole(selectedValue);
-  };
-
   return (
     <>
       {/* first name */}
@@ -83,7 +77,6 @@ const UserInfoForm = () => {
           { id: "1", text: "Male", value: "M" },
           { id: "2", text: "Female", value: "F" },
         ]}
-        onChange={handleRoleChange}
       />
     </>
   );

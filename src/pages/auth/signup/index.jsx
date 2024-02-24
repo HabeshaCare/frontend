@@ -16,7 +16,6 @@ const Register = () => {
     if(progress === 100){
       console.log(data); // Do something with the form data
     }
-    
 
     setProgress(() => progress + formSteps);
   };
