@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import InputField from "./InputField";
 import OptionField from "./OptionField";
-import { Label } from "../ui/label";
 
 const RoleInfoForm = () => {
   const [selectedRole, setSelectedRole] = useState(null);
