@@ -1,9 +1,11 @@
-import Register from './pages/auth/signup'
+// import Register from './pages/auth/signup'
+import Login from './pages/auth/login'
 
 
+//  <div><Register/></div>
 function App() {
   return (
-   <div><Register/></div>
+  <div><Login/></div>
   );
 }
 
