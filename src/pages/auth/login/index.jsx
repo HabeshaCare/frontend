@@ -1,13 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import {Label} from "../../../components/ui/label"
 import {Input} from "../../../components/ui/input"
 import {Button} from "../../../components/ui/button"
 import userIcon from '../../../icons/user.svg'
 import lockIcon from '../../../icons/lock.svg'
 
+const initialFormData = { email: "", password: "" };
+
+
 const Login = () => {
 
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState(initialFormData);
+  
+  const handleFormInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData)// function call for login post request goes here
+
+
+  }
+    // setIsLoading(true);
 
   return (
     <>
@@ -17,7 +34,10 @@ const Login = () => {
             <h1 className="text-4xl font-bold md:text-4xl md:mt-8 font-primary">Login</h1>
           </div>
           <div className="text-primary font-primary md:w-full ">
-            <form  className="flex flex-col gap-10 justify-center items-center w-full md:gap-8">
+            <form  
+             onSubmit={handleFormSubmit}
+             onChange={handleFormInputChange}
+            className="flex flex-col gap-10 justify-center items-center w-full md:gap-8">
 
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="username" className="text-bold">
@@ -30,7 +50,7 @@ const Login = () => {
                   id="Email"
                   placeholder="Type your Email"
                   className="border-primary border-none focus-visible:ring-0"
-                  name="Email"
+                  name="email"
                   required
                 />
               </div>
