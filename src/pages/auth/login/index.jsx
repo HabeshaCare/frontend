@@ -71,6 +71,7 @@ const Login = () => {
                   required
                   minLength={8}
                 />
+                
               </div>
             </div>
 
