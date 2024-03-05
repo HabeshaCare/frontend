@@ -7,7 +7,7 @@ const Telemedicine = () => {
         <>
          <div className="flex ml-12 h-full my-28">
              <div className="flex flex-col w-1/2">
-                    <div className="text-[#1F555D] text-5xl font-medium font-serif mt-12 mb-4">
+                    <div className="text-[#1F555D] text-5xl font-bold font-serif mt-12 mb-4">
                         Telemedicine
                     </div>
 

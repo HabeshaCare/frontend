@@ -9,7 +9,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col justify-center w-3/5">
-              <div className="text-[#1F555D] text-5xl">
+              <div className="text-[#1F555D] text-5xl font-medium">
                 Empowering Your Health Journey Anytime, Anywhere
               </div>
 
