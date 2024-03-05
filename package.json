@@ -16,6 +16,7 @@
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
     "lucide-react": "^0.338.0",
+    "path": "^0.12.7",
     "postcss": "^8.4.35",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.0",
@@ -29,10 +30,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [
@@ -51,5 +52,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "customize-cra": "^1.0.0",
+    "react-app-rewire-alias": "^1.1.7",
+    "react-app-rewired": "^2.2.1"
   }
 }

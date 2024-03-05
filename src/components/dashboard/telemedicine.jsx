@@ -1,5 +1,5 @@
-import {Button} from "../ui/button"
-import Telemed from "../../public/img/telemed.png"
+import {Button} from "@/components/ui/button"
+import Telemed from "@/public/img/telemed.png"
 
 const Telemedicine = () => {
 

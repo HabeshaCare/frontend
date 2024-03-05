@@ -1,6 +1,5 @@
-
-import {Button} from "../ui/button"
-
+import {Button} from "@/components/ui/button"
+import record from "@/public/img/record.png"
 
 
 const Records = () => {
@@ -9,7 +8,7 @@ const Records = () => {
 
         <div>
             <div>
-                <img src="" alt="" />
+                <img src={record} alt="Health record image" />
             </div>
 
             <div>
@@ -33,3 +32,5 @@ const Records = () => {
         </>
     )
 }
+
+export default Records

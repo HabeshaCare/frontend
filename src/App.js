@@ -1,6 +1,6 @@
 // import Register from './pages/auth/signup'
 // import Login from './pages/auth/login'
-import Dashboard from './pages/patient/dashboard';
+import Dashboard from '@/pages/patient/dashboard';
 
 function App() {
   return (

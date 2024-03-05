@@ -1,5 +1,4 @@
-
-import home from "../../public/img/Asset 4y.png"
+import home from "@/public/img/Asset 4y.png"
 
 const Home = () => {
     return(
