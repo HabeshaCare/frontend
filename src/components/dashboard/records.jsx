@@ -7,11 +7,11 @@ const Records = () => {
         <>
 
         <div className="flex bg-[#d0eaec]">
-            <div className="w-1/2">
+            <div className="w-1/2 mt-32">
                 <img src={record} alt="Health record image" />
             </div>
 
-            <div className="flex flex-col justify-center ml-8 w-1/2">
+            <div className="flex flex-col justify-center ml-8 w-1/2 mt-24">
                <div className="text-[#1F555D] text-5xl font-bold font-serif items-center">
                     Medical Records
                </div>

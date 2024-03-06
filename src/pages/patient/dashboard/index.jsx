@@ -9,8 +9,8 @@ const Dashboard = () => {
         <>
         <NavBar/>
         <Home/>
-        <Telemedicine/>
-        <Records/>
+        {/* <Telemedicine/>
+        <Records/> */}
         </>
     )
 }
