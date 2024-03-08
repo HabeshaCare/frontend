@@ -4,6 +4,8 @@ import home from "@/public/img/Asset 4y.png"
 import main from "@/public/img/main.png"
 import tele from "@/public/img/tele.png"
 import { Button } from "@/components/ui/button";
+import Telemedicine from "./telemedicine";
+import Records from "./records";
 const Home = () => {
 
     const [size, setSize] = useState(window.innerWidth);
@@ -25,16 +27,39 @@ const Home = () => {
         <>
         <div>
             
-             {size > 420 ? 
+             {size > 520 ? 
+            <div className="mt-8">
+             <div className="flex ml-8">
+                    <div className="w-2/5">
+                        <img src={home} alt="Home"/>
+                    </div>
 
-              <div className="w-2/5">
-                 <img src={home} alt="Home Image" />
+                    <div className="flex flex-col justify-center w-3/5 mx-4 lg:ml-12 lg:w-4/5 mt-8">
+                
+                        <div className="text-[#1F555D] text-2xl md:text-4xl lg:text-5xl font-medium">
+                            Empowering Your Health Journey Anytime, Anywhere
+                        </div>
 
-              </div>
+                        <div className="mt-8">
+
+                            <p className="text-[#000000] font-light text-xl md:text-2xl">
+                            Simplifying your healthcare experience with us. Access lab results, 
+                            connect with healthcare professionals, and securely manage your medical records, 
+                            all in one place.
+                            </p> 
+                        </div>
+                    </div>
+             </div>
+
+             <Telemedicine/>
+             <Records/>
+             
+            </div>
+
                   : 
             <div>
-                <div className="bg-gradient-to-b from-[#E4F0EE] to-[#1F555D] h-screen">
-                      <img src={main} alt="Home Image" />
+                <div className="bg-gradient-to-b from-[#E4F0EE] to-[#1F555D] h-full pb-8">
+                      <img src={main} alt="Mobile Home" />
 
                       <div className=" text-white text-2xl font-serif font-semibold px-12 pt-16">
                            Consolidate and manage all your medical records in one place.
@@ -51,10 +76,10 @@ const Home = () => {
                     Experience convenient TeleMedicine for prompt medical assistance.
                  </div> 
 
-                 <div className="flex">
+                 <div className="flex pb-8">
                      <Button className = "mx-8 mt-8 font-medium text-white w-40 h-12 bg-[#1F555D] text-xl">Get your Doctor</Button>  
                      <div>
-                        <img src={tele} alt="tele image"/>
+                        <img src={tele} alt="mobile tele"/>
                      </div>
                 </div>
                  </div>
@@ -63,7 +88,7 @@ const Home = () => {
                     <div  className="text-[#1F555D] text-3xl font-bold font-serif pl-8">
                         Medical Records
                     </div>
-                    <div className="my-4 font-light text-2xl px-8 item">
+                    <div className="my-4 font-light text-2xl px-8">
                         Access your medical records, including doctor notes, 
                         medications, and lab test results, for a complete overview of your health history.
                     </div>
@@ -78,25 +103,5 @@ const Home = () => {
         </>
     )
 }
-
-
-// <div className="w-2/5">
-//                 <img src={home} alt="Home Image" />
-//             </div>
-
-//             <div className="flex flex-col justify-center w-3/5">
-//               <div className="text-[#1F555D] text-5xl font-medium">
-//                 Empowering Your Health Journey Anytime, Anywhere
-//               </div>
-
-//                <div className="mt-12">
-//                 <p className="text-[#000000] font-light text-3xl">
-//                 Simplifying your healthcare experience with us. Access lab results, 
-//                 connect with healthcare professionals, and securely manage your medical records, 
-//                 all in one place.
-//                 </p>
-//                </div>
-   
-//             </div>
 
 export default Home
