@@ -12,6 +12,7 @@ import CompleteProfile from '@/components/profile/completeProfile';
 import ProfileKey from '@/components/profile/profileInfo';
 import ProfileValue from '@/components/profile/profileInfo';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const Profile = () => {
     const [showPassword, setShowPassword] = useState(false)
@@ -29,7 +30,7 @@ const Profile = () => {
             </div>
             <ProfilePicture/>
             <CompleteProfile progress = {80}/>
-            <div className='flex justify-end mr-8 mt-4 gap-2 cursor-pointer'>
+            <div className='flex justify-end mr-8 mt-4 gap-2 cursor-pointer' onClick={() => setEditMode(!editMode)}>
                 <div>
                 <img src={edit} alt="edit SVG" />
                 </div>
@@ -78,14 +79,17 @@ const Profile = () => {
                         
                           <div className='text-[#1F555D] ml-4 font-semibold'>New Password</div>
                           <Input/>
-                       </div></>
-                        }
+                       </div>
 
                        <div className='ml-2'>
                           
                           <div className='text-[#1F555D] ml-4 font-semibold'>Confirm New Password</div>
                           <Input/>
                        </div>
+                       
+                       </>
+                        }
+
                        
                        <div className='ml-2'>
                            <ProfileKey keyName="Gender" />
@@ -98,10 +102,10 @@ const Profile = () => {
                     
                     <div className='ml-2'>
                            <ProfileKey keyName="Date of Birth" />
-                            <ProfileValue value= "22-2-2012"/>
+                           {editMode ?   <ProfileValue value= "22-2-2012"/> : <div className='flex gap-2'> <div><p className='pl-6 text-[#1F555D]'>DD</p><Input/></div> <div><p className='pl-6 text-[#1F555D]'>MM</p><Input/></div> <div><p className='pl-6 text-[#1F555D]'>YYYY</p><Input/></div></div> }
                        </div>
 
-                    <div className='ml-2 mb-3 flex gap-32'>
+                    <div className='ml-2 mb-3 flex gap-24'>
                       <div className='ml-2'>
                            <ProfileKey keyName="Hight" />
                            {editMode ?  <ProfileValue value= "1.70m"/> : <Input/>}
@@ -117,7 +121,11 @@ const Profile = () => {
                            <ProfileKey keyName="National ID" />
                            {editMode ? <ProfileValue value= "889977-KO1"/> : <Input/>}
                        </div>
-            </div>
+
+                       {editMode ?  "" : <Button className ="mt-6 bg-[#1F555D] text-white">Save</Button> }
+                 </div>
+
+           
         </>
     );
 };
