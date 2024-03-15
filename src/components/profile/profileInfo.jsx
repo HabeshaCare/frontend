@@ -19,7 +19,7 @@ const ProfileValue = ({value}) => {
 const ProfileInfo = ({keyName, value}) => {
     return (
         <>
-         <div className='ml-2 mb-3'>
+         <div className='ml-2 pb-3'>
             <ProfileKey keyName={keyName} />
             <ProfileValue value={value} />
          </div>
