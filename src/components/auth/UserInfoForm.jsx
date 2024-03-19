@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import InputField from "./InputField";
 import OptionField from "./OptionField";
 
 const UserInfoForm = () => {
-
   return (
     <>
       {/* first name */}
@@ -15,10 +14,9 @@ const UserInfoForm = () => {
         rules={{ required: "Full name required", maxLength: 50 }}
       />
 
-
       {/* phone number */}
       <InputField
-        name="phoneNumber"
+        name="phonenumber"
         label="Phone Number"
         placeholder="Type your Phone Number"
         type="text"
@@ -35,8 +33,8 @@ const UserInfoForm = () => {
         }}
       />
 
-       {/* Email */}
-       <InputField
+      {/* Email */}
+      <InputField
         name="email"
         label="Email"
         placeholder="Type your Email"
