@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import UserInfoForm from "@/components/auth/UserInfoForm";
 import { Button } from "@/components/ui/button";
@@ -13,35 +13,32 @@ import { useMutation } from "react-query";
 const Register = () => {
   const methods = useForm();
   const [progress, setProgress] = useState(0);
-  const { isSuccess, isError, mutate } = useMutation(register);
+  const { isSuccess, isError, isLoading, mutate } = useMutation(register);
   const formSteps = 50;
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     if (progress === 100) {
-      try {
-        const result = await mutate(data);
-        console.log("Mutation Result:", result); // Log the mutation result
-      } catch (error) {
-        console.error("Mutation Error:", error); // Log any mutation errors
-      }
+      console.log(data);
+      mutate(data);
+    } else {
+      setProgress((prevProgress) => prevProgress + formSteps);
     }
-
-    setProgress(() => progress + formSteps);
   };
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Submited");
+      toast.success("Registration successful!");
+      console.log("done");
     }
 
     if (isError) {
-      toast.error("Someting went wrong, try again");
+      toast.error("Something went wrong, please try again.");
+      console.log("error");
     }
   }, [isSuccess, isError]);
 
   return (
     <main className="flex flex-col items-center justify-center w-full my-6 gap-10">
-      {/* logo and title wrapper  */}
       <h1 className="text-4xl text-primary font-bold md:text-4xl md:mt-8 font-primary">
         Register
       </h1>
@@ -53,13 +50,11 @@ const Register = () => {
             className="flex flex-col justify-center items-center gap-6 w-full"
           >
             {progress === 0 && <UserInfoForm />}
-
             {progress === 50 && <RoleInfoForm />}
-
             {progress > 50 && <PasswordInfoForm />}
 
             <Button className="mt-2 w-full md:w-[40%] md:mt-4 text-white">
-              {progress <= 50 ? "Next" : "Register"}
+              {progress < 100 ? "Next" : isLoading ? "Loading..." : "Submit"}
             </Button>
           </form>
         </FormProvider>
