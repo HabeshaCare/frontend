@@ -41,6 +41,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await loginMutation.mutateAsync(formData); // Pass formData directly
+      const{token,user}=res.data;
+      localStorage.setItem('token',token);
+      localStorage.setItem('userId',user.id);
+      console.log('Token:', token);
+      console.log('User ID:', user.id);
       console.log("Response:", res);
       // Login successful, redirect or perform other actions
     } catch (error) {
@@ -49,7 +54,6 @@ const Login = () => {
     }
   };
   
-
   return (
     <>
       <main className="flex items-center justify-center h-[100vh]">
@@ -94,6 +98,7 @@ const Login = () => {
                     name="password"
                     required
                     minLength={6}
+
                   />
 
                 </div>
