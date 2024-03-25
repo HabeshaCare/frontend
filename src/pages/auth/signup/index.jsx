@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useNavigate   } from "react-router-dom";
 import UserInfoForm from "@/components/auth/UserInfoForm";
 import { Button } from "@/components/ui/button";
 import RoleInfoForm from "@/components/auth/RoleInfoForm";
@@ -15,11 +16,13 @@ const Register = () => {
   const [progress, setProgress] = useState(0);
   const { isSuccess, isError, isLoading, mutate } = useMutation(register);
   const formSteps = 50;
+  const navigate  = useNavigate ();
 
   const onSubmit = (data) => {
     if (progress === 100) {
-      console.log(data);
+      
       mutate(data);
+     
     } else {
       setProgress((prevProgress) => prevProgress + formSteps);
     }
@@ -28,14 +31,17 @@ const Register = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Registration successful!");
-      console.log("done");
+      console.log("done"); // forward them to page that say we have sent you email. check your email for varification
+      console.log(isSuccess)
+      navigate("/success");
     }
 
     if (isError) {
       toast.error("Something went wrong, please try again.");
       console.log("error");
+      console.log(isSuccess)
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError, navigate]);
 
   return (
     <main className="flex flex-col items-center justify-center w-full my-6 gap-10">
@@ -53,7 +59,7 @@ const Register = () => {
             {progress === 50 && <RoleInfoForm />}
             {progress > 50 && <PasswordInfoForm />}
 
-            <Button className="mt-2 w-full md:w-[40%] md:mt-4 text-white">
+            <Button className="mt-2 w-full md:w-[40%] md:mt-4 text-white bg-[#1F555D]">
               {progress < 100 ? "Next" : isLoading ? "Loading..." : "Submit"}
             </Button>
           </form>
