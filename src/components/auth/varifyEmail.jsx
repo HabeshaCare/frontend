@@ -1,33 +1,55 @@
 import { Button } from "../ui/button";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import verifyToken from "@/lib/auth/varifyToken";
 import { useMutation } from "react-query";
+import toast from "react-hot-toast";
 
 const VarifyEmail = () => {
   const location = useLocation();
   const token = new URLSearchParams(location.search).get("token");
   const { isSuccess, isError, isLoading, mutate } = useMutation(verifyToken);
   const [urlClicked, setUrlClicked] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
-      setUrlClicked(true)
+      setUrlClicked(true);
       mutate(token);
     } else {
-      setUrlClicked(false)
-      console.error("No token found in the URL.");
+      setUrlClicked(false);
     }
   }, [token]);
 
   return (
     <>
       {urlClicked ? (
-       <div>
-        {isLoading ? "" : <div>Verifying</div>}
-        {isSuccess ? "" : <div>Verified Sucessfully!</div>}
-        {isError ? "" : <div>sothing went wrong! Verify again!</div>}
-       </div>
+        <div>
+          {isLoading ? <div>Verifying</div> : ""}
+
+          {isSuccess ? (
+            <div>
+              {toast.success("Verified Sucessfully!")}
+              Verified Sucessfully!
+              {navigate("/dashboard")}
+            </div>
+          ) : (
+            ""
+          )}
+
+          {isError ? (
+            <div className="flex flex-col justify-center items-center px-6 h-screen gap-5">
+              <p>something went wrong! Verify again!</p>
+              <div>
+                <Button className=" w-32 text-white bg-[#1F555D]">
+                  Resend Email
+                </Button>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
       ) : (
         <div className="flex flex-col justify-center items-center h-screen gap-4 px-10">
           <div className="text-xl font-bold">Email Varification</div>
@@ -36,9 +58,9 @@ const VarifyEmail = () => {
             your email to complete your registration Process!
           </p>
 
-          <div className="text-lg">
+          <div>
             <Button className="text-lg w-32 text-white bg-[#1F555D]">
-              Varify
+              Verify
             </Button>
           </div>
         </div>

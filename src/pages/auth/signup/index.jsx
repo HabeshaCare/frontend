@@ -33,7 +33,7 @@ const Register = () => {
       toast.success("Registration successful!");
       console.log("done"); // forward them to page that say we have sent you email. check your email for varification
       console.log(isSuccess)
-      navigate("/varifyEmail");
+      navigate("/verifyEmail");
     }
 
     if (isError) {
