@@ -58,10 +58,7 @@ const Profile = () => {
     }
 
   }
-
   UserData()
-
-
   return (
     <>
       <div className="md:flex">
