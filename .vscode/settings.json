@@ -1,3 +1,6 @@
 {
-  "editor.defaultFormatter": "svipas.prettier-plus"
+  "editor.defaultFormatter": "svipas.prettier-plus",
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

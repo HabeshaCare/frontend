@@ -16,18 +16,18 @@ const Login = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
-  
+
   const loginMutation = useMutation((formData) =>
     axios.post('http://localhost:5072/api/auth/login', formData)
   );
 
- 
+
 
 
   const handleFormInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-   
+
   };
 
   // const handleFormSubmit = async (e) => {
@@ -35,25 +35,36 @@ const Login = () => {
   //   console.log(formData);// function call for login post request goes here
   // }
 
-  
+
   const handleFormSubmit = async (e) => {
     console.log(formData);
     e.preventDefault();
     try {
       const res = await loginMutation.mutateAsync(formData); // Pass formData directly
-      const{token,user}=res.data;
-      localStorage.setItem('token',token);
-      localStorage.setItem('userId',user.id);
+      const { token, data } = res.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', data.id);
       console.log('Token:', token);
-      console.log('User ID:', user.id);
+      console.log('User ID:', data.id);
       console.log("Response:", res);
+
+      // Retrieve all keys from localStorage
+      const keys = Object.keys(localStorage);
+
+      // Loop through each key and log its corresponding value
+      keys.forEach(key => {
+        const value = localStorage.getItem(key);
+        console.log(`key==>${key}: val==>${value}`);
+      });
+
+
       // Login successful, redirect or perform other actions
     } catch (error) {
       // Handle login error
       console.error('Login failed:', error);
     }
   };
-  
+
   return (
     <>
       <main className="flex items-center justify-center h-[100vh]">
@@ -63,7 +74,7 @@ const Login = () => {
           </div>
           <div className="text-primary font-primary md:w-full ">
             <form
-              onSubmit={ handleFormSubmit}
+              onSubmit={handleFormSubmit}
               onChange={handleFormInputChange}
               className="flex flex-col gap-10 justify-center items-center w-full md:gap-8">
 
