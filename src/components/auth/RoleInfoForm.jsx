@@ -20,7 +20,7 @@ const RoleInfoForm = () => {
           required: "Role required",
         }}
         data={[
-          { id: "1", text: "Patient", value: "Normal" },
+          { id: "1", text: "Patient", value: "Patient" },
           { id: "2", text: "Doctor", value: "Doctor" },
           { id: "3", text: "Pharmacy Admin", value: "PharmacyAdmin" },
           { id: "4", text: "Health Center Admin", value: "HealthCenterAdmin" },
@@ -31,7 +31,7 @@ const RoleInfoForm = () => {
       />
       {/* Render paragraph based on selected role */}
 
-      {selectedRole === "Normal" && (
+      {selectedRole === "Patient" && (
         <>
           <InputField
             name="nationalId"
