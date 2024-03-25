@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import Register from "./pages/auth/signup";
 import Login from './pages/auth/login';
@@ -5,6 +6,8 @@ import Profile from '@/pages/patient/profile';
 import Dashboard from '@/pages/patient/dashboard';
 import VarifyEmail from "./components/auth/varifyEmail";
 
+
+const queryClient = new QueryClient()
 function App() {
 
   return (

@@ -1,15 +1,15 @@
-import React from "react"
-import NavBar from "@/components/dashboard/navBar"
-import Home from "@/components/dashboard/home"
+// import React from "react"
+// // import NavBar from "@/components/dashboard/navBar"
+// // import Home from "@/components/dashboard/home"
 
-const Dashboard = () => {
-    return(
-        <>
-        <NavBar/>
-        <Home/>
-        </>
-    )
-}
+// const Dashboard = () => {
+//     return(
+//         // <>
+//         // <NavBar/>
+//         // <Home/>
+//         // </>
+//     )
+// }
 
 
-export default Dashboard
+// export default Dashboard

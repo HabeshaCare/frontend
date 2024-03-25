@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import { useQuery } from "react-query";
+import axios from 'axios';
 // file import
 import edit from "@/public/icons/edit.svg";
 import back from "@/public/icons/back.svg";
 import openEye from "@/public/icons/openEye.svg";
 import closeEye from "@/public/icons/closeEye.svg";
-
 // component import
 import ProfilePicture from "@/components/profile/profilePicture";
 import { CompleteProfile } from "@/components/profile/completeProfile";
 import { CompleteProfile2 } from "@/components/profile/completeProfile";
-
 import ProfileKey from "@/components/profile/profileInfo";
 import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
@@ -20,7 +20,45 @@ const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
+  var userData;
 
+  const GetUserData = async () => {
+    const token = localStorage.getItem('token');
+    const user_id = localStorage.getItem('userId');
+    console.log('Token:', token);
+    console.log('User ID:', user_id);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+
+    const url = 'http://localhost:5072/api/patient/' + user_id + '/profile';
+    const response = await axios.get(url, config);
+    return response.data;
+
+  };
+
+  const UserData = () => {
+    const { data, isLoading, isError } = useQuery('data', GetUserData)
+
+    if (isLoading) {
+      console.log('Loading..');
+
+    }
+    else if (isError) {
+      console.log('Error fetching data');
+    }
+
+    else {
+      console.log('hello')
+      console.log(data.data.email);
+      userData = data.data 
+      console.log(userData);
+    }
+
+  }
+  UserData()
   return (
     <>
       <div className="md:flex">
@@ -52,7 +90,7 @@ const Profile = () => {
               <div className="ml-2">
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
-                  <ProfileValue value="David Chandler Bing" />
+                  <ProfileValue value={userData.fullname} />
                 ) : (
                   <Input />
                 )}
@@ -60,20 +98,20 @@ const Profile = () => {
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value="+251982314216" /> : <Input />}
+                {editMode ? <ProfileValue value={userData.phonenumber} /> : <Input />}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
                 <ProfileKey keyName="Email" />
                 {editMode ? (
-                  <ProfileValue value="nigusseyeabsira@gmail.com" />
+                  <ProfileValue value={userData.email} />
                 ) : (
                   <Input />
                 )}
               </div>
             </div>
 
-            <div className={`${editMode && "md:flex md:mt-4 md:px-4"}`}>
+            {/* <div className={`${editMode && "md:flex md:mt-4 md:px-4"}`}>
               {editMode ? (
                 <div className="flex md:gap-5 ">
                   <div className="ml-2 md:pl-8">
@@ -116,13 +154,13 @@ const Profile = () => {
                     <Input />
                   </div>
                 </>
-              )}
+              )}</div> */}
 
-              <div className="ml-2 md:pl-32">
-                <ProfileKey keyName="Gender" />
-                {editMode ? <ProfileValue value="Male" /> : <Input />}
-              </div>
+            <div className="ml-2 md:pl-32">
+              <ProfileKey keyName="Gender" />
+              {editMode ? <ProfileValue value={userData.gender} /> : <Input />}
             </div>
+
 
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
               specific Info
@@ -166,7 +204,7 @@ const Profile = () => {
             </div>
             <div className={`md:ml-8 ${editMode ? "ml-2" : "md:ml-2"} `}>
               <ProfileKey keyName="National ID" />
-              {editMode ? <ProfileValue value="889977-KO1" /> : <Input />}
+              {editMode ? <ProfileValue value={userData.nationalId}/> : <Input />}
             </div>
 
             {editMode ? (

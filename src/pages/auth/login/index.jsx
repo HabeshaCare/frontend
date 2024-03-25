@@ -1,26 +1,71 @@
 import React, { useState } from "react";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import userIcon from "@/public/icons/user.svg";
 import lockIcon from "@/public/icons/lock.svg";
 
-const initialFormData = { email: "", password: "" };
+import axios from 'axios';
+import { useMutation } from 'react-query';
+
+
+
+
+const initialFormData = { "email": "", "password": "" };
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
 
+
+  const loginMutation = useMutation((formData) =>
+    axios.post('http://localhost:5072/api/auth/login', formData)
+  );
+
+
   const handleFormInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
   };
 
+
+  // const handleFormSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log(formData);// function call for login post request goes here
+  // }
+
+
   const handleFormSubmit = async (e) => {
+    console.log(formData);
     e.preventDefault();
-    console.log(formData); // function call for login post request goes here
+    try {
+      const res = await loginMutation.mutateAsync(formData); // Pass formData directly
+      const { token, data } = res.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', data.id);
+      console.log('Token:', token);
+      console.log('User ID:', data.id);
+      console.log("Response:", res);
+
+      // Retrieve all keys from localStorage
+      const keys = Object.keys(localStorage);
+
+      // Loop through each key and log its corresponding value
+      keys.forEach(key => {
+        const value = localStorage.getItem(key);
+        console.log(`key==>${key}: val==>${value}`);
+      });
+
+
+      // Login successful, redirect or perform other actions
+    } catch (error) {
+      // Handle login error
+      console.error('Login failed:', error);
+    }
   };
-  // setIsLoading(true);
+
 
   return (
     <>
@@ -35,8 +80,9 @@ const Login = () => {
             <form
               onSubmit={handleFormSubmit}
               onChange={handleFormInputChange}
-              className="flex flex-col gap-10 justify-center items-center w-full md:gap-8"
-            >
+
+              className="flex flex-col gap-10 justify-center items-center w-full md:gap-8">
+
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="username" className="text-bold">
                   Email
@@ -67,10 +113,24 @@ const Login = () => {
                     className="border-primary border-none focus-visible:ring-0"
                     name="password"
                     required
-                    minLength={8}
+
+                    minLength={6}
+
                   />
+
                 </div>
               </div>
+
+              <div className="md:mt-4">
+                <Button
+                  type="submit"
+                  className="bg-primary w-52 rounded-2xl text-white"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Logging in..." : "Login"}
+                </Button>
+              </div>
+
 
               <div className="md:mt-4">
                 <Button
@@ -87,6 +147,8 @@ const Login = () => {
               Don&apos;t have an account?
               <a href="#"> Register</a>
             </h1>
+
+
           </div>
         </section>
       </main>
