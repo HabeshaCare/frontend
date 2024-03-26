@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useQuery } from "react-query";
 import axios from 'axios';
@@ -20,7 +20,7 @@ const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
-  var userData;
+  const [userData, setUserData] = useState();
 
   const GetUserData = async () => {
     const token = localStorage.getItem('token');
@@ -38,29 +38,24 @@ const Profile = () => {
     return response.data;
 
   };
+  const { data, isLoading, isError } = useQuery('data', GetUserData)
 
-  const UserData = () => {
-    const { data, isLoading, isError } = useQuery('data', GetUserData)
 
-    if (isLoading) {
-      console.log('Loading..');
-
-    }
-    else if (isError) {
-      console.log('Error fetching data');
-    }
-
-    else {
-      console.log('hello')
-      console.log(data.data.email);
-      userData = data.data 
-      console.log(userData);
-    }
-
+  if (isLoading) {
+    console.log('Loading...');
+    // You can render a loading indicator here
+    return <div>Loading...</div>;
   }
-  UserData()
+
+  if (isError) {
+    console.log('Error fetching data');
+    // You can render an error message here
+    return <div>Error fetching data</div>;
+  }
+
   return (
     <>
+    
       <div className="md:flex">
         <div className="md:w-2/3">
           <div className="flex my-4">
@@ -90,7 +85,7 @@ const Profile = () => {
               <div className="ml-2">
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
-                  <ProfileValue value={userData.fullname} />
+                  <ProfileValue value={data.data.fullname} />
                 ) : (
                   <Input />
                 )}
@@ -98,13 +93,13 @@ const Profile = () => {
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value={userData.phonenumber} /> : <Input />}
+                {editMode ? <ProfileValue value={data.data.phonenumber} /> : <Input />}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
                 <ProfileKey keyName="Email" />
                 {editMode ? (
-                  <ProfileValue value={userData.email} />
+                  <ProfileValue value={data.data.email} />
                 ) : (
                   <Input />
                 )}
@@ -158,7 +153,7 @@ const Profile = () => {
 
             <div className="ml-2 md:pl-32">
               <ProfileKey keyName="Gender" />
-              {editMode ? <ProfileValue value={userData.gender} /> : <Input />}
+              {editMode ? <ProfileValue value={data.data.gender} /> : <Input />}
             </div>
 
 
@@ -204,7 +199,7 @@ const Profile = () => {
             </div>
             <div className={`md:ml-8 ${editMode ? "ml-2" : "md:ml-2"} `}>
               <ProfileKey keyName="National ID" />
-              {editMode ? <ProfileValue value={userData.nationalId}/> : <Input />}
+              {editMode ? <ProfileValue value={data.data.nationalId}/> : <Input />}
             </div>
 
             {editMode ? (
@@ -219,6 +214,7 @@ const Profile = () => {
           {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
         </div>
       </div>
+    
     </>
   );
 };
