@@ -77,12 +77,12 @@ const Login = () => {
                   Email
                 </Label>
                 <div className="flex items-center border-primary border border-x-0 border-t-0  rounded-none">
-                  <img src={userIcon} className="w-4 " alt="user icon" />
+                  <img src={userIcon} className="w-4" alt="user icon" />
                   <Input
                     type="text"
                     id="Email"
                     placeholder="Type your Email"
-                    className="border-primary border-none focus-visible:ring-0"
+                    className="border-primary border-none focus-visible:ring-0 ml-2"
                     name="email"
                     required
                   />
@@ -99,7 +99,7 @@ const Login = () => {
                     type="password"
                     id="password"
                     placeholder="Type your password"
-                    className="border-primary border-none focus-visible:ring-0"
+                    className="border-primary border-none focus-visible:ring-0 ml-2"
                     name="password"
                     required
                     minLength={6}
@@ -121,7 +121,7 @@ const Login = () => {
             <h1 className=" font-primary text-xs mt-4 text-center">
               {" "}
               Don&apos;t have an account?
-              <a href="#"> Register</a>
+              <a href="/"> Register</a>
             </h1>
           </div>
         </section>

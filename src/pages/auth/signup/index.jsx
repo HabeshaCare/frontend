@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useNavigate   } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserInfoForm from "@/components/auth/UserInfoForm";
 import { Button } from "@/components/ui/button";
 import RoleInfoForm from "@/components/auth/RoleInfoForm";
@@ -16,13 +16,11 @@ const Register = () => {
   const [progress, setProgress] = useState(0);
   const { isSuccess, isError, isLoading, mutate } = useMutation(register);
   const formSteps = 50;
-  const navigate  = useNavigate ();
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     if (progress === 100) {
-      
       mutate(data);
-     
     } else {
       setProgress((prevProgress) => prevProgress + formSteps);
     }
@@ -32,14 +30,14 @@ const Register = () => {
     if (isSuccess) {
       // toast.success("Registration successful!");
       console.log("done"); // forward them to page that say we have sent you email. check your email for varification
-      console.log(isSuccess)
+      console.log(isSuccess);
       navigate("/verifyEmail");
     }
 
     if (isError) {
       // toast.error("Something went wrong, please try again.");
       console.log("error");
-      console.log(isSuccess)
+      console.log(isSuccess);
     }
   }, [isSuccess, isError, navigate]);
 
@@ -68,7 +66,7 @@ const Register = () => {
 
       <div className="text-primary font-primary md:w-full">
         <h1 className=" font-primary text-xs text-center">
-          Already have an account? <a href="#">Login</a>
+          Already have an account? <a href="/login">Login</a>
         </h1>
       </div>
     </main>
