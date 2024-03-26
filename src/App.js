@@ -7,7 +7,6 @@ import Dashboard from '@/pages/patient/dashboard';
 import VarifyEmail from "./components/auth/varifyEmail";
 
 
-const queryClient = new QueryClient()
 function App() {
 
   return (

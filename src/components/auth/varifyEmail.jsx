@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import verifyToken from "@/lib/auth/varifyToken";
 import { useMutation } from "react-query";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast"
+
 
 const VarifyEmail = () => {
   const location = useLocation();
@@ -29,7 +30,7 @@ const VarifyEmail = () => {
 
           {isSuccess ? (
             <div>
-              {toast.success("Verified Sucessfully!")}
+              {/* {toast.success("Verified Sucessfully!")} */}
               Verified Sucessfully!
               {navigate("/dashboard")}
             </div>
