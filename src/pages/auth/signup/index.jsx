@@ -5,7 +5,7 @@ import UserInfoForm from "@/components/auth/UserInfoForm";
 import { Button } from "@/components/ui/button";
 import RoleInfoForm from "@/components/auth/RoleInfoForm";
 import PasswordInfoForm from "@/components/auth/PasswordInfoForm";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 import { register } from "@/lib/auth/register";
 
@@ -30,14 +30,14 @@ const Register = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Registration successful!");
+      // toast.success("Registration successful!");
       console.log("done"); // forward them to page that say we have sent you email. check your email for varification
       console.log(isSuccess)
       navigate("/verifyEmail");
     }
 
     if (isError) {
-      toast.error("Something went wrong, please try again.");
+      // toast.error("Something went wrong, please try again.");
       console.log("error");
       console.log(isSuccess)
     }
@@ -59,7 +59,7 @@ const Register = () => {
             {progress === 50 && <RoleInfoForm />}
             {progress > 50 && <PasswordInfoForm />}
 
-            <Button className="mt-2 w-full md:w-[40%] md:mt-4 text-white bg-[#1F555D]">
+            <Button className="mt-2 w-full md:w-[40%] md:mt-4 text-white bg-[#1F555D] h-10">
               {progress < 100 ? "Next" : isLoading ? "Loading..." : "Submit"}
             </Button>
           </form>
