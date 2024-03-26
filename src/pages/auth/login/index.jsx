@@ -1,27 +1,27 @@
 import React, { useState } from "react";
-import { Label } from "../../../components/ui/label"
-import { Input } from "../../../components/ui/input"
-import { Button } from "../../../components/ui/button"
-import userIcon from '../../../public/icons/user.svg'
-import lockIcon from '../../../public/icons/lock.svg'
+
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import userIcon from "@/public/icons/user.svg";
+import lockIcon from "@/public/icons/lock.svg";
+
 import axios from 'axios';
 import { useMutation } from 'react-query';
 
 
 
+
 const initialFormData = { "email": "", "password": "" };
 
-
 const Login = () => {
-
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
+
 
   const loginMutation = useMutation((formData) =>
     axios.post('http://localhost:5072/api/auth/login', formData)
   );
-
-
 
 
   const handleFormInputChange = (e) => {
@@ -29,6 +29,7 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
 
   };
+
 
   // const handleFormSubmit = async (e) => {
   //   e.preventDefault();
@@ -65,17 +66,21 @@ const Login = () => {
     }
   };
 
+
   return (
     <>
       <main className="flex items-center justify-center h-[100vh]">
         <section className="flex flex-col items-center justify-center gap-20 w-[50%] md:bg-shadow md:gap-14 md:p-10 md:rounded-lg lg:w-[40%]">
           <div className="flex flex-col items-center">
-            <h1 className="text-4xl font-bold md:text-4xl md:mt-8 font-primary">Login</h1>
+            <h1 className="text-4xl font-bold md:text-4xl md:mt-8 font-primary">
+              Login
+            </h1>
           </div>
           <div className="text-primary font-primary md:w-full ">
             <form
               onSubmit={handleFormSubmit}
               onChange={handleFormInputChange}
+
               className="flex flex-col gap-10 justify-center items-center w-full md:gap-8">
 
               <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -108,6 +113,7 @@ const Login = () => {
                     className="border-primary border-none focus-visible:ring-0"
                     name="password"
                     required
+
                     minLength={6}
 
                   />
@@ -125,6 +131,15 @@ const Login = () => {
                 </Button>
               </div>
 
+
+              <div className="md:mt-4">
+                <Button
+                  className="bg-primary w-52 rounded-2xl text-white bg-[#1F555D]"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "loading..." : "Login"}
+                </Button>
+              </div>
             </form>
 
             <h1 className=" font-primary text-xs mt-4 text-center">
@@ -133,6 +148,7 @@ const Login = () => {
               <a href="#"> Register</a>
             </h1>
 
+
           </div>
         </section>
       </main>
@@ -140,5 +156,4 @@ const Login = () => {
   );
 };
 
-
-export default Login
+export default Login;
