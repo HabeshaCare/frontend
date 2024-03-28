@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useQuery } from "react-query";
 import edit from "@/public/icons/edit.svg";
@@ -10,14 +10,35 @@ import ProfileKey from "@/components/profile/profileInfo";
 import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import  GetUserData from "@/lib/profile/getUserData";
+import GetUserData from "@/lib/profile/getUserData";
 
 export const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
-
   const { data, isLoading, isError } = useQuery('data', GetUserData);
+  const [name, setName] = useState("");
+  const [pno, setPno] = useState("");
+  const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [nationalId, setNationalId] = useState("");
+  useEffect(() => {
+    setName(data?.data?.fullname)
+    setPno(data?.data?.phonenumber)
+    setEmail(data?.data?.email)
+    setGender(data?.data?.gender)
+    setHeight(data?.data?.height)
+    setWeight(data?.data?.weight)
+    setNationalId(data?.data?.nationalId)
+  }, [editMode, data])
+
+  const handleInputChange = (setStateFunction) => {
+    return (event) => {
+      setStateFunction(event.target.value); // Update the state with the new input value
+    };
+  };
 
 
   if (isLoading) {
@@ -66,13 +87,23 @@ export const Profile = () => {
                 {editMode ? (
                   <ProfileValue value={data.data.fullname} />
                 ) : (
-                  <Input />
+                  <Input
+                    type="text"
+                    value={name} // Pass the state variable as the value
+                    onChange={handleInputChange(setName)} // Pass the handler function to update the state
+                    placeholder="Enter your name" // Example placeholder text
+                  />
                 )}
               </div>
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value={data.data.phonenumber} /> : <Input />}
+                {editMode ? <ProfileValue value={data.data.phonenumber} /> : <Input
+                  type="text"
+                  value={pno} // Pass the state variable as the value
+                  onChange={handleInputChange(setPno)} // Pass the handler function to update the state
+                  placeholder="Enter your phonenumber" // Example placeholder text
+                />}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
@@ -80,13 +111,23 @@ export const Profile = () => {
                 {editMode ? (
                   <ProfileValue value={data.data.email} />
                 ) : (
-                  <Input />
+                  <Input
+                    type="text"
+                    value={email} // Pass the state variable as the value
+                    onChange={handleInputChange(setEmail)} // Pass the handler function to update the state
+                    placeholder="Enter your Email" // Example placeholder text
+                  />
                 )}
               </div>
             </div>
             <div className="ml-2 md:pl-32">
               <ProfileKey keyName="Gender" />
-              {editMode ? <ProfileValue value={data.data.gender} /> : <Input />}
+              {editMode ? <ProfileValue value={data.data.gender} /> : <Input
+                type="text"
+                value={gender} // Pass the state variable as the value
+                onChange={handleInputChange(setGender)} // Pass the handler function to update the state
+                placeholder="Enter your gender" // Example placeholder text
+              />}
             </div>
 
 
@@ -104,15 +145,27 @@ export const Profile = () => {
                     {" "}
                     <div>
                       <p className="pl-6 text-[#1F555D]">DD</p>
-                      <Input />
+                      <Input
+                        type="text"
+                        value={data.data.height} // Pass the state variable as the value
+                        placeholder="dd" // Example placeholder text
+                      />
                     </div>{" "}
                     <div>
                       <p className="pl-6 text-[#1F555D]">MM</p>
-                      <Input />
+                      <Input
+                        type="text"
+                        value={data.data.height} // Pass the state variable as the value
+                        placeholder="mm" // Example placeholder text
+                      />
                     </div>{" "}
                     <div>
                       <p className="pl-6 text-[#1F555D]">YYYY</p>
-                      <Input />
+                      <Input
+                        type="text"
+                        value={data.data.height} // Pass the state variable as the value
+                        placeholder="YYYY" // Example placeholder text
+                      />
                     </div>
                   </div>
                 )}
@@ -121,18 +174,33 @@ export const Profile = () => {
               <div className="ml-2 mb-3 flex gap-20">
                 <div className="ml-2">
                   <ProfileKey keyName="Hight" />
-                  {editMode ? <ProfileValue value="1.70m" /> : <Input />}
+                  {editMode ? <ProfileValue value="1.70m" /> : <Input
+                    type="text"
+                    value={height} // Pass the state variable as the value
+                    onChange={handleInputChange(setHeight)} // Pass the handler function to update the state
+                    placeholder=" height" // Example placeholder text
+                  />}
                 </div>
 
                 <div className="">
                   <ProfileKey keyName="Weight" />
-                  {editMode ? <ProfileValue value="70Kg" /> : <Input />}
+                  {editMode ? <ProfileValue value="70Kg" /> : <Input
+                    type="text"
+                    value={weight} // Pass the state variable as the value
+                    onChange={handleInputChange(setWeight)} // Pass the handler function to update the state
+                    placeholder=" weight" // Example placeholder text
+                  />}
                 </div>
               </div>
             </div>
             <div className={`md:ml-8 ${editMode ? "ml-2" : "md:ml-2"} `}>
               <ProfileKey keyName="National ID" />
-              {editMode ? <ProfileValue value={data.data.nationalId} /> : <Input />}
+              {editMode ? <ProfileValue value={data.data.nationalId} /> : <Input
+                type="text"
+                value={nationalId} // Pass the state variable as the value
+                onChange={handleInputChange(setNationalId)} // Pass the handler function to update the state
+                placeholder="Enter your national Id" // Example placeholder text
+              />}
             </div>
 
             {editMode ? (
