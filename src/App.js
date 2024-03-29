@@ -7,7 +7,7 @@ import Dashboard from '@/pages/patient/dashboard';
 import VarifyEmail from "./components/auth/varifyEmail";
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
-
+const queryClient = new QueryClient();
 function App() {
 
   return (

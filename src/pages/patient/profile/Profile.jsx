@@ -10,31 +10,29 @@ import ProfileKey from "@/components/profile/profileInfo";
 import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import  GetUserData from "@/lib/profile/getUserData";
+import GetUserData from "@/lib/profile/getUserData";
 
 export const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
 
-  const { data, isLoading, isError } = useQuery('data', GetUserData);
-
+  const { data, isLoading, isError } = useQuery("data", GetUserData);
 
   if (isLoading) {
-    console.log('Loading...');
+    console.log("Loading...");
     // You can render a loading indicator here
     return <div>Loading...</div>;
   }
 
   if (isError) {
-    console.log('Error fetching data');
+    console.log("Error fetching data");
     // You can render an error message here
     return <div>Error fetching data</div>;
   }
 
   return (
     <>
-
       <div className="md:flex">
         <div className="md:w-2/3">
           <div className="flex my-4">
@@ -72,7 +70,11 @@ export const Profile = () => {
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value={data.data.phonenumber} /> : <Input />}
+                {editMode ? (
+                  <ProfileValue value={data.data.phonenumber} />
+                ) : (
+                  <Input />
+                )}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
@@ -88,7 +90,6 @@ export const Profile = () => {
               <ProfileKey keyName="Gender" />
               {editMode ? <ProfileValue value={data.data.gender} /> : <Input />}
             </div>
-
 
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
               specific Info
@@ -132,7 +133,11 @@ export const Profile = () => {
             </div>
             <div className={`md:ml-8 ${editMode ? "ml-2" : "md:ml-2"} `}>
               <ProfileKey keyName="National ID" />
-              {editMode ? <ProfileValue value={data.data.nationalId} /> : <Input />}
+              {editMode ? (
+                <ProfileValue value={data.data.nationalId} />
+              ) : (
+                <Input />
+              )}
             </div>
 
             {editMode ? (
@@ -147,8 +152,7 @@ export const Profile = () => {
           {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
         </div>
       </div>
-
     </>
   );
 };
-export default Profile
+export default Profile;
