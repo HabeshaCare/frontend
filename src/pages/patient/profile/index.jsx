@@ -3,6 +3,6 @@ import { useEffect } from "react";
 import openEye from "@/public/icons/openEye.svg";
 import closeEye from "@/public/icons/closeEye.svg";
 // component import
-import { Profile } from "./Profile";
+import { Profile } from "./patientProfile";
 
 export default Profile;
