@@ -11,6 +11,8 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GetUserData from "@/lib/profile/getUserData";
+import axios from "axios";
+import { Mutation, useMutation } from "react-query";
 
 export const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,12 +34,50 @@ export const Profile = () => {
     setHeight(data?.data?.height)
     setWeight(data?.data?.weight)
     setNationalId(data?.data?.nationalId)
+
+
   }, [editMode, data])
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
-      setStateFunction(event.target.value); // Update the state with the new input value
+      setStateFunction(event.target.value);
+      console.log('Name:', name);
+      console.log('Phone Number:', pno);
+      console.log('Email:', email);
+      console.log('Gender:', gender);
+      console.log('Height:', height);
+      console.log('Weight:', weight);
+      console.log('National ID:', nationalId);
     };
+  };
+  const updatedData = {
+    fullname: name,
+    gender: gender,
+    nationalId: nationalId,
+    height: height,
+    weight: weight,
+    
+  }
+  const user_id = localStorage.getItem('userId');
+  const token = localStorage.getItem('token');
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  };
+
+  const url = 'http://localhost:5072/api/patient/' + user_id + '/profile';
+  const updatData = useMutation((dataToSendToBackend) => axios.put(url, dataToSendToBackend,config),  {
+    onSuccess: () => {
+      // Handle successful update
+      console.log('success')
+    },
+    onError: () => {
+      // Handle error
+    }
+  })
+  const handleSubmit = () => {
+    updatData.mutate(updatedData);
   };
 
 
@@ -75,10 +115,10 @@ export const Profile = () => {
             <div>
               <img src={edit} alt="edit SVG" />
             </div>
-            <div className="text-[#1F555D]">Edit</div>
+            <div className="text-[#5F95DC]">Edit</div>
           </div>
           <div className="flex flex-col border border-solid mt-4 mx-4 p-2">
-            <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
+            <div className="text-xl text-[#5F95DC] font-semibold font-serif mb-4">
               General Info
             </div>
             <div className={`${editMode && "md:flex justify-around"}`}>
@@ -131,7 +171,7 @@ export const Profile = () => {
             </div>
 
 
-            <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
+            <div className="text-xl text-[#5F95DC] font-semibold font-serif mb-4">
               specific Info
             </div>
 
@@ -144,7 +184,7 @@ export const Profile = () => {
                   <div className="flex gap-2">
                     {" "}
                     <div>
-                      <p className="pl-6 text-[#1F555D]">DD</p>
+                      <p className="pl-6 text-[#5F95DC]">DD</p>
                       <Input
                         type="text"
                         value={data.data.height} // Pass the state variable as the value
@@ -152,7 +192,7 @@ export const Profile = () => {
                       />
                     </div>{" "}
                     <div>
-                      <p className="pl-6 text-[#1F555D]">MM</p>
+                      <p className="pl-6 text-[#5F95DC]">MM</p>
                       <Input
                         type="text"
                         value={data.data.height} // Pass the state variable as the value
@@ -160,7 +200,7 @@ export const Profile = () => {
                       />
                     </div>{" "}
                     <div>
-                      <p className="pl-6 text-[#1F555D]">YYYY</p>
+                      <p className="pl-6 text-[#5F95DC]">YYYY</p>
                       <Input
                         type="text"
                         value={data.data.height} // Pass the state variable as the value
@@ -206,7 +246,7 @@ export const Profile = () => {
             {editMode ? (
               ""
             ) : (
-              <Button className="mt-6 bg-[#1F555D] text-white">Save</Button>
+              <Button onClick={handleSubmit} className="mt-6 bg-[#5F95DC] text-white">Save</Button>
             )}
           </div>
         </div>
