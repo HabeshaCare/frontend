@@ -3,7 +3,7 @@ import edit from "@/public/icons/edit.svg";
 
 import picture from "@/public/img/PHOTO.jpg";
 
-const ProfilePicture = ({money}) => {
+const PatientPicture = () => {
   const [profilePicture, setProfilePicture] = useState(picture);
 
   const handlePictureUpload = (event) => {
@@ -36,13 +36,9 @@ const ProfilePicture = ({money}) => {
             />
           </label>
         </div>
-        <div className="mt-4 text-[#1F555D] text-lg font-semibold">
-          Available money
-        </div>
-        <div className="text-[#1F555D] text-lg">{money} Birr</div>
       </div>
     </>
   );
 };
 
-export default ProfilePicture;
+export default PatientPicture;
