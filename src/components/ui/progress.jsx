@@ -16,15 +16,10 @@ const CircularProgress = React.forwardRef(function CircularProgress(
       className={cn("relative w-14 h-14", className)} // Adjust size as needed
       {...props}
     >
-      <svg className="absolute" viewBox="0 0 16 16"> {/* Adjusted viewBox */}
-        <circle
-          cx="8"
-          cy="8"
-          r="7"
-          fill="none"
-          stroke="#ccc"
-          strokeWidth="2"
-        />
+      <svg className="absolute" viewBox="0 0 16 16">
+        {" "}
+        {/* Adjusted viewBox */}
+        <circle cx="8" cy="8" r="7" fill="none" stroke="#ccc" strokeWidth="2" />
         <circle
           cx="8"
           cy="8"
