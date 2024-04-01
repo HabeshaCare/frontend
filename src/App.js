@@ -1,11 +1,11 @@
 
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Register from "./pages/auth/signup";
 import Login from './pages/auth/login';
 import PatientProfile from "./pages/patient/profile/patientProfile";
 import Dashboard from '@/pages/patient/dashboard';
 import VarifyEmail from "./components/auth/varifyEmail";
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import DoctorProfile from '@/pages/doctor/profile/'
 const queryClient = new QueryClient();
 function App() {

@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import GetUserData from "@/lib/profile/getUserData";
 
 export const PatientProfile = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
 
