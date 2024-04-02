@@ -2,12 +2,13 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Register from "./pages/auth/signup";
 import Login from './pages/auth/login';
-import PatientProfile from "./pages/patient/profile/patientProfile";
+import PatientProfile from "./pages/patient/profile/";
 import Dashboard from '@/pages/patient/dashboard';
 import VarifyEmail from "./components/auth/varifyEmail";
 import { QueryClient, QueryClientProvider } from 'react-query';
 import DoctorProfile from '@/pages/doctor/profile/'
 import MedicalHistory from "@/pages/patient/medicalhistory"
+import ReceptionProfile from "@/pages/reception";
 
 const queryClient = new QueryClient();
 function App() {
@@ -16,7 +17,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          
+          <Route path="/reception/profile" element={<ReceptionProfile />} />
           <Route path="/doctor/profile" element={<DoctorProfile />} />
           <Route path="/patient/medicalhistory" element={<MedicalHistory />} />
           <Route path="/patient/profile" element={<PatientProfile />} />

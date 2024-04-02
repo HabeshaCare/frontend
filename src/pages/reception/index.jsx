@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useQuery } from "react-query";
 import edit from "@/public/icons/edit.svg";
 import back from "@/public/icons/back.svg";
 import PatientPicture from "@/components/profile/patientPicture";
@@ -10,25 +9,10 @@ import ProfileKey from "@/components/profile/profileInfo";
 import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import GetUserData from "@/lib/profile/getUserData";
 
-export const PatientProfile = () => {
+export const ReceptionProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
-
-  const { data, isLoading, isError } = useQuery("data", GetUserData);
-
-  if (isLoading) {
-    console.log("Loading...");
-    // You can render a loading indicator here
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    console.log("Error fetching data");
-    // You can render an error message here
-    return <div>Error fetching data</div>;
-  }
 
   return (
     <>
@@ -60,80 +44,36 @@ export const PatientProfile = () => {
             <div className={`${editMode && "md:flex justify-around"}`}>
               <div className="ml-2">
                 <ProfileKey keyName="Full Name" />
-                {editMode ? (
-                  <ProfileValue value={data.data.fullname} />
-                ) : (
-                  <Input />
-                )}
+                {editMode ? <ProfileValue value="beza kasahun" /> : <Input />}
               </div>
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {editMode ? (
-                  <ProfileValue value={data.data.phonenumber} />
-                ) : (
-                  <Input />
-                )}
+                {editMode ? <ProfileValue value="0982314216" /> : <Input />}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
                 <ProfileKey keyName="Email" />
                 {editMode ? (
-                  <ProfileValue value={data.data.email} />
+                  <ProfileValue value="bezakasahun@gmail.com" />
                 ) : (
                   <Input />
                 )}
               </div>
             </div>
-            <div className="ml-2 md:pl-32">
+            <div className={`${editMode && "md:ml-16"} ml-2`}>
               <ProfileKey keyName="Gender" />
-              {editMode ? <ProfileValue value={data.data.gender} /> : <Input />}
+              {editMode ? <ProfileValue value="female" /> : <Input />}
             </div>
 
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
               specific Info
             </div>
 
-            <div className={`${editMode && "md:flex md:gap-12"}`}>
-              <div className={`md:ml-8 ${editMode ? "ml-2" : "md:ml-2"} `}>
-                <ProfileKey keyName="Date of Birth" />
-                {editMode ? (
-                  <ProfileValue value="22-2-2012" />
-                ) : (
-                  <div className="flex gap-2">
-                    {" "}
-                    <div>
-                      <p className="pl-6 text-[#1F555D]">DD</p>
-                      <Input />
-                    </div>{" "}
-                    <div>
-                      <p className="pl-6 text-[#1F555D]">MM</p>
-                      <Input />
-                    </div>{" "}
-                    <div>
-                      <p className="pl-6 text-[#1F555D]">YYYY</p>
-                      <Input />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="ml-2 mb-3 flex gap-20">
-                <div className="ml-2">
-                  <ProfileKey keyName="Hight" />
-                  {editMode ? <ProfileValue value="1.70m" /> : <Input />}
-                </div>
-
-                <div className="">
-                  <ProfileKey keyName="Weight" />
-                  {editMode ? <ProfileValue value="70Kg" /> : <Input />}
-                </div>
-              </div>
-            </div>
-            <div className={`md:ml-8 ${editMode ? "ml-2" : "md:ml-2"} `}>
-              <ProfileKey keyName="National ID" />
+            <div className={`md:ml-16 ${editMode ? "ml-2" : "md:ml-2"} `}>
+              <ProfileKey keyName="Health Center Name" />
               {editMode ? (
-                <ProfileValue value={data.data.nationalId} />
+                <ProfileValue value="Yekatit 12 General Hospital" />
               ) : (
                 <Input />
               )}
@@ -158,4 +98,4 @@ export const PatientProfile = () => {
     </>
   );
 };
-export default PatientProfile;
+export default ReceptionProfile;
