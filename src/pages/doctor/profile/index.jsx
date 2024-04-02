@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import edit from "@/public/icons/edit.svg";
 import back from "@/public/icons/back.svg";
-import ProfilePicture from "@/components/profile/profilePicture";
 import { CompleteProfile } from "@/components/profile/completeProfile";
 import { CompleteProfile2 } from "@/components/profile/completeProfile";
 import ProfileKey from "@/components/profile/profileInfo";
@@ -10,6 +9,7 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
+import DoctorPicture from "@/components/profile/doctorPicture";
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
@@ -27,7 +27,7 @@ export const DoctorProfile = () => {
   return (
     <>
       <div className="md:flex">
-        <div className="md:w-2/3 mb-8">
+        <div className="md:w-3/4 mb-8">
           <div className="flex my-4">
             <div className="ml-2 mt-2 cursor-pointer">
               <img src={back} alt="back icon" />
@@ -36,35 +36,26 @@ export const DoctorProfile = () => {
               <p>Personal Profile</p>
             </div>
           </div>
-          <ProfilePicture money="20" />
-          {isMdScreen ? "" : <CompleteProfile progress={80} />}
-          <div className="flex justify-end mr-8 mt-4 gap-2">
-            <div>
-              <img src={edit} alt="edit SVG" />
-            </div>
-            <div
-              className="text-[#1F555D] cursor-pointer"
-              onClick={() => setEditMode(!editMode)}
-            >
-              Edit
-            </div>
-          </div>
-          <div className="flex flex-col border border-solid mt-4 mx-4 p-2">
-            <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
-              Bio
-            </div>
-            {editMode ? (
-              <div className="mb-8 ml-8 text-lg font-normal text-[#1F555D]">
-                Type something about yourself here
+
+          <div className="flex flex-col border border-solid mt-4 md:ml-24">
+            <DoctorPicture />
+            {isMdScreen ? "" : <CompleteProfile progress={80} />}
+            <div className="flex justify-end mr-8 mt-4 gap-2">
+              <div>
+                <img src={edit} alt="edit SVG" />
               </div>
-            ) : (
-              <Input placeholder="Type something about yourself here" />
-            )}
-            <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
+              <div
+                className="text-[#1F555D] cursor-pointer"
+                onClick={() => setEditMode(!editMode)}
+              >
+                Edit
+              </div>
+            </div>
+            <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               General Info
             </div>
 
-            <div className={`${editMode && "md:flex justify-around"}`}>
+            <div className={`${editMode && "md:flex justify-around md:mb-4"}`}>
               <div className="ml-2">
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
@@ -90,16 +81,18 @@ export const DoctorProfile = () => {
             </div>
 
             <div className={`${editMode && "md:flex justify-start"}`}>
-              <div className="ml-2 md:ml-16">
+              <div className="ml-2 md:ml-16 md:pl-1">
                 <ProfileKey keyName="Gender" />
                 {editMode ? <ProfileValue value="Male" /> : <Input />}
               </div>
             </div>
-            <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
+            <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               specific Info
             </div>
 
-            <div className={`${editMode && "md:flex justify-around"}`}>
+            <div
+              className={`${editMode && "md:flex justify-between md:mx-16"}`}
+            >
               <div className="ml-2">
                 <ProfileKey keyName="Specialization" />
                 {editMode ? (
@@ -120,7 +113,9 @@ export const DoctorProfile = () => {
               </div>
             </div>
             <div
-              className={`${editMode && "md:flex justify-around md:ml-8"} mt-4`}
+              className={`${
+                editMode && "md:flex justify-between md:mx-16 md:px-2"
+              } mt-8`}
             >
               <div>
                 <ProfileKey keyName="Verification status" />
@@ -197,7 +192,7 @@ export const DoctorProfile = () => {
           </div>
         </div>
 
-        <div className="w-1/3 flex justify-center">
+        <div className="w-1/4 flex justify-center">
           {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
         </div>
       </div>

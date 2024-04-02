@@ -3,7 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import { useQuery } from "react-query";
 import edit from "@/public/icons/edit.svg";
 import back from "@/public/icons/back.svg";
-import ProfilePicture from "@/components/profile/profilePicture";
+import PatientPicture from "@/components/profile/patientPicture";
 import { CompleteProfile } from "@/components/profile/completeProfile";
 import { CompleteProfile2 } from "@/components/profile/completeProfile";
 import ProfileKey from "@/components/profile/profileInfo";
@@ -112,7 +112,7 @@ export const PatientProfile = () => {
               <p>Personal Profile</p>
             </div>
           </div>
-          <ProfilePicture />
+          <PatientPicture />
           {isMdScreen ? "" : <CompleteProfile progress={80} />}
           <div
             className="flex justify-end mr-8 mt-4 gap-2 cursor-pointer"
