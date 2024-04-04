@@ -25,22 +25,34 @@ export const DoctorProfile = () => {
   const handleRemoveUpload = () => {
     setLicenseFile(null);
   };
-const GetDoctorData=async()=>{
-  const token=localStorage.getItem('token');
-  const doctor_id=localStorage.getItem('userId');
-  const config = {
-    headers:{
-      Authorization: 'Bearer ' + token
+  const GetDoctorData = async () => {
+    const token = localStorage.getItem('token');
+    const doctor_id = localStorage.getItem('userId');
+    console.log ("Token="+token,"doctorId="+doctor_id);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
     }
+    const url = "http://localhost:5072/api/doctor/" + doctor_id + "/profile";
+    const response = await axios.get(url, config);
+    return response.data;
+
   }
-const url="http://localhost:5072/api/doctor/"+doctor_id +"/profile";
-const response=await axios.get(url,config);
-return  response.data;
-
-}
 
 
-const {data,isLoading,isError} = useQuery(["doctor",GetDoctorData])
+  const { data, isLoading, isError } = useQuery("doctor", GetDoctorData)
+  if (data){
+    console.log("data");
+    console.log(data.data);
+
+  }
+  if (isLoading){
+    return <p>Loading...</p>
+  }
+  if (isError){
+    return <p>Error occured </p>
+  }
 
 
 
@@ -88,7 +100,7 @@ const {data,isLoading,isError} = useQuery(["doctor",GetDoctorData])
               <div className="ml-2">
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
-                  <ProfileValue value="Dr. Belay Seyum" />
+                  <ProfileValue value={data.data.fullname} />
                 ) : (
                   <Input />
                 )}
@@ -96,13 +108,13 @@ const {data,isLoading,isError} = useQuery(["doctor",GetDoctorData])
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value="092314216" /> : <Input />}
+                {editMode ? <ProfileValue value={data.data.phonenumber}/> : <Input />}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
                 <ProfileKey keyName="Email" />
                 {editMode ? (
-                  <ProfileValue value="nigusseyeabsira@gmail.com" />
+                  <ProfileValue value={data.data.email}/>
                 ) : (
                   <Input />
                 )}
@@ -112,7 +124,7 @@ const {data,isLoading,isError} = useQuery(["doctor",GetDoctorData])
             <div className={`${editMode && "md:flex justify-start"}`}>
               <div className="ml-2 md:ml-16">
                 <ProfileKey keyName="Gender" />
-                {editMode ? <ProfileValue value="Male" /> : <Input />}
+                {editMode ? <ProfileValue value={data.data.gender} /> : <Input />}
               </div>
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
@@ -123,7 +135,7 @@ const {data,isLoading,isError} = useQuery(["doctor",GetDoctorData])
               <div className="ml-2">
                 <ProfileKey keyName="Specialization" />
                 {editMode ? (
-                  <ProfileValue value="Doctor of Medicine" />
+                  <ProfileValue value={data.data.specialization} />
                 ) : (
                   <Input />
                 )}
@@ -144,7 +156,7 @@ const {data,isLoading,isError} = useQuery(["doctor",GetDoctorData])
             >
               <div>
                 <ProfileKey keyName="Verification status" />
-                {editMode ? <ProfileValue value="Verified" /> : <Input />}
+                {editMode ? <ProfileValue value={data.data.verified ? "Verified " :"not Verified"}  /> : <Input />}
               </div>
               <div>
                 <ProfileKey keyName="Working Health center" />
@@ -156,7 +168,7 @@ const {data,isLoading,isError} = useQuery(["doctor",GetDoctorData])
               </div>
               <div>
                 <ProfileKey keyName="Year of experience" />
-                {editMode ? <ProfileValue value="2 Years" /> : <Input />}
+                {editMode ? <ProfileValue value={data.data.yearOfExperience}/> : <Input />}
               </div>
             </div>
 
