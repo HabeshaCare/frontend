@@ -8,7 +8,7 @@ import VarifyEmail from "./components/auth/varifyEmail";
 import { QueryClient, QueryClientProvider } from 'react-query';
 import DoctorProfile from '@/pages/doctor/profile/'
 import MedicalHistory from "@/pages/patient/medicalhistory"
-import ReceptionProfile from "@/pages/reception";
+import ReceptionProfile from "@/pages/reception/profile";
 
 const queryClient = new QueryClient();
 function App() {
