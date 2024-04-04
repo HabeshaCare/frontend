@@ -11,16 +11,12 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GetUserData from "@/lib/profile/getUserData";
-<<<<<<< HEAD:src/pages/patient/profile/Profile.jsx
 import axios from "axios";
 import { Mutation, useMutation } from "react-query";
-=======
->>>>>>> dev:src/pages/patient/profile/patientProfile.jsx
 
 export const PatientProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
-<<<<<<< HEAD:src/pages/patient/profile/Profile.jsx
   const { data, isLoading, isError } = useQuery('data', GetUserData);
   const [name, setName] = useState("");
   const [pno, setPno] = useState("");
@@ -83,10 +79,6 @@ export const PatientProfile = () => {
     updatData.mutate(updatedData);
   };
 
-=======
-
-  const { data, isLoading, isError } = useQuery("data", GetUserData);
->>>>>>> dev:src/pages/patient/profile/patientProfile.jsx
 
   if (isLoading) {
     console.log("Loading...");
@@ -144,20 +136,12 @@ export const PatientProfile = () => {
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-<<<<<<< HEAD:src/pages/patient/profile/Profile.jsx
                 {editMode ? <ProfileValue value={data.data.phonenumber} /> : <Input
                   type="text"
                   value={pno} // Pass the state variable as the value
                   onChange={handleInputChange(setPno)} // Pass the handler function to update the state
                   placeholder="Enter your phonenumber" // Example placeholder text
                 />}
-=======
-                {editMode ? (
-                  <ProfileValue value={data.data.phonenumber} />
-                ) : (
-                  <Input />
-                )}
->>>>>>> dev:src/pages/patient/profile/patientProfile.jsx
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
@@ -184,12 +168,8 @@ export const PatientProfile = () => {
               />}
             </div>
 
-<<<<<<< HEAD:src/pages/patient/profile/Profile.jsx
 
             <div className="text-xl text-[#5F95DC] font-semibold font-serif mb-4">
-=======
-            <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
->>>>>>> dev:src/pages/patient/profile/patientProfile.jsx
               specific Info
             </div>
 
@@ -253,20 +233,12 @@ export const PatientProfile = () => {
             </div>
             <div className={`md:ml-8 ${editMode ? "ml-2" : "md:ml-2"} `}>
               <ProfileKey keyName="National ID" />
-<<<<<<< HEAD:src/pages/patient/profile/Profile.jsx
               {editMode ? <ProfileValue value={data.data.nationalId} /> : <Input
                 type="text"
                 value={nationalId} // Pass the state variable as the value
                 onChange={handleInputChange(setNationalId)} // Pass the handler function to update the state
                 placeholder="Enter your national Id" // Example placeholder text
               />}
-=======
-              {editMode ? (
-                <ProfileValue value={data.data.nationalId} />
-              ) : (
-                <Input />
-              )}
->>>>>>> dev:src/pages/patient/profile/patientProfile.jsx
             </div>
 
             {editMode ? (

@@ -10,6 +10,8 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
+import { useQuery } from "react-query";
+import axios from "axios";
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
@@ -23,6 +25,24 @@ export const DoctorProfile = () => {
   const handleRemoveUpload = () => {
     setLicenseFile(null);
   };
+const GetDoctorData=async()=>{
+  const token=localStorage.getItem('token');
+  const doctor_id=localStorage.getItem('userId');
+  const config = {
+    headers:{
+      Authorization: 'Bearer ' + token
+    }
+  }
+const url="http://localhost:5072/api/doctor/"+doctor_id +"/profile";
+const response=await axios.get(url,config);
+return  response.data;
+
+}
+
+
+const {data,isLoading,isError} = useQuery(["doctor",GetDoctorData])
+
+
 
   return (
     <>
