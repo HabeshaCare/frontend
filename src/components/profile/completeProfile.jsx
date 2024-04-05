@@ -3,7 +3,7 @@ import { CircularProgress } from "@/components/ui/progress";
 const CompleteProfile = ({ progress }) => {
   return (
     <>
-      <div className="flex items-center bg-[#A7C2C5] mx-6 my-4 h-20 rounded-3xl">
+      <div className="flex items-center bg-[#F0F6FE] mx-6 my-4 h-20 rounded-3xl">
         <div className="mx-4">
           <CircularProgress value={progress} />
         </div>
@@ -18,7 +18,7 @@ const CompleteProfile = ({ progress }) => {
 const CompleteProfile2 = ({ progress }) => {
   return (
     <>
-      <div className="flex flex-col items-center mt-8 bg-[#A7C2C5] h-72 w-64 rounded-3xl">
+      <div className="flex flex-col items-center mt-8 bg-[#F0F6FE] h-72 w-64 rounded-3xl">
         <div className="text-md font-semibold pt-4">
           {progress === 100 ? "Profile Completed!!" : " Complete Your Profile"}
         </div>
