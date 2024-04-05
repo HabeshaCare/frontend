@@ -25,7 +25,7 @@ const CircularProgress = React.forwardRef(function CircularProgress(
           cy="8"
           r="7"
           fill="none"
-          stroke="#1F555D"
+          stroke="#5F95DC "
           strokeWidth="2"
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -33,7 +33,7 @@ const CircularProgress = React.forwardRef(function CircularProgress(
           transform="rotate(-90 8 8)"
         />
       </svg>
-      <div className="absolute inset-0 flex items-center justify-center text-center font-bold text-sm text-gray-800 dark:text-white">
+      <div className="absolute inset-0 flex items-center justify-center text-center font-bold text-sm text-gray-500 dark:text-white">
         {value}%
       </div>
     </ProgressPrimitive.Root>
