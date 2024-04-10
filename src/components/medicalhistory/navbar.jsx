@@ -11,11 +11,11 @@ const MedicalHistoryNavBar = () => {
 
   return (
     <>
-      <div className="flex justify-around items-center font-bold w-full h-24 text-white text-sm pt-8 px-4 bg-[#1F555D]">
+      <div className="flex justify-around items-center font-bold w-full h-24 md:h-16 text-white text-md md:text-lg pt-8 md:pt-0 px-4 bg-[#1F555D]">
         <div
-          className={`h-full p-2 cursor-pointer ${
+          className={`h-full p-2 md:pt-4 cursor-pointer ${
             activeTab === "Medical Record"
-              ? "bg-white text-[#1F555D] rounded-t-lg"
+              ? "bg-white text-[#1F555D] rounded-t-2xl"
               : ""
           }`}
           onClick={() => handleTabClick("Medical Record")}
@@ -23,9 +23,9 @@ const MedicalHistoryNavBar = () => {
           Medical Record
         </div>
         <div
-          className={`h-full p-2 cursor-pointer ${
+          className={`h-full p-2  md:pt-4 cursor-pointer ${
             activeTab === "Laboratory Test"
-              ? "bg-white text-[#1F555D] rounded-t-lg"
+              ? "bg-white text-[#1F555D] rounded-t-2xl"
               : "bg-[#1F555D]"
           }`}
           onClick={() => handleTabClick("Laboratory Test")}
@@ -33,9 +33,9 @@ const MedicalHistoryNavBar = () => {
           Laboratory Test
         </div>
         <div
-          className={`h-full p-2 cursor-pointer ${
+          className={`h-full p-2  md:pt-4 cursor-pointer ${
             activeTab === "Prescribed Medicine"
-              ? "bg-white text-[#1F555D] rounded-t-lg"
+              ? "bg-white text-[#1F555D] rounded-t-2xl"
               : "bg-[#1F555D]"
           }`}
           onClick={() => handleTabClick("Prescribed Medicine")}
@@ -43,9 +43,9 @@ const MedicalHistoryNavBar = () => {
           Prescribed Medicine
         </div>
         <div
-          className={`h-full p-2 cursor-pointer ${
+          className={`h-full p-2  md:pt-4 cursor-pointer ${
             activeTab === "Medical Report"
-              ? "bg-white text-[#1F555D] rounded-t-lg"
+              ? "bg-white text-[#1F555D] rounded-t-2xl"
               : "bg-[#1F555D]"
           }`}
           onClick={() => handleTabClick("Medical Report")}
