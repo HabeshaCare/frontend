@@ -3,6 +3,8 @@ import MobileLaboratoryTest from "@/components/medicalhistory/laboratorytest/mob
 import MedicalRecord from "@/components/medicalhistory/medicalrecord/medicalrecord";
 import MobileMedicalRecord from "@/components/medicalhistory/medicalrecord/mobilemedicalrecord";
 import MedicalHistoryNavBar from "@/components/medicalhistory/medicalrecord/navbar";
+import MobilePrescription from "@/components/medicalhistory/prescription/mobileprescription";
+import Prescription from "@/components/medicalhistory/prescription/prescription";
 import React, { useEffect, useState } from "react";
 
 const MedicalHistory = () => {
@@ -25,7 +27,8 @@ const MedicalHistory = () => {
       <MedicalHistoryNavBar />
       {/* {size > 740 ? <MedicalRecord /> : <MobileMedicalRecord />} */}
       {/* <MobileLaboratoryTest /> */}
-      {size > 740 ? <LaboratoryTest /> : <MobileLaboratoryTest />}
+      {/* {size > 740 ? <LaboratoryTest /> : <MobileLaboratoryTest />} */}
+      {size > 740 ? <Prescription /> : <MobilePrescription />}
     </>
   );
 };
