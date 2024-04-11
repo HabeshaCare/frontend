@@ -11,7 +11,7 @@ const MedicalHistoryNavBar = () => {
 
   return (
     <>
-      <div className="flex justify-around items-center font-bold w-full h-24 md:h-16 text-white text-md md:text-lg pt-8 md:pt-0 px-4 bg-[#1F555D]">
+      <div className="flex justify-around items-center font-bold w-full h-24 md:h-16 text-white text-base md:text-lg pt-8 md:pt-0 px-4 bg-[#1F555D]">
         <div
           className={`h-full p-2 md:pt-4 cursor-pointer ${
             activeTab === "Medical Record"

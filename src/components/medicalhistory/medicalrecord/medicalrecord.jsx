@@ -33,7 +33,7 @@ const Content = () => {
 const MedicalRecord = () => {
   return (
     <>
-      <div className="flex justify-around mt-4 text-lg font-bold font-serif text-[#1F555D]">
+      <div className="flex justify-around mt-12 text-lg font-bold font-serif text-[#1F555D]">
         <div className="flex justify-between w-1/2 ">
           <div>Doctor's Name</div>
           <div>Record Date</div>
