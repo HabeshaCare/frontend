@@ -3,9 +3,9 @@ import React from "react";
 const Content = () => {
   return (
     <>
-      <div className="flex justify-around text-base text-[#1F555D] mt-6">
+      <div className="flex justify-around text-base mt-6">
         <div>
-          <div className="text-left">Metformin</div>
+          <div className="text-left font-bold">Metformin</div>
           <div className="text-left">500 mg tablet</div>
         </div>
         <div className="flex items-center gap-4">
@@ -15,9 +15,15 @@ const Content = () => {
             <p className="text-left">Infectious disease</p>
           </div>
         </div>
-        <div>Sep 04/2014</div>
-        <div>Sep 05/2014</div>
-        <div className="text-base font-semibold w-1/6">
+        <div>
+          <p className="font-semibold">Sep 04/2014</p>
+          <p>5:20PM</p>
+        </div>
+        <div>
+          <p className="font-semibold">Sep 05/2014</p>
+          <p>11:40PM</p>
+        </div>
+        <div className="text-base font-semibold w-1/6 text-[#5B5B3C]">
           Take 1 tablet by mouth twice daily by 10 hours gap.
         </div>
       </div>
