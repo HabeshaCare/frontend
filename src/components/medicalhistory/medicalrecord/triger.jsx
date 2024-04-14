@@ -6,7 +6,7 @@ const Triger = () => {
           <div className="w-10 h-10 rounded-lg bg-gray-300"></div>
           <div className="flex flex-col">
             <p className="text-left font-bold">Dr. Tsedi</p>
-            <p className="text-left">Infectious disease</p>
+            <p className="text-left text-[#B5B5C3]">Infectious disease</p>
           </div>
         </div>
         <div>
