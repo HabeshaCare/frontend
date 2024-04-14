@@ -46,6 +46,7 @@ const Appointement = () => {
         <div className="text-xl font-bold font-serif">Appointment</div>
         <div>calander</div>
       </div>
+      <div className="mb-2"><hr /></div>
       <AppointementNavBar
         activeTab={activeTab}
         handleTabClick={handleTabClick}

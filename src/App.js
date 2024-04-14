@@ -10,6 +10,7 @@ import DoctorProfile from '@/pages/doctor/profile/'
 import MedicalHistory from "@/pages/patient/medicalhistory"
 import ReceptionProfile from "@/pages/reception/profile";
 import Appointement from "./pages/doctor/appointments";
+import Patient from "./pages/doctor/patients";
 
 const queryClient = new QueryClient();
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/reception/profile" element={<ReceptionProfile />} />
+          <Route path="/doctor/patient" element={<Patient />} />
           <Route path="/doctor/appointments" element={<Appointement />} />
           <Route path="/doctor/profile" element={<DoctorProfile />} />
           <Route path="/patient/medicalhistory" element={<MedicalHistory />} />
