@@ -1,9 +1,8 @@
 import edit from "@/public/icons/edit.svg";
-import doctor from "@/public/img/doctor.png";
 import { useState } from "react";
 
-const DoctorPicture = () => {
-  const [profilePicture, setProfilePicture] = useState(doctor);
+const Picture = ({image}) => {
+  const [profilePicture, setProfilePicture] = useState(image);
 
   const handlePictureUpload = (event) => {
     const file = event.target.files[0];
@@ -40,4 +39,4 @@ const DoctorPicture = () => {
   );
 };
 
-export default DoctorPicture;
+export default Picture;
