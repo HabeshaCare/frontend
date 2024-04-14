@@ -13,6 +13,7 @@ import Appointement from "./pages/doctor/appointments";
 import Patient from "./pages/doctor/patients";
 import HealthCenterProfile from "./pages/healthcenter/profile";
 import LaboratoryProfile from "./pages/laboratory/profile";
+import PharmacyProfile from "./pages/pharmacy/profile";
 
 const queryClient = new QueryClient();
 function App() {
@@ -21,6 +22,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
+          <Route path="/pharmacy/profile" element={<PharmacyProfile />} />
           <Route path="/laboratory/profile" element={<LaboratoryProfile />} />
           <Route path="/healthcenter/profile" element={<HealthCenterProfile />} />
           <Route path="/reception/profile" element={<ReceptionProfile />} />
