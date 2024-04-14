@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MedicalHistoryNavBar from "@/components/medicalhistory/medicalrecord/navbar";
+import MedicalHistoryNavBar from "@/components/medicalhistory/medicalrecord/medicalnavbar";
 import MedicalRecord from "@/components/medicalhistory/medicalrecord/medicalrecord";
 import MobileMedicalRecord from "@/components/medicalhistory/medicalrecord/mobilemedicalrecord";
 import LaboratoryTest from "@/components/medicalhistory/laboratorytest/laboratorytest";
