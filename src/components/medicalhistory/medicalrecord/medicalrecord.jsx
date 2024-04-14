@@ -9,20 +9,20 @@ const Content = () => {
             <div className="w-10 h-10 rounded-lg bg-gray-300"></div>
             <div>
               <div className="font-bold">Dr. Tsedi</div>
-              <div>Infectious Disease</div>
+              <div className="text-[#B5B5C3]">Infectious Disease</div>
             </div>
           </div>
 
           <div>
             <p className="font-semibold">22/12/2023</p>
-            <p>05:20 PM</p>
+            <p className="text-[#B5B5C3]">05:20 PM</p>
           </div>
           <div>
             <p className="font-semibold">Hospital</p>
-            <p>Amin General Hospital</p>
+            <p className="text-[#B5B5C3]">Amin General Hospital</p>
           </div>
         </div>
-        <div className="w-1/3">
+        <div className="w-1/3 text-[#5B5B3C]">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </div>
