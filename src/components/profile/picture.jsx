@@ -1,7 +1,7 @@
 import edit from "@/public/icons/edit.svg";
 import { useState } from "react";
 
-const DoctorPicture = ({image}) => {
+const Picture = ({image}) => {
   const [profilePicture, setProfilePicture] = useState(image);
 
   const handlePictureUpload = (event) => {
@@ -39,4 +39,4 @@ const DoctorPicture = ({image}) => {
   );
 };
 
-export default DoctorPicture;
+export default Picture;

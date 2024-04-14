@@ -9,7 +9,7 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
-import DoctorPicture from "@/components/profile/doctorPicture";
+import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 
 export const DoctorProfile = () => {
@@ -40,7 +40,7 @@ export const DoctorProfile = () => {
           </div>
 
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
-            <DoctorPicture image={doctor}/>
+            <DoctorPicture image={doctor} />
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
