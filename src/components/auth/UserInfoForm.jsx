@@ -12,6 +12,7 @@ const UserInfoForm = () => {
         placeholder="Type your Full Name"
         type="text"
         rules={{ required: "Full name required", maxLength: 50 }}
+        
       />
 
       {/* phone number */}
