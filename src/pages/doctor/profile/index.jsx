@@ -36,7 +36,7 @@ export const DoctorProfile = () => {
       setStateFunction(event.target.value);
     };
   };
-  
+
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -64,7 +64,7 @@ export const DoctorProfile = () => {
 
 
   const { data, isLoading, isError } = useQuery("doctor", GetDoctorData)
-  
+
   useEffect(() => {
     setFullname(data?.data?.fullname)
     setEmail(data?.data?.email)
@@ -77,18 +77,18 @@ export const DoctorProfile = () => {
     setAssociatedHealthCenterId(data?.data?.associatedHealthCenterId)
 
     console.log('Fullname:', data?.data?.fullname);
-  console.log('Email:', data?.data?.email);
-  console.log('Gender:', data?.data?.gender);
-  console.log('Phonenumber:', data?.data?.phonenumber);
-  console.log('Location:', data?.data?.location);
-  console.log('Specialization:', data?.data?.specialization);
-  console.log('Verified:', data?.data?.verified);
-  console.log('Year of Experience:', data?.data?.yearOfExperience);
-  console.log('Associated Health Center Id:', data?.data?.associatedHealthCenterId);
-    
-    console.log("doctor name ",data?.data?.fullname);
+    console.log('Email:', data?.data?.email);
+    console.log('Gender:', data?.data?.gender);
+    console.log('Phonenumber:', data?.data?.phonenumber);
+    console.log('Location:', data?.data?.location);
+    console.log('Specialization:', data?.data?.specialization);
+    console.log('Verified:', data?.data?.verified);
+    console.log('Year of Experience:', data?.data?.yearOfExperience);
+    console.log('Associated Health Center Id:', data?.data?.associatedHealthCenterId);
 
-    
+    console.log("doctor name ", data?.data?.fullname);
+
+
 
   }, [editMode, data])
   if (data) {
@@ -102,7 +102,7 @@ export const DoctorProfile = () => {
   if (isError) {
     return <p>Error occured </p>
   }
-  
+
 
 
 
@@ -141,7 +141,7 @@ export const DoctorProfile = () => {
               </div>
             ) : (
               <Input placeholder="Type something about yourself here"
-               />
+              />
             )}
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
               General Info
@@ -153,14 +153,14 @@ export const DoctorProfile = () => {
                 {editMode ? (
                   <ProfileValue value={data.data.fullname} />
                 ) : (
-                  <Input onChange={handleInputChange(setFullname)} placeholder="Enter your full name" value={fullname}/>
+                  <Input onChange={handleInputChange(setFullname)} placeholder="Enter your full name" value={fullname} />
 
                 )}
               </div>
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value={data.data.phonenumber} /> : <Input  onChange={handleInputChange(setPhonenumber)} value={phonenumber} placeholder="change phone number" />}
+                {editMode ? <ProfileValue value={data.data.phonenumber} /> : <Input onChange={handleInputChange(setPhonenumber)} value={phonenumber} placeholder="change phone number" />}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
@@ -208,7 +208,7 @@ export const DoctorProfile = () => {
             >
               <div>
                 <ProfileKey keyName="Verification status" />
-                {editMode ? <ProfileValue value={data.data.verified ? "Verified " : "not Verified"} /> : <Input onChange={handleInputChange(setVerified)}  value={verified} />}
+                {editMode ? <ProfileValue value={data.data.verified ? "Verified " : "not Verified"} /> : <Input onChange={handleInputChange(setVerified)} value={verified} />}
               </div>
               <div>
                 <ProfileKey keyName="Working Health center" />
