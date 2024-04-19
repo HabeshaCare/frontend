@@ -12,6 +12,7 @@ const UserInfoForm = () => {
         placeholder="Type your Full Name"
         type="text"
         rules={{ required: "Full name required", maxLength: 50 }}
+        
       />
 
       {/* phone number */}
@@ -41,24 +42,6 @@ const UserInfoForm = () => {
         type="email"
         rules={{ required: "Email required", maxLength: 50 }}
       />
-
-      {/* Age */}
-
-      <InputField
-        name="age"
-        label="Age"
-        placeholder="Enter your age"
-        type="number"
-        rules={{
-          required: "Age required",
-          min: {
-            value: 18,
-            message: "Age must be 18+",
-          },
-        }}
-      />
-
-      {/* Gender */}
 
       <OptionField
         name="gender"
