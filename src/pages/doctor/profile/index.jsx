@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { Mutation, useMutation } from "react-query";
+
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
@@ -91,11 +93,48 @@ export const DoctorProfile = () => {
 
 
   }, [editMode, data])
+  const updatedData = {
+    fullname: fullname,
+    gender: gender,
+    email: email,
+    phonenumber: phonenumber,
+    location: location,
+    specialization: specialization,
+    verified: verified,
+    yearOfExperience: yearOfExperience,
+    associatedHealthCenterId: associatedHealthCenterId, 
+
+    
+    
+  }
+  const token = localStorage.getItem('token');
+  const doctor_id = localStorage.getItem('userId');
+  console.log("Token=" + token, "doctorId=...." + doctor_id);
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }};
+
+  const url = 'http://localhost:5072/api/doctor/' + doctor_id + '/profile';
+  const updatData = useMutation((dataToSendToBackend) => axios.put(url, dataToSendToBackend,config),  {
+    onSuccess: () => {
+      // Handle successful update
+      console.log('success')
+    },
+    onError: () => {
+      // Handle error
+      console.log('error changing data')
+    }
+  })
+  const handleSubmit = () => {
+    updatData.mutate(updatedData);
+  };
   if (data) {
     console.log("data");
     console.log(data?.data?.fullname);
 
   }
+
   if (isLoading) {
     return <p>Loading...</p>
   }
@@ -159,8 +198,8 @@ export const DoctorProfile = () => {
               </div>
 
               <div className="ml-2">
-                <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value={data.data.phonenumber} /> : <Input onChange={handleInputChange(setPhonenumber)} value={phonenumber} placeholder="change phone number" />}
+                <ProfileKey keyName="Phone Number"  />
+                {editMode ? <ProfileValue value={data.data.phonenumber}/> : <Input onChange={handleInputChange(setPhonenumber)} value={phonenumber} placeholder="change phone number" />}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
@@ -200,7 +239,7 @@ export const DoctorProfile = () => {
 
               <div className="">
                 <ProfileKey keyName="Location" />
-                {editMode ? <ProfileValue value="Addis Ababa" /> : <Input onChange={handleInputChange(setLocation)} value={location} placeholder="set location" />}
+                {editMode ? <ProfileValue value={location}/> : <Input onChange={handleInputChange(setLocation)} value={location} placeholder="set location" />}
               </div>
             </div>
             <div
@@ -273,7 +312,7 @@ export const DoctorProfile = () => {
               ""
             ) : (
               <div className="flex justify-center">
-                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28 ">
+                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28 " onClick={handleSubmit} >
                   Save
                 </Button>
               </div>
