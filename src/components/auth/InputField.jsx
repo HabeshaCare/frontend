@@ -3,14 +3,7 @@ import { Label } from "../ui/label";
 import { useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 
-
-const InputField = ({
-  name,
-  label,
-  placeholder,
-  rules,
-  type,
-}) => {
+const InputField = ({ name, label, placeholder, rules, type }) => {
   const {
     register,
     formState: { errors },
