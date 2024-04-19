@@ -43,7 +43,7 @@ const Register = () => {
 
   return (
     <main className="flex flex-col items-center justify-center w-full my-6 gap-10">
-      <h1 className="text-4xl text-primary font-bold md:text-4xl md:mt-8 font-primary">
+      <h1 className="text-4xl text-[#1F555D] font-bold md:text-4xl md:mt-8 font-primary">
         Register
       </h1>
 

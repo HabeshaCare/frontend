@@ -15,8 +15,7 @@ const PasswordInfoForm = () => {
         rules={{
           required: "Password required",
           pattern: {
-            value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
             message:
               "Password must contain at least 8 characters. one uppercase, lowercase, number and special character.",
           },
@@ -35,8 +34,7 @@ const PasswordInfoForm = () => {
           validate: (value) =>
             value === watch("password") || "The passwords do not match",
           pattern: {
-            value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
             message:
               "Password must contain at least 8 characters. one uppercase, lowercase, number and special character.",
           },
