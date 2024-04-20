@@ -100,11 +100,14 @@ const Home = () => {
                           GuideBot
                         </SheetTitle>
                         <SheetDescription className="h-96 mt-4 rounded-lg px-2 py-2 text-black">
-                          Hello, How can i help you?
+                          <div className="bg-white p-2 rounded-md">
+                            Hello, How can i help you?
+                          </div>
                         </SheetDescription>
                       </SheetHeader>
                       <SheetFooter>
                         <Textarea />
+                        <Button className="bg-[#1F555D] w-1/4 h-10 text-white">send</Button>
                       </SheetFooter>
                     </SheetContent>
                   </Sheet>
