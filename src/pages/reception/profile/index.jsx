@@ -14,6 +14,18 @@ export const ReceptionProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
 
+  const GetReceptionProfile=async() => {
+    const token=localStorage.getItem('token');
+    const reception_id=localStorage.getItem('user_id');
+    const config={
+      headers:{
+        Authorization: 'Bearer ' + token
+      }
+    }
+    const url=""
+
+  }
+
   return (
     <>
       <div className="md:flex">

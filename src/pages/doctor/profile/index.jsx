@@ -12,7 +12,6 @@ import { FiUpload } from "react-icons/fi";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { Mutation, useMutation } from "react-query";
-
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 
