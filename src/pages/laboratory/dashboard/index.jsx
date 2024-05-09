@@ -1,7 +1,9 @@
+import NavBar from "./navBar";
 const LaboratoryDashboard = () => {
   return (
     <>
-      <div>this is Laboratory dashboard</div>
+      <NavBar />
+      
     </>
   );
 };
