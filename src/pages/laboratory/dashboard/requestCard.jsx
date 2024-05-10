@@ -7,6 +7,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import ReqForm from "./requestForm"
 
 const Card = (props) => {
     return (
@@ -24,6 +25,7 @@ const Card = (props) => {
                         <DialogHeader>
                             <DialogTitle>Result form</DialogTitle>
                             <DialogDescription>
+
                                 This action cannot be undone. This will permanently delete your account
                                 and remove your data from our servers.
                             </DialogDescription>
@@ -38,8 +40,7 @@ const Card = (props) => {
                         <DialogHeader>
                             <DialogTitle>request</DialogTitle>
                             <DialogDescription>
-                                This action cannot be undone. This will permanently delete your account
-                                and remove your data from our servers.
+                                <ReqForm />
                             </DialogDescription>
                         </DialogHeader>
                     </DialogContent>
