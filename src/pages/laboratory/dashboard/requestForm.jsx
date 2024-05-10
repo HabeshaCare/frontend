@@ -7,12 +7,16 @@ import ExaminationRequestedForm from "./ExaminationRequestedForm";
 
 const ReqForm = () => {
     return (
-        <div>
-            <RequesterDetailsForm />
-            <SampleDetailsForm />
-            <RelevantClinicalInformationForm />
-            <ExaminationRequestedForm />
-
+        <div className="grid lg:grid-cols-2 gap-4">
+            <div>
+                <RequesterDetailsForm />
+                <SampleDetailsForm />
+            </div>
+            <div>
+                <RelevantClinicalInformationForm />
+                <ExaminationRequestedForm />
+            </div>
+        <button type="button">Submit</button>
         </div>
     );
 };

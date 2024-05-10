@@ -46,7 +46,6 @@ const RelevantClinicalInformationForm = () => {
           <textarea id="otherInformation" name="otherInformation" value={formData.otherInformation} onChange={handleChange} rows="4" className="w-full px-3 py-2 border rounded-md"></textarea>
         </div>
 
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Submit</button>
       </form>
     </div>
   );
