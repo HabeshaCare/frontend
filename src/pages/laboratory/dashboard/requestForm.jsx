@@ -16,7 +16,7 @@ const ReqForm = () => {
                 <RelevantClinicalInformationForm />
                 <ExaminationRequestedForm />
             </div>
-        <button type="button">Submit</button>
+            <button type="button">Submit</button>
         </div>
     );
 };

@@ -54,7 +54,7 @@ const LaboratoryProfile = () => {
               </div>
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
-            Laboratory  Info
+              Laboratory  Info
             </div>
 
             <div className={`${editMode && "md:flex justify-around md:mb-4"}`}>
