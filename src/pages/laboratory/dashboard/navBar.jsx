@@ -43,12 +43,11 @@ const NavBar = () => {
                         <ul className='flex'>
 
                             <li className='mr-20'>
-                                <Link href='/' className='bg-hover-blue hover:text-blue-500'>
+                                <Link to='/laboratory/profile' className='bg-hover-blue hover:text-blue-500'>
                                     <Avatar>
                                         <AvatarImage src="https://github.com/shadcn.png" />
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
-
                                 </Link>
                             </li>
                         </ul>

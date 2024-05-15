@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
 import Picture from "@/components/profile/picture";
 import laboratory from "@/public/img/laboratory.jpg";
+import { Link } from 'react-router-dom';
 
 const LaboratoryProfile = () => {
   const [editMode, setEditMode] = useState(true);
@@ -31,9 +32,9 @@ const LaboratoryProfile = () => {
       <div className="md:flex">
         <div className="md:w-3/4 mb-8">
           <div className="flex my-4">
-            <div className="ml-2 mt-2 cursor-pointer">
+            <Link to="/laboratory/dashboard" className="ml-2 mt-2 cursor-pointer">
               <img src={back} alt="back icon" />
-            </div>
+            </Link>
             <div className="mt-1 font-semibold text-2xl font-serif flex justify-center w-full">
               <p>Laboratory Profile</p>
             </div>
