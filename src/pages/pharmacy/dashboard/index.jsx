@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FormComponent from "./presForm";
+import PrescriptionCard from "./prescription";
 
 const LaboratoryDashboard = () => {
   const cardData = [
@@ -25,17 +26,18 @@ const LaboratoryDashboard = () => {
   ];
   
   return (
-    <>
+    <div className=" bg-gray-100">
   
       <NavBar />
-      <div className="h-24"></div>
+      <div className="h-24 max-content "></div>
       <FormComponent/>
-      <div>
+      <PrescriptionCard/>
+      {/* <div>
         {cardData.map((data, index) => (
           <Card key={index} Name={data.name} Hospital={data.hospital} />
         ))}
-      </div>
-    </>
+      </div> */}
+    </div>
   );
 };
 
