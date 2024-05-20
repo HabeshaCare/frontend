@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import FormComponent from "./presForm";
 
 const LaboratoryDashboard = () => {
   const cardData = [
@@ -25,8 +26,10 @@ const LaboratoryDashboard = () => {
   
   return (
     <>
+  
       <NavBar />
       <div className="h-24"></div>
+      <FormComponent/>
       <div>
         {cardData.map((data, index) => (
           <Card key={index} Name={data.name} Hospital={data.hospital} />
