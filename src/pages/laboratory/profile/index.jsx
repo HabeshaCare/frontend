@@ -43,6 +43,7 @@ const LaboratoryProfile = () => {
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
             <Picture image={laboratory} />
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
+
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
                 <img src={edit} alt="edit SVG" />
@@ -116,51 +117,7 @@ const LaboratoryProfile = () => {
               </div>
             </div>
 
-            <div className="flex justify-center my-6">
-              {!editMode ? (
-                <label htmlFor="licenseUpload" className="cursor-pointer">
-                  <div className="w-64 h-20 flex flex-col font-semibold justify-center items-center border border-solid bg-gray-300 p-4">
-                    {licenseFile ? (
-                      <div className="flex flex-col gap-2 items-center">
-                        <FiUpload className="mr-2" />
-                        <span>Reupload License</span>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-2 items-center">
-                        <FiUpload className="mr-2" />
-                        <span>Upload License</span>
-                      </div>
-                    )}
-                    <input
-                      id="licenseUpload"
-                      type="file"
-                      accept=".pdf, .doc, .docx"
-                      style={{ display: "none" }}
-                      onChange={handleFileUpload}
-                    />
-                  </div>
-                </label>
-              ) : (
-                <div className="flex flex-col gap-2 items-center bg-gray-300 p-4">
-                  <div className="w-64 h-20 flex flex-col font-semibold justify-center items-center border border-solid gap-1">
-                    Uploaded License: <FiUpload className="mr-2" />
-                    {licenseFile ? (
-                      <span className="ml-8">{licenseFile.name}</span>
-                    ) : (
-                      <span className="text-gray-500">No file uploaded</span>
-                    )}
-                  </div>
-                  {licenseFile && (
-                    <button
-                      className="ml-4 text-red-600 hover:text-red-700 font-semibold"
-                      onClick={handleRemoveUpload}
-                    >
-                      Remove
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
+
             {editMode ? (
               ""
             ) : (
@@ -174,7 +131,56 @@ const LaboratoryProfile = () => {
         </div>
 
         <div className="w-1/4 flex justify-center">
-          {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
+        <div>
+        <div> {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}</div>
+          <div> <div className="flex justify-center my-6">
+            {!editMode ? (
+              <label htmlFor="licenseUpload" className="cursor-pointer">
+                <div className="w-64 h-20 flex flex-col font-semibold justify-center items-center border border-solid bg-gray-300 p-4">
+                  {licenseFile ? (
+                    <div className="flex flex-col gap-2 items-center">
+                      <FiUpload className="mr-2" />
+                      <span>Reupload License</span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-2 items-center">
+                      <FiUpload className="mr-2" />
+                      <span>Upload License</span>
+                    </div>
+                  )}
+                  <input
+                    id="licenseUpload"
+                    type="file"
+                    accept=".pdf, .doc, .docx"
+                    style={{ display: "none" }}
+                    onChange={handleFileUpload}
+                  />
+                </div>
+              </label>
+            ) : (
+              <div className="flex flex-col gap-2 items-center bg-gray-300 p-4">
+                <div className="w-64 h-20 flex flex-col font-semibold justify-center items-center border border-solid gap-1">
+                  Uploaded License: <FiUpload className="mr-2" />
+                  {licenseFile ? (
+                    <span className="ml-8">{licenseFile.name}</span>
+                  ) : (
+                    <span className="text-gray-500">No file uploaded</span>
+                  )}
+                </div>
+                {licenseFile && (
+                  <button
+                    className="ml-4 text-red-600 hover:text-red-700 font-semibold"
+                    onClick={handleRemoveUpload}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            )}
+          </div></div>
+        </div>
+          
+
         </div>
       </div>
     </>
