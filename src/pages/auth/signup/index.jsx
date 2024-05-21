@@ -5,18 +5,35 @@ import UserInfoForm from "@/components/auth/UserInfoForm";
 import { Button } from "@/components/ui/button";
 import RoleInfoForm from "@/components/auth/RoleInfoForm";
 import PasswordInfoForm from "@/components/auth/PasswordInfoForm";
-// import toast from "react-hot-toast";
-
 import { register } from "@/lib/auth/register";
-
 import { useMutation } from "react-query";
 
 const Register = () => {
   const methods = useForm();
   const [progress, setProgress] = useState(0);
-  const { isSuccess, isError, isLoading, mutate } = useMutation(register);
-  const formSteps = 50;
   const navigate = useNavigate();
+  const formSteps = 50;
+
+  const { isSuccess, isError, isLoading, mutate, error } = useMutation(
+    register,
+    {
+      onError: (error) => {
+        if (error.response && error.response.status === 409) {
+          methods.setError("email", {
+            type: "manual",
+            message: "Account already exists. Please log in.",
+          });
+        } else if (error.isAxiosError && !error.response) {
+          console.error("Network Error:");
+        } else {
+          console.error("Error:", error);
+        }
+      },
+      onSuccess: () => {
+        navigate("/verifyEmail");
+      },
+    }
+  );
 
   const onSubmit = (data) => {
     if (progress === 100) {
@@ -27,19 +44,10 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      // toast.success("Registration successful!");
-      console.log("done"); // forward them to page that say we have sent you email. check your email for varification
-      console.log(isSuccess);
-      navigate("/verifyEmail");
-    }
-
     if (isError) {
-      // toast.error("Something went wrong, please try again.");
-      console.log("error");
-      console.log(isSuccess);
+      console.error("Error:", error);
     }
-  }, [isSuccess, isError, navigate]);
+  }, [isError, error]);
 
   return (
     <main className="flex flex-col items-center justify-center w-full my-6 gap-10">
@@ -55,9 +63,12 @@ const Register = () => {
           >
             {progress === 0 && <UserInfoForm />}
             {progress === 50 && <RoleInfoForm />}
-            {progress > 50 && <PasswordInfoForm />}
+            {progress === 100 && <PasswordInfoForm />}
 
-            <Button className="mt-2 w-full md:w-[40%] md:mt-4 text-white bg-[#1F555D] h-10">
+            <Button
+              className="mt-2 w-full md:w-[40%] md:mt-4 text-white bg-[#1F555D] h-10"
+              type="submit"
+            >
               {progress < 100 ? "Next" : isLoading ? "Loading..." : "Submit"}
             </Button>
           </form>
@@ -65,7 +76,7 @@ const Register = () => {
       </section>
 
       <div className="text-primary font-primary md:w-full">
-        <h1 className=" font-primary text-xs text-center">
+        <h1 className="font-primary text-xs text-center">
           Already have an account? <a href="/login">Login</a>
         </h1>
       </div>

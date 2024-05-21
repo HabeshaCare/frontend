@@ -20,7 +20,7 @@ const VarifyEmail = () => {
   }, [token]);
 
   const handleVerify = () => {
-    navigate("/dashboard");
+    navigate("/login");
   };
 
   return (
