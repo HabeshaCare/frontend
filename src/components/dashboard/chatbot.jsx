@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Sheet,
@@ -12,9 +12,37 @@ import {
 import { Button } from "@/components/ui/button";
 
 function Chatbot() {
+  const [input, setInput] = useState("");
+  const [chatLog, setChatLog] = useState([
+    { sender: "bot", message: "Hello, how can I help you?" },
+  ]);
+
+  const handleSendMessage = () => {
+    if (input.trim() === "") return;
+
+    const newChatLog = [...chatLog, { sender: "user", message: input }];
+    setChatLog(newChatLog);
+    setInput("");
+
+    // Simulate LLM response
+    setTimeout(() => {
+      const response = {
+        sender: "bot",
+        message: "This is a simulated response from the LLM.",
+      };
+      setChatLog([...newChatLog, response]);
+    }, 1000);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   return (
     <div>
-      {" "}
       <Sheet>
         <SheetTrigger className="rounded-full animate-bounce">
           <svg
@@ -58,15 +86,32 @@ function Chatbot() {
             <SheetTitle className="mb-4 bg-teal-900 text-white px-4 py-2 mr-4 rounded-md">
               GuideBot
             </SheetTitle>
-            <SheetDescription className="h-96 mt-4 rounded-lg px-2 py-2 text-black">
-              <div className="bg-white p-2 rounded-md">
-                Hello, How can i help you?
-              </div>
+            <SheetDescription className="h-96 mt-4 rounded-lg px-2 py-2 text-black overflow-y-auto">
+              {chatLog.map((entry, index) => (
+                <div
+                  key={index}
+                  className={`p-2 rounded-md ${
+                    entry.sender === "bot" ? "bg-white" : "bg-blue-100"
+                  }`}
+                >
+                  {entry.message}
+                </div>
+              ))}
             </SheetDescription>
           </SheetHeader>
           <SheetFooter>
-            <Textarea />
-            <Button className="bg-[#1F555D] w-1/4 h-10 text-white">send</Button>
+            <Textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Type your message..."
+            />
+            <Button
+              className="bg-[#1F555D] w-1/4 h-10 text-white"
+              onClick={handleSendMessage}
+            >
+              Send
+            </Button>
           </SheetFooter>
         </SheetContent>
       </Sheet>

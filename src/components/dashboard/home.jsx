@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 import home from "@/public/img/Asset 4y.png";
 import main from "@/public/img/main.png";
@@ -13,7 +15,13 @@ import Chatbot from "./chatbot";
 
 const Home = () => {
   const [size, setSize] = useState(window.innerWidth);
+  const navigate = useNavigate();
 
+
+  const handleNavigation = () => {
+    navigate("/register");
+  };
+  
   useEffect(() => {
     const handleResize = () => {
       setSize(window.innerWidth);
@@ -50,7 +58,10 @@ const Home = () => {
                   </p>
                 </div>
                 <div className="flex justify-start">
-                  <Button className="font-medium text-white w-72 h-16 mt-24 bg-[#1F555D] text-xl">
+                  <Button
+                    className="font-medium text-white w-72 h-16 mt-24 bg-[#1F555D] text-xl"
+                    onClick={handleNavigation}
+                  >
                     Register As a Patient
                   </Button>
                 </div>

@@ -27,6 +27,8 @@ const Login = () => {
       localStorage.setItem("name", userData.name);
       localStorage.setItem("phone", userData.phone);
       localStorage.setItem("address", userData.address);
+      localStorage.setItem("userdata", userData);
+
       console.log("user data:", userData);
 
       dispatch(loginAction({ user: userData, role: userData.role }));
