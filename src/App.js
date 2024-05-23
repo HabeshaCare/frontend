@@ -24,7 +24,7 @@ import ReceptionProfile from "@/pages/reception/profile";
 import Appointement from "@/pages/doctor/appointments";
 import Patient from "./pages/doctor/patients";
 import ProtectedRoute from './components/ProtectedRoute';
-
+import HomePage from './pages/homepage';
 const queryClient = new QueryClient();
 
 function App() {
@@ -51,7 +51,8 @@ function App() {
               <Route path="/patient/dashboard" element={<ProtectedRoute requiredRole="Patient"><PatientDashboard /></ProtectedRoute>} />
               <Route path="/verifyEmail" element={<VarifyEmail />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Register />} />
+              <Route path="/Register" element={<Register />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/unauthorized" element={<div>Unauthorized Access <a href="/login" className='text-primary '>Login</a></div>} />
             </Routes>
           </Router>

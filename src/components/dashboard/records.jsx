@@ -11,18 +11,19 @@ const Records = () => {
 
         <div className="flex flex-col justify-center ml-8 w-1/2 mt-24">
           <div className="text-[#1F555D] text-3xl font-bold font-serif items-center md:text-4xl">
-            Medical Records
+            Transforming Health Center Management.
           </div>
 
           <div className="my-8 font-light text-xl md:text-3xl">
-            Access your medical records, including doctor notes, medications,
-            and lab test results, for a complete overview of your health
-            history.
+            Elevate the quality of care at your health center. Coordinate
+            patient care, manage appointments, and collaborate with healthcare
+            providers. Improve efficiency and patient outcomes with
+            comprehensive management tools, all in one platform.
           </div>
 
           <div className="mb-8">
-            <Button className="font-medium text-white w-52 h-16 mt-8 bg-[#1F555D] text-xl">
-              View Records
+            <Button className="font-medium text-white w-72 h-16 mt-8 bg-[#1F555D] text-xl">
+              Register Your Health Center
             </Button>
           </div>
         </div>
