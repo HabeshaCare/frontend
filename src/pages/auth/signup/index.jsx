@@ -7,6 +7,7 @@ import RoleInfoForm from "@/components/auth/RoleInfoForm";
 import PasswordInfoForm from "@/components/auth/PasswordInfoForm";
 import { register } from "@/lib/auth/register";
 import { useMutation } from "react-query";
+import NavBar from "@/components/dashboard/navBar";
 
 const Register = () => {
   const methods = useForm();
@@ -50,37 +51,40 @@ const Register = () => {
   }, [isError, error]);
 
   return (
-    <main className="flex flex-col items-center justify-center w-full my-6 gap-10">
-      <h1 className="text-4xl text-[#1F555D] font-bold md:text-4xl md:mt-8 font-primary">
-        Register
-      </h1>
-
-      <section className="flex flex-col justify-center items-center gap-12 w-[80%] md:w-[35%]">
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}
-            className="flex flex-col justify-center items-center gap-6 w-full"
-          >
-            {progress === 0 && <UserInfoForm />}
-            {progress === 50 && <RoleInfoForm />}
-            {progress === 100 && <PasswordInfoForm />}
-
-            <Button
-              className="mt-2 w-full md:w-[40%] md:mt-4 text-white bg-[#1F555D] h-10"
-              type="submit"
-            >
-              {progress < 100 ? "Next" : isLoading ? "Loading..." : "Submit"}
-            </Button>
-          </form>
-        </FormProvider>
-      </section>
-
-      <div className="text-primary font-primary md:w-full">
-        <h1 className="font-primary text-xs text-center">
-          Already have an account? <a href="/login">Login</a>
+    <>
+      <NavBar />
+      <main className="flex flex-col items-center justify-center w-full gap-10">
+        <h1 className="text-4xl text-[#1F555D] font-bold md:text-4xl md:mt-8 font-primary">
+          Register
         </h1>
-      </div>
-    </main>
+
+        <section className="flex flex-col justify-center items-center gap-12 w-[80%] md:w-[35%]">
+          <FormProvider {...methods}>
+            <form
+              onSubmit={methods.handleSubmit(onSubmit)}
+              className="flex flex-col justify-center items-center gap-6 w-full"
+            >
+              {progress === 0 && <UserInfoForm />}
+              {progress === 50 && <RoleInfoForm />}
+              {progress === 100 && <PasswordInfoForm />}
+
+              <Button
+                className="mt-2 w-full md:w-[40%] md:mt-4 text-white bg-[#1F555D] h-10"
+                type="submit"
+              >
+                {progress < 100 ? "Next" : isLoading ? "Loading..." : "Submit"}
+              </Button>
+            </form>
+          </FormProvider>
+        </section>
+
+        <div className="text-primary font-primary md:w-full">
+          <h1 className="font-primary text-lg  text-center">
+            Already have an account? <a href="/login">Login</a>
+          </h1>
+        </div>
+      </main>
+    </>
   );
 };
 
