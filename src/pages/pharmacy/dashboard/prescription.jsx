@@ -7,11 +7,11 @@ const PrescriptionCard = ({ patientName, doctorName, date, medication, dosage, i
       
         <div className="p-8">
           <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Prescription</div>
-          <p className="block mt-1 text-lg leading-tight font-medium text-black">{patientName}</p>
-          <p className="block mt-1 text-sm leading-tight text-gray-600">Prescribed by: {doctorName}</p>
-          <p className="mt-8 text-gray-500">Date: {date}</p>
-          <p className="mt-8 text-gray-500">Dosage: {dosage}</p>
-          <p className="mt-8 text-gray-500">Instructions: {instructions}</p>
+          <p className="block mt-1 text-2xl leading-tight font-medium text-black">{patientName}</p>
+          <p className=" mt-8 block  text-l leading-tight text-gray-600">Prescribed by: {doctorName}</p>
+          <p className="mt-8 text-gray-500  text-l">Date: {date}</p>
+          <p className="mt-8 text-gray-500 text-l ">Dosage: {dosage}</p>
+          <p className="mt-8 text-gray-500 text-l">Instructions: {instructions}</p>
           <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded text-sm hover:bg-green-600 active:bg-green-700 focus:outline-none transition-all duration-300">Print</button>
       
       </div>
