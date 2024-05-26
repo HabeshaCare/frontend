@@ -3,16 +3,17 @@ import { Avatar, AvatarImage, AvatarFallback } from '../../../components/ui/avat
 import React, { useEffect, useState } from 'react'
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons'
 import { Link } from "react-router-dom";
+
 import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+  } from "@/components/ui/sheet"
+  
+import { MdOutlineNotifications } from "react-icons/md";
 const NavBar = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
@@ -50,23 +51,21 @@ const NavBar = () => {
                 <div className=' flex flex-1 justify-end'>
                     <div className='flex items-center'>
                         <ul className='flex'>
-                            <li className='mr-20'><Drawer>
-                                <DrawerTrigger>Open</DrawerTrigger>
-                                <DrawerContent>
-                                    <DrawerHeader>
-                                        <DrawerTitle>Your Notifications</DrawerTitle>
-                                        <DrawerDescription>This action cannot be undone.</DrawerDescription>
-                                    </DrawerHeader>
-                                    <DrawerFooter>
-                                        <button>Submit</button>
-                                        <DrawerClose>
-                                            <button >Cancel</button>
-                                        </DrawerClose>
-                                    </DrawerFooter>
-                                </DrawerContent>
-                            </Drawer>
+                            <li className='mr-10'>
+                                <Sheet>
+                                    <SheetTrigger><MdOutlineNotifications className='size-10 text-gray-600' /></SheetTrigger>
+                                    <SheetContent>
+                                        <SheetHeader>
+                                            <SheetTitle>Your Notifications</SheetTitle>
+                                            <SheetDescription>
+                                                Your notifications will appear here
+                                            </SheetDescription>
+                                        </SheetHeader>
+                                    </SheetContent>
+                                </Sheet>
+
                             </li>
-                            <li className='mr-20'>
+                            <li className='mr-10'>
                                 <Link to='/pharmacy/profile' className='bg-hover-blue hover:text-blue-500'>
                                     <Avatar>
                                         <AvatarImage src="https://github.com/shadcn.png" />
