@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import login from "@/lib/auth/login";
 import { useDispatch } from "react-redux";
 import { login as loginAction } from "@/redux/authSlice";
+import NavBar from "@/components/dashboard/navBar";
 
 const initialFormData = { email: "", password: "" };
 
@@ -73,72 +74,75 @@ const Login = () => {
   };
 
   return (
-    <main className="flex items-center justify-center h-[100vh]">
-      <section className="flex flex-col items-center justify-center gap-20 w-[50%] md:bg-shadow md:gap-14 md:p-10 md:rounded-lg lg:w-[40%]">
-        <div className="flex flex-col items-center">
-          <h1 className="text-4xl font-bold md:text-4xl md:mt-8 font-primary">
-            Login
-          </h1>
-        </div>
-        <div className="text-primary font-primary md:w-full ">
-          <form
-            onSubmit={handleFormSubmit}
-            className="flex flex-col gap-10 justify-center items-center w-full md:gap-8"
-          >
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="username" className="text-bold">
-                Email
-              </Label>
-              <div className="flex items-center border-primary border border-x-0 border-t-0 rounded-none">
-                <img src={userIcon} className="w-4" alt="user icon" />
-                <Input
-                  type="text"
-                  id="Email"
-                  placeholder="Type your Email"
-                  className="border-primary border-none focus-visible:ring-0 ml-2"
-                  name="email"
-                  required
-                  onChange={handleFormInputChange}
-                />
+    <>
+      <NavBar />
+      <main className="flex items-center justify-center h-[100vh]">
+        <section className="flex flex-col items-center justify-center gap-20 w-[50%] md:bg-shadow md:gap-14 md:p-10 md:rounded-lg lg:w-[40%]">
+          <div className="flex flex-col items-center">
+            <h1 className="text-4xl font-bold md:text-4xl md:mt-8 font-primary">
+              Login
+            </h1>
+          </div>
+          <div className="text-primary font-primary md:w-full ">
+            <form
+              onSubmit={handleFormSubmit}
+              className="flex flex-col gap-10 justify-center items-center w-full md:gap-8"
+            >
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="username" className="text-bold">
+                  Email
+                </Label>
+                <div className="flex items-center border-primary border border-x-0 border-t-0 rounded-none">
+                  <img src={userIcon} className="w-4" alt="user icon" />
+                  <Input
+                    type="text"
+                    id="Email"
+                    placeholder="Type your Email"
+                    className="border-primary border-none focus-visible:ring-0 ml-2"
+                    name="email"
+                    required
+                    onChange={handleFormInputChange}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="password" className="text-bold">
-                Password
-              </Label>
-              <div className="flex items-center border-primary border border-x-0 border-t-0 rounded-none">
-                <img src={lockIcon} className="w-4" alt="user icon" />
-                <Input
-                  type="password"
-                  id="password"
-                  placeholder="Type your password"
-                  className="border-primary border-none focus-visible:ring-0 ml-2"
-                  name="password"
-                  required
-                  minLength={6}
-                  onChange={handleFormInputChange}
-                />
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="password" className="text-bold">
+                  Password
+                </Label>
+                <div className="flex items-center border-primary border border-x-0 border-t-0 rounded-none">
+                  <img src={lockIcon} className="w-4" alt="user icon" />
+                  <Input
+                    type="password"
+                    id="password"
+                    placeholder="Type your password"
+                    className="border-primary border-none focus-visible:ring-0 ml-2"
+                    name="password"
+                    required
+                    minLength={6}
+                    onChange={handleFormInputChange}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="md:mt-4">
-              <Button
-                type="submit"
-                className="bg-primary w-52 rounded-2xl text-white h-10 bg-[#1F555D]"
-                disabled={loginMutation.isLoading}
-              >
-                {loginMutation.isLoading ? "Logging in..." : "Login"}
-              </Button>
-            </div>
-          </form>
+              <div className="md:mt-4">
+                <Button
+                  type="submit"
+                  className="bg-primary w-52 rounded-2xl text-white h-10 bg-[#1F555D]"
+                  disabled={loginMutation.isLoading}
+                >
+                  {loginMutation.isLoading ? "Logging in..." : "Login"}
+                </Button>
+              </div>
+            </form>
 
-          <h1 className="font-primary text-xs mt-4 text-center">
-            Don&apos;t have an account? <a href="/"> Register</a>
-          </h1>
-        </div>
-      </section>
-    </main>
+            <h1 className="font-primary text-md mt-4 text-center">
+              Don&apos;t have an account? <a href="/"> Sign Up</a>
+            </h1>
+          </div>
+        </section>
+      </main>
+    </>
   );
 };
 

@@ -1,8 +1,11 @@
 import React from "react";
 import Chatbot from "@/components/dashboard/chatbot";
+import MedicalHistory from "@/pages/patient/medicalhistory";
+import Appointment from "@/pages/doctor/appointments";
+
 const MainContent = ({ activeLink }) => {
   return (
-    <div className="flex flex-col flex-1 p-8">
+    <div className="flex-1 overflow-y-auto p-8">
       {activeLink === "dashboard" && (
         <>
           <div className="flex justify-around w-full mb-8">
@@ -32,8 +35,16 @@ const MainContent = ({ activeLink }) => {
           </div>
         </>
       )}
-      {activeLink === "appointments" && <div>Appointments Page</div>}
-      {activeLink === "medicalRecords" && <div>Medical Records Page</div>}
+      {activeLink === "appointments" && (
+        <div>
+          <Appointment />
+        </div>
+      )}
+      {activeLink === "medicalRecords" && (
+        <div>
+          <MedicalHistory />
+        </div>
+      )}
       {activeLink === "doctors" && <div>Doctors Page</div>}
     </div>
   );

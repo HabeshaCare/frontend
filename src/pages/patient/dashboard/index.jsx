@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import NavBar from './navbar';
-import Sidebar from './sidebar';
-import MainContent from './maincontent';
+import React, { useState } from "react";
+import NavBar from "./navbar";
+import Sidebar from "./sidebar";
+import MainContent from "./maincontent";
 
 const PatientDashboard = () => {
   const [activeLink, setActiveLink] = useState('dashboard');
@@ -12,11 +12,11 @@ const PatientDashboard = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <div><NavBar /></div>
-      <div className="flex flex-1">
+      <NavBar />
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar onLinkClick={handleLinkClick} />
-        <div className="flex-1">
-          <div className="flex justify-start text-lg p-4 text-gray-800">
+        <div className="flex-1 flex flex-col">
+          <div className="flex justify-start bg-gray-100 p-4 text-gray-800">
             <div>Welcome, Yeab</div>
           </div>
           <MainContent activeLink={activeLink} />

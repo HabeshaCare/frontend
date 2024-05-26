@@ -39,14 +39,14 @@ const Appointement = () => {
   };
   return (
     <>
-      <div className="flex justify-between items-center h-16 px-4">
+      {/* <div className="flex justify-between items-center h-16 px-4">
         <div className="ml-2 cursor-pointer">
           <img src={back} alt="back icon" />
         </div>
         <div className="text-xl font-bold font-serif">Appointment</div>
         <div>calander</div>
       </div>
-      <div className="mb-2"><hr /></div>
+      <div className="mb-2"><hr /></div> */}
       <AppointementNavBar
         activeTab={activeTab}
         handleTabClick={handleTabClick}

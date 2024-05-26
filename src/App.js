@@ -36,19 +36,26 @@ function App() {
             <Routes>
               <Route path="/pharmacy/profile" element={<ProtectedRoute requiredRole="PharmacyAdmin"><PharmacyProfile /></ProtectedRoute>} />
               <Route path="/pharmacy/dashboard" element={<ProtectedRoute requiredRole="PharmacyAdmin"><PharmacyDashboard /></ProtectedRoute>} />
+
               <Route path="/laboratory/profile" element={<ProtectedRoute requiredRole="LaboratoryAdmin"><LaboratoryProfile /></ProtectedRoute>} />
               <Route path="/laboratory/dashboard" element={<ProtectedRoute requiredRole="LaboratoryAdmin"><LaboratoryDashboard /></ProtectedRoute>} />
+
               <Route path="/healthcenter/dashboard" element={<ProtectedRoute requiredRole="HealthCenterAdmin"><HealthCenterDashboard /></ProtectedRoute>} />
               <Route path="/healthcenter/profile" element={<ProtectedRoute requiredRole="HealthCenterAdmin"><HealthCenterProfile /></ProtectedRoute>} />
+
               <Route path="/reception/profile" element={<ProtectedRoute requiredRole="Reception"><ReceptionProfile /></ProtectedRoute>} />
               <Route path="/reception/dashboard" element={<ProtectedRoute requiredRole="Reception"><ReceptionDashboard /></ProtectedRoute>} />
+
               <Route path="/doctor/patient" element={<ProtectedRoute requiredRole="Doctor"><Patient /></ProtectedRoute>} />
               <Route path="/doctor/appointments" element={<ProtectedRoute requiredRole="Doctor"><Appointement /></ProtectedRoute>} />
               <Route path="/doctor/profile" element={<ProtectedRoute requiredRole="Doctor"><DoctorProfile /></ProtectedRoute>} />
               <Route path="/doctor/dashboard" element={<ProtectedRoute requiredRole="Doctor"><DoctorsDashboard /></ProtectedRoute>} />
+
+              <Route path="/patient/appointments" element={<ProtectedRoute requiredRole="Patient"><Appointement /></ProtectedRoute>} />
               <Route path="/patient/medicalhistory" element={<ProtectedRoute requiredRole="Patient"><MedicalHistory /></ProtectedRoute>} />
               <Route path="/patient/profile" element={<ProtectedRoute requiredRole="Patient"><PatientProfile /></ProtectedRoute>} />
               <Route path="/patient/dashboard" element={<ProtectedRoute requiredRole="Patient"><PatientDashboard /></ProtectedRoute>} />
+              
               <Route path="/verifyEmail" element={<VarifyEmail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/Register" element={<Register />} />
