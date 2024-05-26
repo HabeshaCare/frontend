@@ -10,6 +10,8 @@ import login from "@/lib/auth/login";
 import { useDispatch } from "react-redux";
 import { login as loginAction } from "@/redux/authSlice";
 import NavBar from "@/components/dashboard/navBar";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const initialFormData = { email: "", password: "" };
 
@@ -17,6 +19,7 @@ const Login = () => {
   const [formData, setFormData] = useState(initialFormData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { toast } = useToast();
 
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
@@ -57,9 +60,19 @@ const Login = () => {
           navigate("/");
           break;
       }
+      toast({
+        title: "Success!",
+        description: "You have logged in successfully.",
+        action: <ToastAction altText="Continue">Continue</ToastAction>,
+      });
     },
     onError: (error) => {
       console.error("Login failed:", error);
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with login credential.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
     },
   });
 

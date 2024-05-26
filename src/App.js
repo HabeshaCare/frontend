@@ -51,9 +51,9 @@ function App() {
               <Route path="/doctor/profile" element={<ProtectedRoute requiredRole="Doctor"><DoctorProfile /></ProtectedRoute>} />
               <Route path="/doctor/dashboard" element={<ProtectedRoute requiredRole="Doctor"><DoctorsDashboard /></ProtectedRoute>} />
 
-              <Route path="/patient/appointments" element={<ProtectedRoute requiredRole="Patient"><Appointement /></ProtectedRoute>} />
+              {/* <Route path="/patient/appointments" element={<ProtectedRoute requiredRole="Patient"><Appointement /></ProtectedRoute>} />
               <Route path="/patient/medicalhistory" element={<ProtectedRoute requiredRole="Patient"><MedicalHistory /></ProtectedRoute>} />
-              <Route path="/patient/profile" element={<ProtectedRoute requiredRole="Patient"><PatientProfile /></ProtectedRoute>} />
+              <Route path="/patient/profile" element={<ProtectedRoute requiredRole="Patient"><PatientProfile /></ProtectedRoute>} /> */}
               <Route path="/patient/dashboard" element={<ProtectedRoute requiredRole="Patient"><PatientDashboard /></ProtectedRoute>} />
               
               <Route path="/verifyEmail" element={<VarifyEmail />} />

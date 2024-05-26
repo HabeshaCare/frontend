@@ -6,7 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import './styles/global.css';
 import App from './App';
 import store, { persistor } from './redux/store';
-
+import { Toaster } from "@/components/ui/toaster"
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -17,6 +17,7 @@ root.render(
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <App />
+          <Toaster /> 
         </QueryClientProvider>
       </PersistGate>
     </Provider>

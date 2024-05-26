@@ -18,3 +18,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 };
 
 export default ProtectedRoute;
+// what is the role of the following word
+// protectedRoute
+// state
+// useSelector
