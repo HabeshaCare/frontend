@@ -24,19 +24,14 @@ const LaboratoryDashboard = () => {
     { name: 'James Lee', hospital: 'Hospital I' },
     { name: 'Emma Rodriguez', hospital: 'Hospital J' },
   ];
-  
+
   return (
-    <div className=" bg-gray-100">
-  
+    <div className=" bg-gray-100 h-screen">
+
       <NavBar />
       <div className="h-24 max-content "></div>
-      <FormComponent/>
-      <PrescriptionCard/>
-      {/* <div>
-        {cardData.map((data, index) => (
-          <Card key={index} Name={data.name} Hospital={data.hospital} />
-        ))}
-      </div> */}
+      <FormComponent />
+
     </div>
   );
 };

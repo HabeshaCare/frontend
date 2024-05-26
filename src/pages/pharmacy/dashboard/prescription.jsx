@@ -3,7 +3,7 @@ import 'tailwindcss/tailwind.css';
 
 const PrescriptionCard = ({ patientName, doctorName, date, medication, dosage, instructions }) => {
   return (
-    <div className="m-10 max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+    // <div className="m-10 max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
       
         <div className="p-8">
           <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Prescription</div>
@@ -15,7 +15,7 @@ const PrescriptionCard = ({ patientName, doctorName, date, medication, dosage, i
           <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded text-sm hover:bg-green-600 active:bg-green-700 focus:outline-none transition-all duration-300">Print</button>
       
       </div>
-    </div>
+    // </div>
   );
 }
 

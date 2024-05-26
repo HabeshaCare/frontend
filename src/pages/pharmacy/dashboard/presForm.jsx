@@ -1,6 +1,14 @@
 import React from 'react';
 import 'tailwindcss/tailwind.css';
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import PrescriptionCard from "./prescription"
 class FormComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +24,7 @@ class FormComponent extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    alert(`Input: ${this.state.input}`);
+    // alert(`Input: ${this.state.input}`);
   }
 
   render() {
@@ -25,28 +33,35 @@ class FormComponent extends React.Component {
     return (
       <form className="flex items-center mt-12 w-full justify-center" onSubmit={this.handleSubmit}>
         <div className="w-3/5 flex">
-          <input 
-            type="text" 
-            value={this.state.input} 
-            onChange={this.handleChange} 
-            placeholder={placeholder} 
-            className="flex-grow px-6 py-2 text-lg border-2 border-blue-500 rounded-l focus:outline-none focus:border-blue-800 transition-all duration-300"
+          <input
+            type="text"
+            value={this.state.input}
+            onChange={this.handleChange}
+            placeholder={placeholder}
+            className="flex-grow px-6 py-2 text-lg border-2 border-blue-500 rounded-l-3xl focus:outline-none focus:border-blue-800 transition-all duration-300"
           />
-          <button 
-            type="submit" 
-            className="bg-blue-500 text-white px-6 py-2 rounded-r text-lg hover:bg-blue-700 active:bg-blue-700 focus:outline-none transition-all duration-300"
-          >
-            view 
-          </button>
+          <Dialog>
+            <DialogTrigger>
+              <button className="bg-blue-500 text-white px-4 py-2  mr-4 h-14 rounded-r-3xl">Search</button>
+            </DialogTrigger>
+            <DialogContent className="lg:w-1/2">
+              <DialogHeader>
+                {/* <DialogTitle>Result form</DialogTitle> */}
+                <DialogDescription>
+                  <PrescriptionCard />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog />
+
         </div>
       </form>
     );
   }
 }
 
-// Usage example
-const App = () => (
-  <FormComponent placeholder="Enter patient id ..." />
-);
 
-export default App;
+
+export default FormComponent;

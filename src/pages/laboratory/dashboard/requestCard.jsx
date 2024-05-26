@@ -34,8 +34,8 @@ const Card = (props) => {
                     </DialogContent>
                 </Dialog>
 
-                <Dialog>
-
+                <Dialog
+>
                     <DialogTrigger>
                         <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md">view request</button>
                     </DialogTrigger>
