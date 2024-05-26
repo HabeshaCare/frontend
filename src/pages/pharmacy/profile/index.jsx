@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
 import Picture from "@/components/profile/picture";
 import pharmacy from "@/public/img/pharmacy.jpg";
-import {Link} from "react-router-dom";
+import {Link} from "react-router-dom"
 
 const PharmacyProfile = () => {
   const [editMode, setEditMode] = useState(true);
