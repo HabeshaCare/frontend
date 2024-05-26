@@ -8,33 +8,42 @@ import PasswordInfoForm from "@/components/auth/PasswordInfoForm";
 import { register } from "@/lib/auth/register";
 import { useMutation } from "react-query";
 import NavBar from "@/components/dashboard/navBar";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const Register = () => {
   const methods = useForm();
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
   const formSteps = 50;
+  const { toast } = useToast();
 
-  const {isError, isLoading, mutate, error } = useMutation(
-    register,
-    {
-      onError: (error) => {
-        if (error.response && error.response.status === 409) {
-          methods.setError("email", {
-            type: "manual",
-            message: "Account already exists. Please log in.",
-          });
-        } else if (error.isAxiosError && !error.response) {
-          console.error("Network Error:");
-        } else {
-          console.error("Error:", error);
-        }
-      },
-      onSuccess: () => {
-        navigate("/verifyEmail");
-      },
-    }
-  );
+  const { isError, isLoading, mutate, error } = useMutation(register, {
+    onError: (error) => {
+      if (error.response && error.response.status === 409) {
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "This account already exist. Please Login",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      } else if (error.isAxiosError && !error.response) {
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "Please Check your internet connection.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+        console.error("Network Error:");
+      } else {
+        console.error("Error:", error);
+      }
+    },
+    onSuccess: () => {
+      navigate("/verifyEmail");
+      toast({
+        description: "You Registerd successfully. Please Verify your email",
+      })
+    },
+  });
 
   const onSubmit = (data) => {
     if (progress === 100) {
