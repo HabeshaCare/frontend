@@ -9,18 +9,24 @@ const Sidebar = ({ onLinkClick }) => {
   };
 
   const linkClasses = (link) =>
-    `mb-2 text-center w-full h-10 ${
+    `mb-2 text-left w-full px-6 h-10 ${
       selectedLink === link ? "bg-[#809ea3]" : "bg-none"
     }`;
 
   return (
-    <div className="bg-[#1F555D] h-screen w-64 text-white justify-center items-center">
-      <div className="flex flex-col justify-center items-center py-8 h-full">
+    <div className="bg-[#1F555D] h-screen w-64 text-white flex justify-center items-">
+      <div className="flex flex-col items-center py-8 h-full mt-16 mr-8">
         <button
           onClick={() => handleLinkClick("dashboard")}
-          className={linkClasses("dashboard")}
+          className={linkClasses("dashboard") } 
         >
           Dashboard
+        </button>
+        <button
+          onClick={() => handleLinkClick("profile")}
+          className={linkClasses("profile")}
+        >
+          Profile
         </button>
         <button
           onClick={() => handleLinkClick("doctors")}

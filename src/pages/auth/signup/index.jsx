@@ -15,7 +15,7 @@ const Register = () => {
   const navigate = useNavigate();
   const formSteps = 50;
 
-  const { isSuccess, isError, isLoading, mutate, error } = useMutation(
+  const {isError, isLoading, mutate, error } = useMutation(
     register,
     {
       onError: (error) => {

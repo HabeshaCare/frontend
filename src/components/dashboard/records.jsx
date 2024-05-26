@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
 import record from "@/public/img/record.png";
+import { useNavigate } from "react-router";
 
 const Records = () => {
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate("/register");
+  };
   return (
     <>
       <div className="flex bg-[#d0eaec]">
@@ -22,7 +28,10 @@ const Records = () => {
           </div>
 
           <div className="mb-8">
-            <Button className="font-medium text-white w-72 h-16 mt-8 bg-[#1F555D] text-xl">
+            <Button
+              className="font-medium text-white w-72 h-16 mt-8 bg-[#1F555D] text-xl"
+              onClick={handleNavigation}
+            >
               Register Your Health Center
             </Button>
           </div>

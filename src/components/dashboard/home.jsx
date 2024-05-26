@@ -97,7 +97,7 @@ const Home = () => {
               </div>
 
               <div className="flex pb-8">
-                <Button className="mx-8 mt-8 font-medium text-white w-40 h-12 bg-[#1F555D] text-xl">
+                <Button className="mx-8 mt-8 font-medium text-white w-40 h-12 bg-[#1F555D] text-xl" >
                   Get your Doctor
                 </Button>
                 <div>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useQuery } from "react-query";
 import edit from "@/public/icons/edit.svg";
-import back from "@/public/icons/back.svg";
 import PatientPicture from "@/components/profile/patientPicture";
 import { CompleteProfile } from "@/components/profile/completeProfile";
 import { CompleteProfile2 } from "@/components/profile/completeProfile";
@@ -11,6 +10,7 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GetUserData from "@/lib/profile/getUserData";
+import NavBar from "../dashboard/navbar";
 
 export const PatientProfile = () => {
   const [editMode, setEditMode] = useState(true);
@@ -35,9 +35,6 @@ export const PatientProfile = () => {
       <div className="md:flex">
         <div className="md:w-2/3">
           <div className="flex my-4">
-            <div className="ml-2 mt-2 cursor-pointer">
-              <img src={back} alt="back icon" />
-            </div>
             <div className="mt-1 font-semibold text-2xl font-serif flex justify-center w-full">
               <p>Personal Profile</p>
             </div>

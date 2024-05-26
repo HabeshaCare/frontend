@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
 import Telemed from "@/public/img/doctors.png";
+import { useNavigate } from "react-router";
 
 const Telemedicine = () => {
+  const navigate = useNavigate();
+  const handleNavigation = () => {
+    navigate("/register");
+  };
   return (
     <>
       <div className="flex ml-8 h-screen  items-center">
@@ -16,7 +21,10 @@ const Telemedicine = () => {
             informed decisions with comprehensive tools.
           </div>
           <div className="mb-4">
-            <Button className="font-medium text-white w-56 h-16 mt-8 bg-[#1F555D] text-xl">
+            <Button
+              className="font-medium text-white w-56 h-16 mt-8 bg-[#1F555D] text-xl"
+              onClick={handleNavigation}
+            >
               Register As a Doctor
             </Button>
           </div>

@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
 import Telemed from "@/public/img/pharmacist.png";
+import { useNavigate } from "react-router";
 
 const Pharmacy = () => {
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate("/register");
+  };
   return (
     <>
       <div className="flex ml-8 h-screen  items-center">
@@ -17,7 +23,10 @@ const Pharmacy = () => {
             and streamline operations, all in one place.
           </div>
           <div className="mb-4">
-            <Button className="font-medium text-white w-64 h-16 mt-8 bg-[#1F555D] text-xl">
+            <Button
+              className="font-medium text-white w-64 h-16 mt-8 bg-[#1F555D] text-xl"
+              onClick={handleNavigation}
+            >
               Register Your Pharmacy
             </Button>
           </div>
