@@ -3,6 +3,15 @@ import { Avatar, AvatarImage, AvatarFallback } from '../../../components/ui/avat
 import React, { useEffect, useState } from 'react'
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons'
 import { Link } from "react-router-dom";
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+  } from "@/components/ui/sheet"
+  import { MdOutlineNotifications } from "react-icons/md";
 
 const NavBar = () => {
     const [isScrolled, setIsScrolled] = useState(false)
@@ -41,8 +50,21 @@ const NavBar = () => {
                 <div className=' flex flex-1 justify-end'>
                     <div className='flex items-center'>
                         <ul className='flex'>
+                            <li className='mr-10'>
+                                <Sheet>
+                                    <SheetTrigger><MdOutlineNotifications className='size-10 text-gray-600' /></SheetTrigger>
+                                    <SheetContent>
+                                        <SheetHeader>
+                                            <SheetTitle>Your Notifications</SheetTitle>
+                                            <SheetDescription>
+                                                Your notifications will appear here
+                                            </SheetDescription>
+                                        </SheetHeader>
+                                    </SheetContent>
+                                </Sheet>
 
-                            <li className='mr-20'>
+                            </li>
+                            <li className='mr-10'>
                                 <Link to='/laboratory/profile' className='bg-hover-blue hover:text-blue-500'>
                                     <Avatar>
                                         <AvatarImage src="https://github.com/shadcn.png" />
