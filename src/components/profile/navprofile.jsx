@@ -6,16 +6,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { logout as logoutAction } from "@/redux/authSlice";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
 const Profile = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { toast } = useToast();
 
+  const { toast } = useToast();
+  const dispatch = useDispatch();
+ 
   const handleLogout = () => {
     dispatch(logoutAction());
     toast({

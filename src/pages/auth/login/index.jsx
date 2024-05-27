@@ -36,6 +36,7 @@ const Login = () => {
       console.log("user data:", userData);
 
       dispatch(loginAction({ user: userData, role: userData.role }));
+      console.log("name", userData.fullname)
 
       switch (userData.role) {
         case "HealthCenterAdmin":
