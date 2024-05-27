@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import NavBar from "./navbar";
 import Sidebar from "./sidebar";
 import MainContent from "./maincontent";
+import { useSelector } from "react-redux";
 
 const PatientDashboard = () => {
   const [activeLink, setActiveLink] = useState('dashboard');
+  const userData = useSelector((state) => state.auth.user)
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
@@ -17,7 +19,7 @@ const PatientDashboard = () => {
         <Sidebar onLinkClick={handleLinkClick} />
         <div className="flex-1 flex flex-col">
           <div className="flex justify-start bg-gray-100 p-4 text-gray-800">
-            <div>Welcome, Yeab</div>
+            <div>Welcome, {userData.fullname}</div>
           </div>
           <MainContent activeLink={activeLink} />
         </div>

@@ -132,7 +132,7 @@ export const PatientProfile = () => {
         </div>
 
         <div className="w-1/3 flex justify-center">
-          {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
+          {isMdScreen ? <CompleteProfile2 progress={70} /> : ""}
         </div>
       </div>
     </>

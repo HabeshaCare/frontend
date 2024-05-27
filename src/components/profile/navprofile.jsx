@@ -6,15 +6,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout as logoutAction } from "@/redux/authSlice";
 import { useToast } from "@/components/ui/use-toast";
 
 const Profile = () => {
-
   const { toast } = useToast();
   const dispatch = useDispatch();
- 
+  const userData = useSelector((state) => state.auth.user);
   const handleLogout = () => {
     dispatch(logoutAction());
     toast({
@@ -42,10 +41,7 @@ const Profile = () => {
               fill="white"
             />
           </svg>
-          <div className="">
-            {/* {props.firstName} {props.lastName} */}
-            Yeabsira Nigusse
-          </div>
+          <div className="">{userData.fullname}</div>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

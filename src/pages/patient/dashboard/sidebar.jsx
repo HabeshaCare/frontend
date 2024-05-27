@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Sidebar = ({ onLinkClick }) => {
-  const [selectedLink, setSelectedLink] = useState("");
+  const [selectedLink, setSelectedLink] = useState("dashboard");
 
   const handleLinkClick = (link) => {
     setSelectedLink(link);
