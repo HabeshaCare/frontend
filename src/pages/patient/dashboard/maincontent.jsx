@@ -2,7 +2,7 @@ import React from "react";
 import Chatbot from "@/components/dashboard/chatbot";
 import MedicalHistory from "@/pages/patient/medicalhistory";
 import Appointment from "@/pages/doctor/appointments";
-import ProfileInfo from "@/components/profile/profileInfo";
+// import ProfileInfo from "@/components/profile/profileInfo";
 import PatientProfile from "../profile";
 
 const Card = ({ text }) => {

@@ -7,7 +7,7 @@ import store, { persistor } from './redux/store';
 
 import Register from "./pages/auth/signup";
 import Login from './pages/auth/login';
-import PatientProfile from "./pages/patient/profile/";
+// import PatientProfile from "./pages/patient/profile/";
 import PatientDashboard from '@/pages/patient/dashboard';
 import DoctorsDashboard from '@/pages/doctor/dashboard';
 import LaboratoryDashboard from '@/pages/laboratory/dashboard';
@@ -19,7 +19,7 @@ import PharmacyProfile from "./pages/pharmacy/profile";
 import ReceptionDashboard from '@/pages/reception/dashboard';
 import VarifyEmail from "./components/auth/varifyEmail";
 import DoctorProfile from '@/pages/doctor/profile/'
-import MedicalHistory from "@/pages/patient/medicalhistory"
+// import MedicalHistory from "@/pages/patient/medicalhistory"
 import ReceptionProfile from "@/pages/reception/profile";
 import Appointement from "@/pages/doctor/appointments";
 import Patient from "./pages/doctor/patients";

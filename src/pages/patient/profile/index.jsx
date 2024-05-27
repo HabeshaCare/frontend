@@ -10,7 +10,7 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GetUserData from "@/lib/profile/getUserData";
-import NavBar from "../dashboard/navbar";
+// import NavBar from "../dashboard/navbar";
 
 export const PatientProfile = () => {
   const [editMode, setEditMode] = useState(true);

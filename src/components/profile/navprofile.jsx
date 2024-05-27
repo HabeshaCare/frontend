@@ -6,14 +6,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useDispatch } from "react-redux";
+import { logout as logoutAction } from "@/redux/authSlice";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 const Profile = () => {
-  const profile = () => {};
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { toast } = useToast();
 
   const handleLogout = () => {
-    // logout();
-    // toast.success("Logout successful!");
-    // router.reload();
+    dispatch(logoutAction());
+    toast({
+      title: "Success!",
+      description: "You have logged out successfully.",
+    });
   };
 
   return (
