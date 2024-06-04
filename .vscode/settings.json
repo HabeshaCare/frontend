@@ -2,5 +2,10 @@
   "editor.defaultFormatter": "svipas.prettier-plus",
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
-  }
+  },
+  "cSpell.words": [
+    "Hakime",
+    "Telemedicine",
+    "toastify"
+  ]
 }

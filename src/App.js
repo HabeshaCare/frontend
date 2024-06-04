@@ -19,6 +19,7 @@ import MedicalHistory from "@/pages/patient/medicalhistory"
 import ReceptionProfile from "@/pages/reception/profile";
 import Appointement from "./pages/doctor/appointments";
 import Patient from "./pages/doctor/patients";
+import VideoCall from "./pages/video-call";
 
 const queryClient = new QueryClient();
 function App() {
@@ -27,6 +28,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
+          <Route path="/patient/appointment/chat" element={<VideoCall />} />
           <Route path="/pharmacy/profile" element={<PharmacyProfile />} />
           <Route path="/pharmacy/dashboard" element={<PharmacyDashboard />} />
           <Route path="/laboratory/profile" element={<LaboratoryProfile />} />
