@@ -5,7 +5,7 @@ import io from "socket.io-client";
 
 function VideoChat() {
     const [token, setToken] = useState("");
-    const [timeToConnect] = useState(15 * 1000); // Time in milliseconds
+    const [timeToConnect] = useState(15 * 1000000); // Time in milliseconds
     const [schedule] = useState({
         id: "6650b9598d0b9c0918efd4d0",
         from: "2024-05-24T15:59:56Z",
@@ -307,7 +307,7 @@ function VideoChat() {
 
     return (
         <>
-            {localStreamRef.current && (
+            {localStreamRef && (
                 <div id="localVideoStream" className={
                     callAccepted && !callEnded
                         ? 'fixed top-4 right-4 z-10 h-60 w-40 shadow-lg animate-fade'
@@ -347,22 +347,24 @@ function VideoChat() {
                         playsInline
                         autoPlay
                     />
-                    <button onClick={toggleVideo}>
-                        {isVideoEnabled ? "Disable Video" : "Enable Video"}
-                    </button>
-
-                    <button onClick={toggleAudio}>
-                        {isAudioEnabled ? "Disable Audio" : "Enable Audio"}
-                    </button>
                 </div>
             )}
 
-            <div className="fixed bottom-4 flex flex-row justify-center items-center gap-y-2">
+            <div className="fixed right-40 bottom-4 flex flex-row justify-center items-center gap-y-2">
                 <div className="call-button">
                     {calling ? (
-                        <Button variant="contained" color="secondary" onClick={leaveCall}>
-                            {callAccepted && !callEnded ? "End Call" : "Leave Call"}
-                        </Button>
+                        <>
+                            <button onClick={leaveCall}>
+                                {callAccepted && !callEnded ? "End Call" : "Leave Call"}
+                            </button>
+                            <button onClick={toggleVideo}>
+                                {isVideoEnabled ? "Disable Video" : "Enable Video"}
+                            </button>
+
+                            <button onClick={toggleAudio}>
+                                {isAudioEnabled ? "Disable Audio" : "Enable Audio"}
+                            </button>
+                        </>
                     ) :
                         null
                     }
