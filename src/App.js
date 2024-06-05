@@ -25,6 +25,7 @@ import Appointement from "@/pages/doctor/appointments";
 import Patient from "./pages/doctor/patients";
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/homepage';
+import VideoChat from './pages/video-call';
 const queryClient = new QueryClient();
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Router>
             <Routes>
+              <Route path="/patient/appointment/chat" element={<VideoChat />} />
               <Route path="/pharmacy/profile" element={<ProtectedRoute requiredRole="PharmacyAdmin"><PharmacyProfile /></ProtectedRoute>} />
               <Route path="/pharmacy/dashboard" element={<ProtectedRoute requiredRole="PharmacyAdmin"><PharmacyDashboard /></ProtectedRoute>} />
 

@@ -306,49 +306,51 @@ function VideoChat() {
     };
 
     return (
-        <>
-            {localStreamRef && (
-                <div id="localVideoStream" className={
-                    callAccepted && !callEnded
-                        ? 'fixed top-4 right-4 z-10 h-60 w-40 shadow-lg animate-fade'
-                        : 'fixed top-0 left-0 right-0 bottom-0'
-                }>
-                    <h1
-                        className={
-                            callAccepted && !callEnded
-                                ? 'absolute top-2 right-2 z-10 font-medium text-md mb-2 text-gray-200'
-                                : 'absolute top-2 left-3 z-10 font-medium text-md mb-2 text-gray-200'
-                        }
-                    >
-                        {schedule.scheduler || 'Scheduler name'}
-                    </h1>
-                    <video
-                        ref={localStreamRef}
-                        className={
-                            callAccepted && !callEnded
-                                ? 'scale-x-[-1] object-cover h-60 w-40 rounded-md'
-                                : 'scale-x-[-1] object-cover h-full w-full'
-                        }
-                        playsInline
-                        muted={!isAudioEnabled}
-                        autoPlay
-                    />
-                </div>
-            )}
-            {/* <h1 style={{ textAlign: "center", color: "#fff" }}>Hakime Telemedicine Session</h1> */}
-            {callAccepted && !callEnded && (
-                <div className="fixed top-0 left-0 right-0 bottom-0">
-                    <h1 className="absolute top-2 left-3 z-10 font-medium text-md mb-2 text-gray-200">
-                        {schedule.doctor || 'Scheduled name'}
-                    </h1>
-                    <video
-                        className="scale-x-[-1] object-cover h-full w-full"
-                        ref={remoteStreamRef}
-                        playsInline
-                        autoPlay
-                    />
-                </div>
-            )}
+        <main className="flex flex-col justify-center items-center h-screen w-screen">
+            <section className="h-full w-full">
+                {localStreamRef && (
+                    <div id="localVideoStream" className={
+                        callAccepted && !callEnded
+                            ? 'fixed top-4 right-4 z-10 h-60 w-40 shadow-lg animate-fade'
+                            : 'fixed top-0 left-0 right-0 bottom-0'
+                    }>
+                        <h1
+                            className={
+                                callAccepted && !callEnded
+                                    ? 'absolute top-2 right-2 z-10 font-medium text-md mb-2 text-gray-200'
+                                    : 'absolute top-2 left-3 z-10 font-medium text-md mb-2 text-gray-200'
+                            }
+                        >
+                            {schedule.scheduler || 'Scheduler name'}
+                        </h1>
+                        <video
+                            ref={localStreamRef}
+                            className={
+                                callAccepted && !callEnded
+                                    ? 'scale-x-[-1] object-fill h-60 w-40 rounded-md'
+                                    : 'scale-x-[-1] object-fill h-full w-full'
+                            }
+                            playsInline
+                            muted={!isAudioEnabled}
+                            autoPlay
+                        />
+                    </div>
+                )}
+                {/* <h1 style={{ textAlign: "center", color: "#fff" }}>Hakime Telemedicine Session</h1> */}
+                {callAccepted && !callEnded && (
+                    <div className="fixed top-0 left-0 right-0 bottom-0">
+                        <h1 className="absolute top-2 left-3 z-10 font-medium text-md mb-2 text-gray-200">
+                            {schedule.doctor || 'Scheduled name'}
+                        </h1>
+                        <video
+                            className="scale-x-[-1] object-fill h-full w-full"
+                            ref={remoteStreamRef}
+                            playsInline
+                            autoPlay
+                        />
+                    </div>
+                )}
+            </section>
 
             <div className="fixed right-40 bottom-4 flex flex-row justify-center items-center gap-y-2">
                 <div className="call-button">
@@ -370,6 +372,7 @@ function VideoChat() {
                     }
                 </div>
             </div>
+
             {/* <div>
                 {receivingCall && !callAccepted ? (
                     <div className="caller">
@@ -400,7 +403,8 @@ function VideoChat() {
                     </div>
                 ) : null}
             </div> */}
-        </>
+        </main>
+
     );
 }
 
