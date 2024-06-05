@@ -1,36 +1,38 @@
 import { Button } from "@/components/ui/button";
-import Telemed from "@/public/img/doctors.png";
+import Telemed from "@/public/img/pharmacist.png";
 import { useNavigate } from "react-router";
 
-const Telemedicine = () => {
+const Pharmacy = () => {
   const navigate = useNavigate();
+
   const handleNavigation = () => {
     navigate("/register");
   };
   return (
     <>
       <div className="flex ml-8 h-screen  items-center">
-        <div className="flex flex-col w-1/2 md:mt-12">
+        <div className="flex flex-col w-3/4 md:mt-12">
           <div className="text-[#1F555D] text-3xl font-bold font-serif mt-12 mb-4 md:text-4xl">
-            Enhancing Care Through Expertise and Collaboration.
+            Empowering Your Pharmacy Operations.
           </div>
 
           <div className=" font-light text-xl md:text-3xl">
-            Efficiently manage your patients and provide exceptional care.
-            Streamline patient management, deliver exceptional care. Make
-            informed decisions with comprehensive tools.
+            Optimize your pharmacy's workflow with ease. Efficiently manage
+            prescriptions, track inventory, and connect with healthcare
+            professionals to ensure seamless patient care. Enhance your services
+            and streamline operations, all in one place.
           </div>
           <div className="mb-4">
             <Button
-              className="font-medium text-white w-56 h-16 mt-8 bg-[#1F555D] text-xl"
+              className="font-medium text-white w-64 h-16 mt-8 bg-[#1F555D] text-xl"
               onClick={handleNavigation}
             >
-              Register As a Doctor
+              Register Your Pharmacy
             </Button>
           </div>
         </div>
 
-        <div className="w-1/2 flex items-center">
+        <div className="w-1/2 flex items-end justify-end">
           <img src={Telemed} alt="Telemedicine" />
         </div>
       </div>
@@ -38,4 +40,4 @@ const Telemedicine = () => {
   );
 };
 
-export default Telemedicine;
+export default Pharmacy;
