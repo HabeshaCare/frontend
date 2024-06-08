@@ -17,21 +17,20 @@ const InputField = ({ name, label, placeholder, rules, type }) => {
       <Label htmlFor={name} className="text-bold">
         {label}
       </Label>
-      <p>
-        {isError && (
-          <span className=" font-primary text-xs text-red-500">
-            {errorMessage}
-          </span>
-        )}
-      </p>
-
       <Input
         {...register(name, rules)}
         type={type}
         id={name}
         placeholder={placeholder}
-        className="border-x-0 border-t-0 rounded-none border-b-shadow-100 text-black placeholder-shadow-100"
+        className={`border-x-0 border-t-0 rounded-none border-b-shadow-100 text-black placeholder-shadow-100 ${
+          isError ? "border-red-500" : ""
+        }`}
       />
+      {isError && (
+        <span className="font-primary text-xs text-red-500">
+          {errorMessage}
+        </span>
+      )}
     </div>
   );
 };

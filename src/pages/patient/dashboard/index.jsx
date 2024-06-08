@@ -1,13 +1,30 @@
-import React from "react";
-import NavBar from "@/components/dashboard/navBar";
-import Home from "@/components/dashboard/home";
+import React, { useState } from "react";
+import NavBar from "./navbar";
+import Sidebar from "./sidebar";
+import MainContent from "./maincontent";
+import { useSelector } from "react-redux";
 
 const PatientDashboard = () => {
+  const [activeLink, setActiveLink] = useState('dashboard');
+  const userData = useSelector((state) => state.auth.user)
+
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+  };
+
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <NavBar />
-      <Home />
-    </>
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar onLinkClick={handleLinkClick} />
+        <div className="flex-1 flex flex-col">
+          <div className="flex justify-start bg-gray-100 p-4 text-gray-800">
+            <div>Welcome, {userData.fullname}</div>
+          </div>
+          <MainContent activeLink={activeLink} />
+        </div>
+      </div>
+    </div>
   );
 };
 

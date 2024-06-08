@@ -6,7 +6,8 @@ export const register = (data) => {
     .post("http://localhost:5072/api/auth/signup/", data)
     .then((res) => res.data)
     .catch((error) => {
-      console.error("Axios error:", error); // Log Axios error
+      console.error("Axios error:"); // Log Axios error
+      throw error;
     });
 };
 

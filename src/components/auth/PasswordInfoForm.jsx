@@ -3,7 +3,8 @@ import InputField from "./InputField";
 import { useFormContext } from "react-hook-form";
 
 const PasswordInfoForm = () => {
-  const { watch } = useFormContext();
+  const { watch, formState: { errors } } = useFormContext();
+
   return (
     <>
       {/* Password */}
@@ -17,29 +18,35 @@ const PasswordInfoForm = () => {
           pattern: {
             value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
             message:
-              "Password must contain at least 8 characters. one uppercase, lowercase, number and special character.",
+              "Password must contain at least 8 characters, including one uppercase, one lowercase, one number, and one special character.",
           },
         }}
       />
 
-      {/* Conf Password */}
-
+      {/* Confirm Password */}
       <InputField
         name="confirmPassword"
         label="Confirm Password"
         placeholder="Type your Confirm Password"
         type="password"
         rules={{
-          required: "Password Required",
+          required: "Password required",
           validate: (value) =>
             value === watch("password") || "The passwords do not match",
           pattern: {
             value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
             message:
-              "Password must contain at least 8 characters. one uppercase, lowercase, number and special character.",
+              "Password must contain at least 8 characters, including one uppercase, one lowercase, one number, and one special character.",
           },
         }}
       />
+
+      {/* Display Email Error Here */}
+      {errors.email && (
+        <div className="text-red-500 text-sm">
+          {errors.email.message}
+        </div>
+      )}
     </>
   );
 };

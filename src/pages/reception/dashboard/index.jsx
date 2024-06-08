@@ -1,7 +1,8 @@
+import NavBar from "./navBar";
 const ReceptionDashboard = () => {
     return (
       <>
-        <div>this is reception dashboard</div>
+      <NavBar/>
       </>
     );
   };

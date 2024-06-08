@@ -7,7 +7,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import ReqForm from "./requestForm"
+import ReqForm from "../../doctor/form/requestForm"
 
 const Card = (props) => {
     return (
@@ -19,7 +19,8 @@ const Card = (props) => {
 
             <div className="flex">
                 <Dialog>
-                    <DialogTrigger>                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4">submit result </button>
+                    <DialogTrigger>
+                        <button className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4">submit result </button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
@@ -33,9 +34,11 @@ const Card = (props) => {
                     </DialogContent>
                 </Dialog>
 
-                <Dialog>
-
-                    <DialogTrigger> <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md">view request</button> </DialogTrigger>
+                <Dialog
+>
+                    <DialogTrigger>
+                        <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md">view request</button>
+                    </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>request</DialogTitle>
