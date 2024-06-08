@@ -25,7 +25,9 @@ const Card = ({ doctor }) => {
         <p className="text-xs">{doctor.speciality}</p>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" className="bg-inherit border-none ">View Profile</Button>
+            <Button variant="outline" className="bg-inherit border-none ">
+              View Profile
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -76,16 +78,31 @@ const Doctors = () => {
     {
       name: "Doctor Jane Doe",
       speciality: "Cardiologist",
-      profilePicture: doc, // Replace with actual image URL
+      profilePicture: doc2, // Replace with actual image URL
     },
     {
       name: "Doctor John Smith",
       speciality: "Neurologist",
+      profilePicture: doc3, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
       profilePicture: doc, // Replace with actual image URL
     },
     {
       name: "Doctor Emily Johnson",
       speciality: "Dermatologist",
+      profilePicture: doc2, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc3, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
       profilePicture: doc, // Replace with actual image URL
     },
     {
@@ -96,12 +113,12 @@ const Doctors = () => {
     {
       name: "Doctor Emily Johnson",
       speciality: "Dermatologist",
-      profilePicture: doc2, // Replace with actual image URL
+      profilePicture: doc3, // Replace with actual image URL
     },
     {
       name: "Doctor Emily Johnson",
       speciality: "Dermatologist",
-      profilePicture: doc2, // Replace with actual image URL
+      profilePicture: doc, // Replace with actual image URL
     },
     {
       name: "Doctor Emily Johnson",
@@ -116,12 +133,57 @@ const Doctors = () => {
     {
       name: "Doctor Emily Johnson",
       speciality: "Dermatologist",
-      profilePicture: doc3, // Replace with actual image URL
+      profilePicture: doc, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc2, // Replace with actual image URL
     },
     {
       name: "Doctor Emily Johnson",
       speciality: "Dermatologist",
       profilePicture: doc3, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc2, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc3, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc2, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc3, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc, // Replace with actual image URL
+    },
+    {
+      name: "Doctor Emily Johnson",
+      speciality: "Dermatologist",
+      profilePicture: doc2, // Replace with actual image URL
     },
     {
       name: "Doctor Emily Johnson",

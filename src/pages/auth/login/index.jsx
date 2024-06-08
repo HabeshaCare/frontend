@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import login from "@/lib/auth/login";
 import { useDispatch } from "react-redux";
 import { login as loginAction } from "@/redux/authSlice";
-import NavBar from "@/components/dashboard/navBar";
+import NavBar from "@/components/landingpage/navBar";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -36,7 +36,7 @@ const Login = () => {
       console.log("user data:", userData);
 
       dispatch(loginAction({ user: userData, role: userData.role }));
-      console.log("name", userData.fullname)
+      console.log("name", userData.fullname);
 
       switch (userData.role) {
         case "HealthCenterAdmin":
@@ -69,19 +69,19 @@ const Login = () => {
     },
     onError: (error) => {
       if (error.response && error.response.status === 401) {
-      console.error("Login failed:", error);
-      toast({
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with login credential.",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-      })
-    }else if (error.isAxiosError && !error.response) {
-      toast({
-        title: "Uh oh! Something went wrong.",
-        description: "Please Check your internet connection.",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-      })
-    }
+        console.error("Login failed:", error);
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with login credential.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      } else if (error.isAxiosError && !error.response) {
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "Please Check your internet connection.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      }
     },
   });
 
@@ -159,7 +159,7 @@ const Login = () => {
             </form>
 
             <h1 className="font-primary text-md mt-4 text-center">
-              Don&apos;t have an account? <a href="/"> Sign Up</a>
+              Don&apos;t have an account? <a href="/register"> Sign Up</a>
             </h1>
           </div>
         </section>

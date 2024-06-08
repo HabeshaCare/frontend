@@ -7,7 +7,7 @@ import RoleInfoForm from "@/components/auth/RoleInfoForm";
 import PasswordInfoForm from "@/components/auth/PasswordInfoForm";
 import { register } from "@/lib/auth/register";
 import { useMutation } from "react-query";
-import NavBar from "@/components/dashboard/navBar";
+import NavBar from "@/components/landingpage/navBar";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -41,7 +41,7 @@ const Register = () => {
       navigate("/verifyEmail");
       toast({
         description: "You Registerd successfully. Please Verify your email",
-      })
+      });
     },
   });
 

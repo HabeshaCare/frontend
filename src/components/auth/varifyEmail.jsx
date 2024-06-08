@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import verifyToken from "@/lib/auth/varifyToken";
 import { useMutation } from "react-query";
+import NavBar from "@/components/landingpage/navBar";
 
 const VarifyEmail = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const VarifyEmail = () => {
 
   return (
     <>
+      <NavBar />
       {urlClicked ? (
         <div>
           {isLoading ? (

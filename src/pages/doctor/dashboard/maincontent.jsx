@@ -4,7 +4,7 @@ import MedicalHistory from "@/pages/patient/medicalhistory";
 import Appointment from "@/pages/doctor/appointments";
 // import ProfileInfo from "@/components/profile/profileInfo";
 import PatientProfile from "../profile";
-import Doctors from "../doctors";
+import Patient from "../patients";
 
 const Card = ({ text }) => {
   return (
@@ -51,9 +51,9 @@ const MainContent = ({ activeLink }) => {
           <MedicalHistory />
         </div>
       )}
-      {activeLink === "doctors" && (
+      {activeLink === "petient" && (
         <div>
-          <Doctors />
+          <Patient />
         </div>
       )}
     </div>
