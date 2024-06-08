@@ -1,9 +1,12 @@
-const HealthCenterDashboard = () => {
-  return (
-    <>
-      <div>this is health center dashboard</div>
-    </>
-  );
-};
+import NavBar from "./navBar";
+const ReceptionDashboard = () => {
+    return (
+      <>
+      <NavBar/>
+      </>
+    );
+  };
 
-export default HealthCenterDashboard
+
+  export default ReceptionDashboard
+  

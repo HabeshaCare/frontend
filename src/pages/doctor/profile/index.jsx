@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import edit from "@/public/icons/edit.svg";
 import back from "@/public/icons/back.svg";
@@ -9,6 +9,9 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { Mutation, useMutation } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 
@@ -16,6 +19,28 @@ export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const [licenseFile, setLicenseFile] = useState(null);
+  const [associatedHealthCenterId, setAssociatedHealthCenterId] = useState("660300b921588e14d58d04db");
+  const [email, setEmail] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [gender, setGender] = useState("Male");
+  const [id, setId] = useState("6602e5b2a861c9f01f3b0abf");
+  const [imageUrl, setImageUrl] = useState(null);
+  const [licensePath, setLicensePath] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [phonenumber, setPhonenumber] = useState("0912231223");
+  const [role, setRole] = useState("Doctor");
+  const [specialization, setSpecialization] = useState("Medical");
+  const [verified, setVerified] = useState(true);
+  const [yearOfExperience, setYearOfExperience] = useState(0);
+
+
+  const handleInputChange = (setStateFunction) => {
+    return (event) => {
+      setStateFunction(event.target.value);
+    };
+  };
+
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -25,6 +50,101 @@ export const DoctorProfile = () => {
   const handleRemoveUpload = () => {
     setLicenseFile(null);
   };
+  const GetDoctorData = async () => {
+    const token = localStorage.getItem('token');
+    const doctor_id = localStorage.getItem('userId');
+    console.log("Token=" + token, "doctorId=" + doctor_id);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+    const url = "http://localhost:5072/api/doctor/" + doctor_id + "/profile";
+    const response = await axios.get(url, config);
+    return response.data;
+
+  }
+
+
+  const { data, isLoading, isError } = useQuery("doctor", GetDoctorData)
+
+  useEffect(() => {
+    setFullname(data?.data?.fullname)
+    setEmail(data?.data?.email)
+    setGender(data?.data?.gender)
+    setPhonenumber(data?.data?.phonenumber)
+    setLocation(data?.data?.location)
+    setSpecialization(data?.data?.specialization)
+    setVerified(data?.data?.verified)
+    setYearOfExperience(data?.data?.yearOfExperience)
+    setAssociatedHealthCenterId(data?.data?.associatedHealthCenterId)
+
+    console.log('Fullname:', data?.data?.fullname);
+    console.log('Email:', data?.data?.email);
+    console.log('Gender:', data?.data?.gender);
+    console.log('Phonenumber:', data?.data?.phonenumber);
+    console.log('Location:', data?.data?.location);
+    console.log('Specialization:', data?.data?.specialization);
+    console.log('Verified:', data?.data?.verified);
+    console.log('Year of Experience:', data?.data?.yearOfExperience);
+    console.log('Associated Health Center Id:', data?.data?.associatedHealthCenterId);
+
+    console.log("doctor name ", data?.data?.fullname);
+
+
+
+  }, [editMode, data])
+  const updatedData = {
+    fullname: fullname,
+    gender: gender,
+    email: email,
+    phonenumber: phonenumber,
+    location: location,
+    specialization: specialization,
+    verified: verified,
+    yearOfExperience: yearOfExperience,
+    associatedHealthCenterId: associatedHealthCenterId, 
+
+    
+    
+  }
+  const token = localStorage.getItem('token');
+  const doctor_id = localStorage.getItem('userId');
+  console.log("Token=" + token, "doctorId=...." + doctor_id);
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }};
+
+  const url = 'http://localhost:5072/api/doctor/' + doctor_id + '/profile';
+  const updatData = useMutation((dataToSendToBackend) => axios.put(url, dataToSendToBackend,config),  {
+    onSuccess: () => {
+      // Handle successful update
+      console.log('success')
+    },
+    onError: () => {
+      // Handle error
+      console.log('error changing data')
+    }
+  })
+  const handleSubmit = () => {
+    updatData.mutate(updatedData);
+  };
+  if (data) {
+    console.log("data");
+    console.log(data?.data?.fullname);
+
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
+  if (isError) {
+    return <p>Error occured </p>
+  }
+
+
+
 
   return (
     <>
@@ -61,23 +181,24 @@ export const DoctorProfile = () => {
               <div className="ml-2">
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
-                  <ProfileValue value="Dr. Belay Seyum" />
+                  <ProfileValue value={data.data.fullname} />
                 ) : (
-                  <Input />
+                  <Input onChange={handleInputChange(setFullname)} placeholder="Enter your full name" value={fullname} />
+
                 )}
               </div>
 
               <div className="ml-2">
-                <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value="092314216" /> : <Input />}
+                <ProfileKey keyName="Phone Number"  />
+                {editMode ? <ProfileValue value={data.data.phonenumber}/> : <Input onChange={handleInputChange(setPhonenumber)} value={phonenumber} placeholder="change phone number" />}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
                 <ProfileKey keyName="Email" />
                 {editMode ? (
-                  <ProfileValue value="nigusseyeabsira@gmail.com" />
+                  <ProfileValue value={data.data.email} />
                 ) : (
-                  <Input />
+                  <Input onChange={handleInputChange(setEmail)} value={email} placeholder="change email" />
                 )}
               </div>
             </div>
@@ -85,7 +206,7 @@ export const DoctorProfile = () => {
             <div className={`${editMode && "md:flex justify-start"}`}>
               <div className="ml-2 md:ml-16 md:pl-1">
                 <ProfileKey keyName="Gender" />
-                {editMode ? <ProfileValue value="Male" /> : <Input />}
+                {editMode ? <ProfileValue value={data.data.gender} /> : <Input onChange={handleInputChange(setGender)} value={gender} />}
               </div>
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
@@ -98,9 +219,9 @@ export const DoctorProfile = () => {
               <div className="ml-2">
                 <ProfileKey keyName="Specialization" />
                 {editMode ? (
-                  <ProfileValue value="Doctor of Medicine" />
+                  <ProfileValue value={data.data.specialization} />
                 ) : (
-                  <Input />
+                  <Input onChange={handleInputChange(setSpecialization)} value={specialization} placeholder="edit your specializaiton" />
                 )}
               </div>
 
@@ -111,7 +232,7 @@ export const DoctorProfile = () => {
 
               <div className="">
                 <ProfileKey keyName="Location" />
-                {editMode ? <ProfileValue value="Addis Ababa" /> : <Input />}
+                {editMode ? <ProfileValue value={location}/> : <Input onChange={handleInputChange(setLocation)} value={location} placeholder="set location" />}
               </div>
             </div>
             <div
@@ -121,19 +242,19 @@ export const DoctorProfile = () => {
             >
               <div>
                 <ProfileKey keyName="Verification status" />
-                {editMode ? <ProfileValue value="Verified" /> : <Input />}
+                {editMode ? <ProfileValue value={data.data.verified ? "Verified " : "not Verified"} /> : <Input onChange={handleInputChange(setVerified)} value={verified} />}
               </div>
               <div>
                 <ProfileKey keyName="Working Health center" />
                 {editMode ? (
                   <ProfileValue value="Yekatit 12 General Hospital" />
                 ) : (
-                  <Input />
+                  <Input onChange={handleInputChange(setAssociatedHealthCenterId)} value={associatedHealthCenterId} placeholder="change hospital" />
                 )}
               </div>
               <div>
                 <ProfileKey keyName="Year of experience" />
-                {editMode ? <ProfileValue value="2 Years" /> : <Input />}
+                {editMode ? <ProfileValue value={data.data.yearOfExperience} /> : <Input />}
               </div>
             </div>
 
@@ -186,7 +307,7 @@ export const DoctorProfile = () => {
               ""
             ) : (
               <div className="flex justify-center">
-                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28 ">
+                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28 " onClick={handleSubmit} >
                   Save
                 </Button>
               </div>

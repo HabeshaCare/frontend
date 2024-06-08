@@ -9,22 +9,38 @@ import ProfileKey from "@/components/profile/profileInfo";
 import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
 
 export const ReceptionProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
+
+  const GetReceptionProfile = async () => {
+    const token = localStorage.getItem('token');
+    const reception_id = localStorage.getItem('user_id');
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    }
+    const url = ""
+
+  }
 
   return (
     <>
       <div className="md:flex">
         <div className="md:w-2/3">
           <div className="flex my-4">
-            <div className="ml-2 mt-2 cursor-pointer">
-              <img src={back} alt="back icon" />
-            </div>
-            <div className="mt-1 font-semibold text-2xl font-serif flex justify-center w-full">
-              <p>Personal Profile</p>
-            </div>
+            <Link to='/reception/dashboard' className='bg-hover-blue hover:text-blue-500'>
+
+              <div className="ml-2 mt-2 cursor-pointer">
+                <img src={back} alt="back icon" />
+              </div>
+              </Link>
+              <div className="mt-1 font-semibold text-2xl font-serif flex justify-center w-full">
+                <p>Personal Profile</p>
+              </div>
           </div>
           <PatientPicture />
           {isMdScreen ? "" : <CompleteProfile progress={80} />}
