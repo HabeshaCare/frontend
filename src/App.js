@@ -12,7 +12,7 @@ import PatientDashboard from '@/pages/patient/dashboard';
 import DoctorsDashboard from '@/pages/doctor/dashboard';
 import LaboratoryDashboard from '@/pages/laboratory/dashboard';
 import LaboratoryProfile from "./pages/laboratory/profile";
-import HealthCenterDashboard from '@/pages/healthcenter/[id]/dashboard';
+import HealthCenterDashboard from '@/pages/healthcenter/dashboard';
 import HealthCenterProfile from "./pages/healthcenter/[id]/dashboard/profile";
 import PharmacyDashboard from '@/pages/pharmacy/dashboard';
 import PharmacyProfile from "./pages/pharmacy/profile";
