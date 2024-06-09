@@ -14,6 +14,7 @@ import axios from "axios";
 import { Mutation, useMutation } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
+import { useSelector } from "react-redux";
 
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
@@ -33,6 +34,8 @@ export const DoctorProfile = () => {
   const [verified, setVerified] = useState(true);
   const [yearOfExperience, setYearOfExperience] = useState(0);
 
+  const userData = useSelector((state) => state.auth.user);
+  console.log("name from state", userData.fullname);
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
@@ -136,24 +139,21 @@ export const DoctorProfile = () => {
 
   }
 
-  if (isLoading) {
-    return <p>Loading...</p>
-  }
-  if (isError) {
-    return <p>Error occured </p>
-  }
+  // if (isLoading) {
+  //   return <p>Loading...</p>
+  // }
+  // if (isError) {
+  //   return <p>Error occured </p>
+  // }
 
-
+ 
 
 
   return (
     <>
       <div className="md:flex">
-        <div className="md:w-3/4 mb-8">
+        <div className="md:w-2/3 mb-8">
           <div className="flex my-4">
-            <div className="ml-2 mt-2 cursor-pointer">
-              <img src={back} alt="back icon" />
-            </div>
             <div className="mt-1 font-semibold text-2xl font-serif flex justify-center w-full">
               <p>Personal Profile</p>
             </div>
@@ -178,10 +178,10 @@ export const DoctorProfile = () => {
             </div>
 
             <div className={`${editMode && "md:flex justify-around md:mb-4"}`}>
-              <div className="ml-2">
+              <div className="">
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
-                  <ProfileValue value={data.data.fullname} />
+                  <ProfileValue value={userData.fullname} />
                 ) : (
                   <Input onChange={handleInputChange(setFullname)} placeholder="Enter your full name" value={fullname} />
 
@@ -190,13 +190,13 @@ export const DoctorProfile = () => {
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number"  />
-                {editMode ? <ProfileValue value={data.data.phonenumber}/> : <Input onChange={handleInputChange(setPhonenumber)} value={phonenumber} placeholder="change phone number" />}
+                {editMode ? <ProfileValue value={userData.phonenumber}/> : <Input onChange={handleInputChange(setPhonenumber)} value={phonenumber} placeholder="change phone number" />}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
                 <ProfileKey keyName="Email" />
                 {editMode ? (
-                  <ProfileValue value={data.data.email} />
+                  <ProfileValue value={userData.email} />
                 ) : (
                   <Input onChange={handleInputChange(setEmail)} value={email} placeholder="change email" />
                 )}
@@ -204,9 +204,9 @@ export const DoctorProfile = () => {
             </div>
 
             <div className={`${editMode && "md:flex justify-start"}`}>
-              <div className="ml-2 md:ml-16 md:pl-1">
+              <div className="md:ml-8 md:pl-1">
                 <ProfileKey keyName="Gender" />
-                {editMode ? <ProfileValue value={data.data.gender} /> : <Input onChange={handleInputChange(setGender)} value={gender} />}
+                {editMode ? <ProfileValue value={userData.gender} /> : <Input onChange={handleInputChange(setGender)} value={gender} />}
               </div>
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
@@ -214,12 +214,12 @@ export const DoctorProfile = () => {
             </div>
 
             <div
-              className={`${editMode && "md:flex justify-between md:mx-16"}`}
+              className={`${editMode && "md:flex justify-between mx-8"}`}
             >
-              <div className="ml-2">
+              <div className="">
                 <ProfileKey keyName="Specialization" />
                 {editMode ? (
-                  <ProfileValue value={data.data.specialization} />
+                  <ProfileValue value={userData.specialization} />
                 ) : (
                   <Input onChange={handleInputChange(setSpecialization)} value={specialization} placeholder="edit your specializaiton" />
                 )}
@@ -237,12 +237,12 @@ export const DoctorProfile = () => {
             </div>
             <div
               className={`${
-                editMode && "md:flex justify-between md:mx-16 md:px-2"
+                editMode && "ml-2 md:flex justify-around"
               } mt-8`}
             >
               <div>
                 <ProfileKey keyName="Verification status" />
-                {editMode ? <ProfileValue value={data.data.verified ? "Verified " : "not Verified"} /> : <Input onChange={handleInputChange(setVerified)} value={verified} />}
+                {editMode ? <ProfileValue value={userData.verified ? "Verified " : "not Verified"} /> : <Input onChange={handleInputChange(setVerified)} value={verified} />}
               </div>
               <div>
                 <ProfileKey keyName="Working Health center" />
@@ -254,7 +254,7 @@ export const DoctorProfile = () => {
               </div>
               <div>
                 <ProfileKey keyName="Year of experience" />
-                {editMode ? <ProfileValue value={data.data.yearOfExperience} /> : <Input />}
+                {editMode ? <ProfileValue value={userData.yearOfExperience} /> : <Input />}
               </div>
             </div>
 
@@ -315,7 +315,7 @@ export const DoctorProfile = () => {
           </div>
         </div>
 
-        <div className="w-1/4 flex justify-center">
+        <div className="w-1/3 flex justify-center">
           {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
         </div>
       </div>

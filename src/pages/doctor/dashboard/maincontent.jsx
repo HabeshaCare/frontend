@@ -15,7 +15,7 @@ const Card = ({ text }) => {
 };
 const MainContent = ({ activeLink }) => {
   return (
-    <div className="flex-1 overflow-y-auto p-8">
+    <div className="flex-1 overflow-y-auto">
       {activeLink === "dashboard" && (
         <>
           <div className="flex justify-around w-full mb-8">
@@ -42,20 +42,16 @@ const MainContent = ({ activeLink }) => {
         </div>
       )}
       {activeLink === "profile" && (
-        <div>
+        
           <PatientProfile />
-        </div>
+        
       )}
       {activeLink === "medicalRecords" && (
         <div>
           <MedicalHistory />
         </div>
       )}
-      {activeLink === "petient" && (
-        <div>
-          <Patient />
-        </div>
-      )}
+      {activeLink === "petient" && <Patient />}
     </div>
   );
 };

@@ -24,14 +24,14 @@ const Login = () => {
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       const { token, data: userData } = data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("userId", userData.id);
-      localStorage.setItem("role", userData.role);
-      localStorage.setItem("email", userData.email);
-      localStorage.setItem("name", userData.name);
-      localStorage.setItem("phone", userData.phone);
-      localStorage.setItem("address", userData.address);
-      localStorage.setItem("userdata", userData);
+      // localStorage.setItem("token", token);
+      // localStorage.setItem("userId", userData.id);
+      // localStorage.setItem("role", userData.role);
+      // localStorage.setItem("email", userData.email);
+      // localStorage.setItem("name", userData.name);
+      // localStorage.setItem("phone", userData.phone);
+      // localStorage.setItem("address", userData.address);
+      // localStorage.setItem("userdata", userData);
 
       console.log("user data:", userData);
 
