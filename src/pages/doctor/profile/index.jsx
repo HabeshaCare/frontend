@@ -15,7 +15,11 @@ import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {assignSpecialization } from "@/redux/authSlice";
+import { updateprofile } from "@/redux/authSlice";
+import { updateProfile } from "@/lib/auth/updatedoctorprofile";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import { set } from "date-fns";
 
 // import {updateProfile, updateProfile} from "@/lib/auth/updatedoctorprofile";
 
@@ -38,73 +42,43 @@ export const DoctorProfile = () => {
   const [yearOfExperience, setYearOfExperience] = useState(0);
   const [hourlyRateInBirr, setHourlyRateInBirr] = useState(0);
   const dispatch = useDispatch();
+  const { toast } = useToast();
 
-  const userData = useSelector((state) => state.auth.user);
-  const doctorEmail = useSelector((state) => state.doctor.doctoremail);
-  const doctorfullname = useSelector((state) => state.doctor.doctorname);
-  const doctorphonenumber = useSelector((state) => state.doctor.doctorphone);
-  const doctorgender = useSelector((state) => state.doctor.doctorgender);
-  const doctorlocation = useSelector((state) => state.doctor.doctorlocation);
-  const doctorspecialization = useSelector(
-    (state) => state.doctor.doctorspecialization
-  );
-  const doctorverified = useSelector((state) => state.doctor.doctorverified);
-  const doctoryearOfExperience = useSelector(
-    (state) => state.doctor.doctoryearOfExperience
-  );
-  const doctorid = useSelector((state) => state.doctor.doctorid);
-  const doctorassociatedHealthCenterId = useSelector(
-    (state) => state.doctor.doctorassociatedHealthCenterId
-  );
-  const doctorhourlyRateInBirr = useSelector(
-    (state) => state.doctor.doctorhourlyRateInBirr
-  );
-  const doctorimageUrl = useSelector((state) => state.doctor.doctorimageUrl);
-
-  console.log("email from docotr slice", doctorEmail);
-
-  console.log("name from state", userData.fullname);
-
-  // const updateProfile = useMutation(updateProfile, {
-  //   onSuccess: (data) => {
-  //     console.log("data from mutation", data);
-  //   },
-
-  // });
+  const doctorData = useSelector((state) => state.doctor);
 
   useEffect(() => {
-    if (userData) {
-      setFullname(doctorfullname);
-      setPhonenumber(doctorphonenumber);
-      setEmail(doctorEmail);
+    if (doctorData) {
+      const {
+        doctorname,
+        doctorphone,
+        doctoremail,
+        doctorgender,
+        doctorlocation,
+        doctorspecialization,
+        doctoryearOfExperience,
+        doctorid,
+        doctorassociatedHealthCenterId,
+        doctorhourlyRateInBirr,
+        doctorimageUrl,
+        doctorverified,
+      } = doctorData;
+
+      setFullname(doctorname);
+      setPhonenumber(doctorphone);
+      setEmail(doctoremail);
       setGender(doctorgender);
       setLocation(doctorlocation);
       setSpecialization(doctorspecialization);
-      setVerified(doctorverified);
       setYearOfExperience(doctoryearOfExperience);
+      setVerified(doctorverified);
       setId(doctorid);
       setAssociatedHealthCenterId(doctorassociatedHealthCenterId);
       setHourlyRateInBirr(doctorhourlyRateInBirr);
-      // setImageUrl(doctorimageUrl || doctor); // Use persisted image or default if not set
+      setImageUrl(doctorimageUrl || doctor);
     }
-  }, [
-    userData,
-    doctorfullname,
-    doctorphonenumber,
-    doctorEmail,
-    doctorgender,
-    doctorlocation,
-    doctorspecialization,
-    doctorverified,
-    doctoryearOfExperience,
-    doctorid,
-    doctorassociatedHealthCenterId,
-    doctorhourlyRateInBirr,
-    doctorimageUrl,
-  ]);
+  }, [doctorData]);
 
-  console.log("fullname state", fullname);
-  console.log("year of experience", yearOfExperience);
+  console.log("doctor iddd", id);
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
@@ -133,15 +107,59 @@ export const DoctorProfile = () => {
     yearOfExperience: yearOfExperience,
     associatedHealthCenterId: associatedHealthCenterId,
     hourlyRateInBirr: hourlyRateInBirr,
-    role: role,
-    id: id,
   };
+  const updatedprofile = useMutation(updateProfile, {
+    onSuccess: (updatedData) => {
+      console.log("Profile updated successfully:", updatedData);
+      toast({
+        title: "Success!",
+        description: "Profile updated successfully.",
+        action: <ToastAction altText="Continue">Continue</ToastAction>,
+      });
+      setEditMode(true);
+      dispatch(
+        updateprofile({
+          doctorid: id,
+          doctorname: fullname,
+          doctorphone: phonenumber,
+          doctoremail: email,
+          doctorgender: gender,
+          doctorlocation: location,
+          doctorspecialization: specialization,
+          doctorhourlyRateInBirr: hourlyRateInBirr,
+          doctoryearOfExperience: yearOfExperience,
+          doctorlocation: location,
+          doctorlicensePath: licensePath,
+        })
+      );
+    },
+    onError: (error) => {
+      console.error("Error updating profile:", error);
+      console.log("id from error", id);
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "There was an error updating profile.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    },
+  });
 
   const handleSubmit = () => {
-    dispatch(assignSpecialization({ doctorspecialization: specialization }));
+    updatedprofile.mutate({
+      id,
+      fullname,
+      gender,
+      email,
+      phonenumber,
+      location,
+      specialization,
+      verified,
+      yearOfExperience,
+      associatedHealthCenterId,
+      hourlyRateInBirr,
+      // Add other fields if needed
+    });
     setEditMode(true);
-
-    // updatData.mutate(updatedData);
   };
 
   return (
@@ -278,7 +296,7 @@ export const DoctorProfile = () => {
                 <ProfileKey keyName="Verification status" />
                 {editMode ? (
                   <ProfileValue
-                    value={doctorverified ? "Verified " : "not Verified"}
+                    value={verified ? "Verified " : "not Verified"}
                   />
                 ) : (
                   <Input

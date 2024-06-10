@@ -29,7 +29,7 @@ const doctorInitialState = {
   doctordescription: null,
   doctorhourlyRateInBirr: null,
   doctoravailableMoney: null,
-  doctoryearOfExperience:null
+  doctoryearOfExperience: null
 };
 
 const authSlice = createSlice({
@@ -67,14 +67,23 @@ const doctorSlice = createSlice({
     assignProfilePicture(state, action) {
       state.doctorimageUrl = action.payload.doctorimageUrl;
     },
-    assignSpecialization(state, action) {
+
+    updateprofile(state, action) {
+      state.doctorname = action.payload.doctorname;
+      state.doctorphone = action.payload.doctorphone;
+      state.doctoremail = action.payload.doctoremail;
+      state.doctorgender = action.payload.doctorgender;
+      state.doctorlocation = action.payload.doctorlocation;
+      state.doctorlicensePath = action.payload.doctorlicensePath;
       state.doctorspecialization = action.payload.doctorspecialization;
+      state.doctorhourlyRateInBirr = action.payload.doctorhourlyRateInBirr;
+      state.doctoryearOfExperience = action.payload.doctoryearOfExperience;
     },
   },
 });
 
 export const { login, logout, updateUserProfile } = authSlice.actions;
-export const { assignProfile, assignProfilePicture, assignSpecialization } = doctorSlice.actions;
+export const { assignProfile, assignProfilePicture, updateprofile } = doctorSlice.actions;
 
 export const authReducer = authSlice.reducer;
 export const doctorReducer = doctorSlice.reducer;
