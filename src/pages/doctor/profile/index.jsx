@@ -15,14 +15,13 @@ import { Mutation, useMutation } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 import { useSelector } from "react-redux";
+// import {updateProfile, updateProfile} from "@/lib/auth/updatedoctorprofile";
 
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const [licenseFile, setLicenseFile] = useState(null);
-  const [associatedHealthCenterId, setAssociatedHealthCenterId] = useState(
-    "660300b921588e14d58d04db"
-  );
+  const [associatedHealthCenterId, setAssociatedHealthCenterId] = useState("");
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
   const [gender, setGender] = useState("");
@@ -39,6 +38,14 @@ export const DoctorProfile = () => {
   const userData = useSelector((state) => state.auth.user);
   console.log("name from state", userData.fullname);
 
+
+  // const updateProfile = useMutation(updateProfile, {
+  //   onSuccess: (data) => {
+  //     console.log("data from mutation", data);
+  //   },
+
+  // });
+
   useEffect(() => {
     if (userData) {
       setFullname(userData.fullname);
@@ -52,6 +59,9 @@ export const DoctorProfile = () => {
       setId(userData.id);
     }
   }, [userData]);
+
+  console.log("fullname state", fullname);
+  console.log("year of experience", yearOfExperience);
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
@@ -84,6 +94,7 @@ export const DoctorProfile = () => {
   };
 
   const handleSubmit = () => {
+    setEditMode(true);
     // updatData.mutate(updatedData);
   };
 
@@ -238,7 +249,11 @@ export const DoctorProfile = () => {
                 {editMode ? (
                   <ProfileValue value={userData.yearOfExperience} />
                 ) : (
-                  <Input />
+                  <Input
+                    onChange={handleInputChange(setYearOfExperience)}
+                    value={yearOfExperience}
+                    placeholder="change year of experience"
+                  />
                 )}
               </div>
             </div>
