@@ -1,64 +1,103 @@
 import React, { useState } from "react";
-
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import userIcon from "@/public/icons/user.svg";
 import lockIcon from "@/public/icons/lock.svg";
-
-import axios from "axios";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
+import login from "@/lib/auth/login";
+import { useDispatch } from "react-redux";
+import { login as loginAction } from "@/redux/authSlice";
+import NavBar from "@/components/landingpage/navBar";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
+import {assignProfile as assignProfileAction} from "@/redux/authSlice";
 
 const initialFormData = { email: "", password: "" };
 
 const Login = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { toast } = useToast();
 
-  const loginMutation = useMutation((formData) =>
-    axios.post("http://localhost:5072/api/auth/login", formData)
-  );
+  const loginMutation = useMutation(login, {
+    onSuccess: (data) => {
+      const { token, data: userData } = data;
+      console.log("user data:", userData);
+      dispatch(loginAction({ user: userData, role: userData.role }));
+      console.log("name", userData.fullname);
+
+      switch (userData.role) {
+        case "HealthCenterAdmin":
+          navigate("/healthcenter/dashboard");
+          break;
+        case "PharmacyAdmin":
+          navigate("/pharmacy/dashboard");
+          break;
+        case "LaboratoryAdmin":
+          navigate("/laboratory/dashboard");
+          break;
+        case "Reception":
+          navigate("/reception/dashboard");
+          break;
+        case "Doctor":
+          dispatch(
+            assignProfileAction({
+              email: userData.email,
+              id: userData.id,
+              fullname: userData.fullname,
+              phonenumber: userData.phonenumber,
+              gender: userData.gender,
+            })
+          );
+          navigate("/doctor/dashboard");
+          break;
+        case "Patient":
+          navigate("/patient/dashboard");
+          break;
+        default:
+          navigate("/");
+          break;
+      }
+      toast({
+        title: "Success!",
+        description: "You have logged in successfully.",
+        action: <ToastAction altText="Continue">Continue</ToastAction>,
+      });
+    },
+    onError: (error) => {
+      if (error.response && error.response.status === 401) {
+        console.error("Login failed:", error);
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with login credential.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      } else if (error.isAxiosError && !error.response) {
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "Please Check your internet connection.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      }
+    },
+  });
 
   const handleFormInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // const handleFormSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log(formData);// function call for login post request goes here
-  // }
-
-  const handleFormSubmit = async (e) => {
-    console.log(formData);
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    try {
-      const res = await loginMutation.mutateAsync(formData); // Pass formData directly
-      const { token, data } = res.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("userId", data.id);
-      console.log("Token:", token);
-      console.log("User ID:", data.id);
-      console.log("Response:", res);
-
-      // Retrieve all keys from localStorage
-      const keys = Object.keys(localStorage);
-
-      // Loop through each key and log its corresponding value
-      keys.forEach((key) => {
-        const value = localStorage.getItem(key);
-        console.log(`key==>${key}: val==>${value}`);
-      });
-
-      // Login successful, redirect or perform other actions
-    } catch (error) {
-      // Handle login error
-      console.error("Login failed:", error);
-    }
+    loginMutation.mutate(formData);
   };
 
   return (
     <>
+      <NavBar />
       <main className="flex items-center justify-center h-[100vh]">
         <section className="flex flex-col items-center justify-center gap-20 w-[50%] md:bg-shadow md:gap-14 md:p-10 md:rounded-lg lg:w-[40%]">
           <div className="flex flex-col items-center">
@@ -69,14 +108,13 @@ const Login = () => {
           <div className="text-primary font-primary md:w-full ">
             <form
               onSubmit={handleFormSubmit}
-              onChange={handleFormInputChange}
               className="flex flex-col gap-10 justify-center items-center w-full md:gap-8"
             >
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="username" className="text-bold">
                   Email
                 </Label>
-                <div className="flex items-center border-primary border border-x-0 border-t-0  rounded-none">
+                <div className="flex items-center border-primary border border-x-0 border-t-0 rounded-none">
                   <img src={userIcon} className="w-4" alt="user icon" />
                   <Input
                     type="text"
@@ -85,6 +123,7 @@ const Login = () => {
                     className="border-primary border-none focus-visible:ring-0 ml-2"
                     name="email"
                     required
+                    onChange={handleFormInputChange}
                   />
                 </div>
               </div>
@@ -93,7 +132,7 @@ const Login = () => {
                 <Label htmlFor="password" className="text-bold">
                   Password
                 </Label>
-                <div className="flex items-center border-primary border border-x-0 border-t-0  rounded-none">
+                <div className="flex items-center border-primary border border-x-0 border-t-0 rounded-none">
                   <img src={lockIcon} className="w-4" alt="user icon" />
                   <Input
                     type="password"
@@ -103,6 +142,7 @@ const Login = () => {
                     name="password"
                     required
                     minLength={6}
+                    onChange={handleFormInputChange}
                   />
                 </div>
               </div>
@@ -111,17 +151,15 @@ const Login = () => {
                 <Button
                   type="submit"
                   className="bg-primary w-52 rounded-2xl text-white h-10 bg-[#1F555D]"
-                  disabled={isLoading}
+                  disabled={loginMutation.isLoading}
                 >
-                  {isLoading ? "Logging in..." : "Login"}
+                  {loginMutation.isLoading ? "Logging in..." : "Login"}
                 </Button>
               </div>
             </form>
 
-            <h1 className=" font-primary text-xs mt-4 text-center">
-              {" "}
-              Don&apos;t have an account?
-              <a href="/"> Register</a>
+            <h1 className="font-primary text-md mt-4 text-center">
+              Don&apos;t have an account? <a href="/register"> Sign Up</a>
             </h1>
           </div>
         </section>

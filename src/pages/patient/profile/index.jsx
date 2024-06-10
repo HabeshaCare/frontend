@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useQuery } from "react-query";
 import edit from "@/public/icons/edit.svg";
-import back from "@/public/icons/back.svg";
 import PatientPicture from "@/components/profile/patientPicture";
 import { CompleteProfile } from "@/components/profile/completeProfile";
 import { CompleteProfile2 } from "@/components/profile/completeProfile";
@@ -10,34 +8,20 @@ import ProfileKey from "@/components/profile/profileInfo";
 import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import GetUserData from "@/lib/profile/getUserData";
+import { useSelector } from "react-redux";
 
 export const PatientProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
 
-  const { data, isLoading, isError } = useQuery("data", GetUserData);
-
-  if (isLoading) {
-    console.log("Loading...");
-    // You can render a loading indicator here
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    console.log("Error fetching data");
-    // You can render an error message here
-    return <div>Error fetching data</div>;
-  }
+  const userData = useSelector((state) => state.auth.user);
+  console.log("name", userData.fullname);
 
   return (
     <>
       <div className="md:flex">
         <div className="md:w-2/3">
           <div className="flex my-4">
-            <div className="ml-2 mt-2 cursor-pointer">
-              <img src={back} alt="back icon" />
-            </div>
             <div className="mt-1 font-semibold text-2xl font-serif flex justify-center w-full">
               <p>Personal Profile</p>
             </div>
@@ -58,36 +42,32 @@ export const PatientProfile = () => {
               General Info
             </div>
             <div className={`${editMode && "md:flex justify-around"}`}>
-              <div className="ml-2">
+              <div>
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
-                  <ProfileValue value={data.data.fullname} />
+                  <ProfileValue value={userData.fullname} />
                 ) : (
                   <Input />
                 )}
               </div>
 
-              <div className="ml-2">
+              <div>
                 <ProfileKey keyName="Phone Number" />
                 {editMode ? (
-                  <ProfileValue value={data.data.phonenumber} />
+                  <ProfileValue value={userData.phonenumber} />
                 ) : (
                   <Input />
                 )}
               </div>
 
-              <div className={`${editMode && "md:ml-12"} ml-2`}>
+              <div className={`${editMode && "md:ml-12"}`}>
                 <ProfileKey keyName="Email" />
-                {editMode ? (
-                  <ProfileValue value={data.data.email} />
-                ) : (
-                  <Input />
-                )}
+                {editMode ? <ProfileValue value={userData.email} /> : <Input />}
               </div>
             </div>
-            <div className="ml-2 md:pl-32">
+            <div className="md:pl-6">
               <ProfileKey keyName="Gender" />
-              {editMode ? <ProfileValue value={data.data.gender} /> : <Input />}
+              {editMode ? <ProfileValue value={userData.gender} /> : <Input />}
             </div>
 
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4">
@@ -133,7 +113,7 @@ export const PatientProfile = () => {
             <div className={`md:ml-8 ${editMode ? "ml-2" : "md:ml-2"} `}>
               <ProfileKey keyName="National ID" />
               {editMode ? (
-                <ProfileValue value={data.data.nationalId} />
+                <ProfileValue value={userData.nationalId} />
               ) : (
                 <Input />
               )}
@@ -152,7 +132,7 @@ export const PatientProfile = () => {
         </div>
 
         <div className="w-1/3 flex justify-center">
-          {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
+          {isMdScreen ? <CompleteProfile2 progress={70} /> : ""}
         </div>
       </div>
     </>

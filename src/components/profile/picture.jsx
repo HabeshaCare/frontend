@@ -11,13 +11,13 @@ const Picture = ({image}) => {
 
   return (
     <>
-      <div className="border border-solid w-full relative bg-none">
+      <div className="border border-solid w-full relative bg-[#1F555D]">
         <label
           htmlFor="profile-picture"
           className="absolute top-0 end-0 mr-2 cursor-pointer"
         >
           <img src={edit} alt="edit SVG" className="text-white" />
-          <div className="text-sm  text-black ">Edit Profile Picture</div>
+          <div className="text-sm  text-white">Edit Profile Picture</div>
           <input
             type="file"
             id="profile-picture"
