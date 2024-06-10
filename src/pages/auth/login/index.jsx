@@ -12,6 +12,7 @@ import { login as loginAction } from "@/redux/authSlice";
 import NavBar from "@/components/landingpage/navBar";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import {assignProfile as assignProfileAction} from "@/redux/authSlice";
 
 const initialFormData = { email: "", password: "" };
 
@@ -24,17 +25,7 @@ const Login = () => {
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       const { token, data: userData } = data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("userId", userData.id);
-      localStorage.setItem("role", userData.role);
-      localStorage.setItem("email", userData.email);
-      localStorage.setItem("name", userData.name);
-      localStorage.setItem("phone", userData.phone);
-      localStorage.setItem("address", userData.address);
-      localStorage.setItem("userdata", userData);
-
       console.log("user data:", userData);
-
       dispatch(loginAction({ user: userData, role: userData.role }));
       console.log("name", userData.fullname);
 
@@ -52,6 +43,15 @@ const Login = () => {
           navigate("/reception/dashboard");
           break;
         case "Doctor":
+          dispatch(
+            assignProfileAction({
+              email: userData.email,
+              id: userData.id,
+              fullname: userData.fullname,
+              phonenumber: userData.phonenumber,
+              gender: userData.gender,
+            })
+          );
           navigate("/doctor/dashboard");
           break;
         case "Patient":

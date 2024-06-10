@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import edit from "@/public/icons/edit.svg";
-import back from "@/public/icons/back.svg";
 import { CompleteProfile } from "@/components/profile/completeProfile";
 import { CompleteProfile2 } from "@/components/profile/completeProfile";
 import ProfileKey from "@/components/profile/profileInfo";
@@ -14,32 +13,78 @@ import axios from "axios";
 import { Mutation, useMutation } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateprofile } from "@/redux/authSlice";
+import { updateProfile } from "@/lib/auth/updatedoctorprofile";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import { set } from "date-fns";
+
+// import {updateProfile, updateProfile} from "@/lib/auth/updatedoctorprofile";
 
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const [licenseFile, setLicenseFile] = useState(null);
-  const [associatedHealthCenterId, setAssociatedHealthCenterId] = useState("660300b921588e14d58d04db");
+  const [associatedHealthCenterId, setAssociatedHealthCenterId] = useState("");
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
-  const [gender, setGender] = useState("Male");
-  const [id, setId] = useState("6602e5b2a861c9f01f3b0abf");
-  const [imageUrl, setImageUrl] = useState(null);
+  const [gender, setGender] = useState("");
+  const [id, setId] = useState("");
+  const [imageUrl, setImageUrl] = useState(doctor);
   const [licensePath, setLicensePath] = useState(null);
   const [location, setLocation] = useState(null);
-  const [phonenumber, setPhonenumber] = useState("0912231223");
+  const [phonenumber, setPhonenumber] = useState("");
   const [role, setRole] = useState("Doctor");
-  const [specialization, setSpecialization] = useState("Medical");
+  const [specialization, setSpecialization] = useState("");
   const [verified, setVerified] = useState(true);
   const [yearOfExperience, setYearOfExperience] = useState(0);
+  const [hourlyRateInBirr, setHourlyRateInBirr] = useState(0);
+  const dispatch = useDispatch();
+  const { toast } = useToast();
 
+  const doctorData = useSelector((state) => state.doctor);
+
+  useEffect(() => {
+    if (doctorData) {
+      const {
+        doctorname,
+        doctorphone,
+        doctoremail,
+        doctorgender,
+        doctorlocation,
+        doctorspecialization,
+        doctoryearOfExperience,
+        doctorid,
+        doctorassociatedHealthCenterId,
+        doctorhourlyRateInBirr,
+        doctorimageUrl,
+        doctorverified,
+      } = doctorData;
+
+      setFullname(doctorname);
+      setPhonenumber(doctorphone);
+      setEmail(doctoremail);
+      setGender(doctorgender);
+      setLocation(doctorlocation);
+      setSpecialization(doctorspecialization);
+      setYearOfExperience(doctoryearOfExperience);
+      setVerified(doctorverified);
+      setId(doctorid);
+      setAssociatedHealthCenterId(doctorassociatedHealthCenterId);
+      setHourlyRateInBirr(doctorhourlyRateInBirr);
+      setImageUrl(doctorimageUrl || doctor);
+    }
+  }, [doctorData]);
+
+  console.log("doctor iddd", id);
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
       setStateFunction(event.target.value);
     };
   };
-
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -50,50 +95,7 @@ export const DoctorProfile = () => {
   const handleRemoveUpload = () => {
     setLicenseFile(null);
   };
-  const GetDoctorData = async () => {
-    const token = localStorage.getItem('token');
-    const doctor_id = localStorage.getItem('userId');
-    console.log("Token=" + token, "doctorId=" + doctor_id);
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
-    }
-    const url = "http://localhost:5072/api/doctor/" + doctor_id + "/profile";
-    const response = await axios.get(url, config);
-    return response.data;
 
-  }
-
-
-  const { data, isLoading, isError } = useQuery("doctor", GetDoctorData)
-
-  useEffect(() => {
-    setFullname(data?.data?.fullname)
-    setEmail(data?.data?.email)
-    setGender(data?.data?.gender)
-    setPhonenumber(data?.data?.phonenumber)
-    setLocation(data?.data?.location)
-    setSpecialization(data?.data?.specialization)
-    setVerified(data?.data?.verified)
-    setYearOfExperience(data?.data?.yearOfExperience)
-    setAssociatedHealthCenterId(data?.data?.associatedHealthCenterId)
-
-    console.log('Fullname:', data?.data?.fullname);
-    console.log('Email:', data?.data?.email);
-    console.log('Gender:', data?.data?.gender);
-    console.log('Phonenumber:', data?.data?.phonenumber);
-    console.log('Location:', data?.data?.location);
-    console.log('Specialization:', data?.data?.specialization);
-    console.log('Verified:', data?.data?.verified);
-    console.log('Year of Experience:', data?.data?.yearOfExperience);
-    console.log('Associated Health Center Id:', data?.data?.associatedHealthCenterId);
-
-    console.log("doctor name ", data?.data?.fullname);
-
-
-
-  }, [editMode, data])
   const updatedData = {
     fullname: fullname,
     gender: gender,
@@ -103,64 +105,77 @@ export const DoctorProfile = () => {
     specialization: specialization,
     verified: verified,
     yearOfExperience: yearOfExperience,
-    associatedHealthCenterId: associatedHealthCenterId, 
-
-    
-    
-  }
-  const token = localStorage.getItem('token');
-  const doctor_id = localStorage.getItem('userId');
-  console.log("Token=" + token, "doctorId=...." + doctor_id);
-  const config = {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }};
-
-  const url = 'http://localhost:5072/api/doctor/' + doctor_id + '/profile';
-  const updatData = useMutation((dataToSendToBackend) => axios.put(url, dataToSendToBackend,config),  {
-    onSuccess: () => {
-      // Handle successful update
-      console.log('success')
-    },
-    onError: () => {
-      // Handle error
-      console.log('error changing data')
-    }
-  })
-  const handleSubmit = () => {
-    updatData.mutate(updatedData);
+    associatedHealthCenterId: associatedHealthCenterId,
+    hourlyRateInBirr: hourlyRateInBirr,
   };
-  if (data) {
-    console.log("data");
-    console.log(data?.data?.fullname);
+  const updatedprofile = useMutation(updateProfile, {
+    onSuccess: (updatedData) => {
+      console.log("Profile updated successfully:", updatedData);
+      toast({
+        title: "Success!",
+        description: "Profile updated successfully.",
+        action: <ToastAction altText="Continue">Continue</ToastAction>,
+      });
+      setEditMode(true);
+      dispatch(
+        updateprofile({
+          doctorid: id,
+          doctorname: fullname,
+          doctorphone: phonenumber,
+          doctoremail: email,
+          doctorgender: gender,
+          doctorlocation: location,
+          doctorspecialization: specialization,
+          doctorhourlyRateInBirr: hourlyRateInBirr,
+          doctoryearOfExperience: yearOfExperience,
+          doctorlocation: location,
+          doctorlicensePath: licensePath,
+        })
+      );
+    },
+    onError: (error) => {
+      console.error("Error updating profile:", error);
+      console.log("id from error", id);
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "There was an error updating profile.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    },
+  });
 
-  }
-
-  if (isLoading) {
-    return <p>Loading...</p>
-  }
-  if (isError) {
-    return <p>Error occured </p>
-  }
-
-
-
+  const handleSubmit = () => {
+    updatedprofile.mutate({
+      id,
+      fullname,
+      gender,
+      email,
+      phonenumber,
+      location,
+      specialization,
+      verified,
+      yearOfExperience,
+      associatedHealthCenterId,
+      hourlyRateInBirr,
+      // Add other fields if needed
+    });
+    setEditMode(true);
+  };
 
   return (
     <>
       <div className="md:flex">
-        <div className="md:w-3/4 mb-8">
+        <div className="md:w-2/3 mb-8">
           <div className="flex my-4">
-            <div className="ml-2 mt-2 cursor-pointer">
-              <img src={back} alt="back icon" />
-            </div>
             <div className="mt-1 font-semibold text-2xl font-serif flex justify-center w-full">
               <p>Personal Profile</p>
             </div>
           </div>
 
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
-            <DoctorPicture image={doctor} />
+            <DoctorPicture image={imageUrl} />
+            {/* <DoctorPicture /> */}
+            {console.log("image url", doctor)}
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
@@ -178,83 +193,141 @@ export const DoctorProfile = () => {
             </div>
 
             <div className={`${editMode && "md:flex justify-around md:mb-4"}`}>
-              <div className="ml-2">
+              <div className="">
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
-                  <ProfileValue value={data.data.fullname} />
+                  <ProfileValue value={fullname} />
                 ) : (
-                  <Input onChange={handleInputChange(setFullname)} placeholder="Enter your full name" value={fullname} />
-
+                  <Input
+                    onChange={handleInputChange(setFullname)}
+                    placeholder="Enter your full name"
+                    value={fullname}
+                  />
                 )}
               </div>
 
               <div className="ml-2">
-                <ProfileKey keyName="Phone Number"  />
-                {editMode ? <ProfileValue value={data.data.phonenumber}/> : <Input onChange={handleInputChange(setPhonenumber)} value={phonenumber} placeholder="change phone number" />}
+                <ProfileKey keyName="Phone Number" />
+                {editMode ? (
+                  <ProfileValue value={phonenumber} />
+                ) : (
+                  <Input
+                    onChange={handleInputChange(setPhonenumber)}
+                    value={phonenumber}
+                    placeholder="change phone number"
+                  />
+                )}
               </div>
 
               <div className={`${editMode && "md:ml-12"} ml-2`}>
                 <ProfileKey keyName="Email" />
                 {editMode ? (
-                  <ProfileValue value={data.data.email} />
+                  <ProfileValue value={email} />
                 ) : (
-                  <Input onChange={handleInputChange(setEmail)} value={email} placeholder="change email" />
+                  <Input
+                    onChange={handleInputChange(setEmail)}
+                    value={email}
+                    placeholder="change email"
+                  />
                 )}
               </div>
             </div>
 
             <div className={`${editMode && "md:flex justify-start"}`}>
-              <div className="ml-2 md:ml-16 md:pl-1">
+              <div className="md:ml-8 md:pl-1">
                 <ProfileKey keyName="Gender" />
-                {editMode ? <ProfileValue value={data.data.gender} /> : <Input onChange={handleInputChange(setGender)} value={gender} />}
+                {editMode ? (
+                  <ProfileValue value={gender} />
+                ) : (
+                  <Input
+                    onChange={handleInputChange(setGender)}
+                    value={gender}
+                  />
+                )}
               </div>
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               specific Info
             </div>
 
-            <div
-              className={`${editMode && "md:flex justify-between md:mx-16"}`}
-            >
-              <div className="ml-2">
+            <div className={`${editMode && "md:flex justify-between mx-8"}`}>
+              <div className="">
                 <ProfileKey keyName="Specialization" />
                 {editMode ? (
-                  <ProfileValue value={data.data.specialization} />
+                  <ProfileValue value={specialization} />
                 ) : (
-                  <Input onChange={handleInputChange(setSpecialization)} value={specialization} placeholder="edit your specializaiton" />
+                  <Input
+                    onChange={handleInputChange(setSpecialization)}
+                    value={specialization}
+                    placeholder="edit your specializaiton"
+                  />
                 )}
               </div>
 
               <div className="ml-2">
                 <ProfileKey keyName="Hourly Price" />
-                {editMode ? <ProfileValue value="100$/hr" /> : <Input />}
+                {editMode ? (
+                  <ProfileValue value={hourlyRateInBirr} />
+                ) : (
+                  <Input
+                    value={hourlyRateInBirr}
+                    onChange={handleInputChange(setHourlyRateInBirr)}
+                  />
+                )}
               </div>
 
               <div className="">
                 <ProfileKey keyName="Location" />
-                {editMode ? <ProfileValue value={location}/> : <Input onChange={handleInputChange(setLocation)} value={location} placeholder="set location" />}
+                {editMode ? (
+                  <ProfileValue value={location} />
+                ) : (
+                  <Input
+                    onChange={handleInputChange(setLocation)}
+                    value={location}
+                    placeholder="set location"
+                  />
+                )}
               </div>
             </div>
             <div
-              className={`${
-                editMode && "md:flex justify-between md:mx-16 md:px-2"
-              } mt-8`}
+              className={`${editMode && "ml-2 md:flex justify-around"} mt-8`}
             >
               <div>
                 <ProfileKey keyName="Verification status" />
-                {editMode ? <ProfileValue value={data.data.verified ? "Verified " : "not Verified"} /> : <Input onChange={handleInputChange(setVerified)} value={verified} />}
+                {editMode ? (
+                  <ProfileValue
+                    value={verified ? "Verified " : "not Verified"}
+                  />
+                ) : (
+                  <Input
+                    onChange={handleInputChange(setVerified)}
+                    value={verified}
+                  />
+                )}
               </div>
               <div>
                 <ProfileKey keyName="Working Health center" />
                 {editMode ? (
                   <ProfileValue value="Yekatit 12 General Hospital" />
                 ) : (
-                  <Input onChange={handleInputChange(setAssociatedHealthCenterId)} value={associatedHealthCenterId} placeholder="change hospital" />
+                  <Input
+                    onChange={handleInputChange(setAssociatedHealthCenterId)}
+                    value={associatedHealthCenterId}
+                    placeholder="change hospital"
+                  />
                 )}
               </div>
               <div>
                 <ProfileKey keyName="Year of experience" />
-                {editMode ? <ProfileValue value={data.data.yearOfExperience} /> : <Input />}
+                {editMode ? (
+                  <ProfileValue value={yearOfExperience} />
+                ) : (
+                  <Input
+                    onChange={handleInputChange(setYearOfExperience)}
+                    value={yearOfExperience}
+                    placeholder="change year of experience"
+                  />
+                )}
               </div>
             </div>
 
@@ -307,7 +380,10 @@ export const DoctorProfile = () => {
               ""
             ) : (
               <div className="flex justify-center">
-                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28 " onClick={handleSubmit} >
+                <Button
+                  className="my-6 bg-[#1F555D] text-white h-10 w-28 "
+                  onClick={handleSubmit}
+                >
                   Save
                 </Button>
               </div>
@@ -315,7 +391,7 @@ export const DoctorProfile = () => {
           </div>
         </div>
 
-        <div className="w-1/4 flex justify-center">
+        <div className="w-1/3 flex justify-center">
           {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
         </div>
       </div>
