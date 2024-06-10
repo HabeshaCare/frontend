@@ -42,14 +42,14 @@ const CardComponent = () => {
             type="text"
             value={newCardDescription}
             onChange={handleInputChange}
-            placeholder="Enter description"
+            placeholder="Enter Service . . ."
             className="border p-2 rounded-lg w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
             onClick={addCard}
             className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg w-full transition-colors"
           >
-            Add Card
+            Add Service
           </button>
         </div>
       )}
