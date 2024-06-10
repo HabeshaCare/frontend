@@ -36,18 +36,13 @@ function VideoChat() {
     const didIOffer = useRef(false);
 
     const socket = useRef(
-<<<<<<< Updated upstream
-        io.connect("http://localhost:8181", {
-            // io.connect("https://192.168.43.61:8181", {
-=======
-//        io.connect("http://192.168.43.61:8181", {
-            io.connect("https://socket-server-jnfc.onrender.com", {
->>>>>>> Stashed changes
+        //        io.connect("http://192.168.43.61:8181", {
+        io.connect("https://socket-server-jnfc.onrender.com", {
             query: {
                 token: token,
             },
             autoConnect: false,
-            transports : ['websocket'],
+            transports: ['websocket'],
         })
     );
 
