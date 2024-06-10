@@ -25,7 +25,7 @@ import Appointement from "@/pages/doctor/appointments";
 import Patient from "./pages/doctor/patients";
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/homepage';
-import VideoChat from './pages/video-call';
+import VideoChat from './pages/video-call/';
 const queryClient = new QueryClient();
 
 function App() {
