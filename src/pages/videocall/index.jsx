@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import FloatButtons from "@/pages/video-call/FloatButtons";
+import FloatButtons from "@/pages/videocall/FloatButtons";
 import { useToast } from "@/components/ui/use-toast";
 
 
