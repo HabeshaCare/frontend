@@ -6,7 +6,7 @@ import PatientProfile from "./pages/patient/profile/";
 import PatientDashboard from '@/pages/patient/dashboard';
 import DoctorsDashboard from '@/pages/doctor/dashboard';
 import LaboratoryDashboard from '@/pages/laboratory/dashboard';
-import LaboratoryProfile from "./pages/laboratory/profile";
+import LaboratoryProfile from "./pages/laboratory/profile/index";
 import HealthCenterDashboard from '@/pages/healthcenter/dashboard';
 import HealthCenterProfile from "./pages/healthcenter/profile";
 import PharmacyDashboard from '@/pages/pharmacy/dashboard';

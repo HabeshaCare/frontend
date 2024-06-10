@@ -18,17 +18,17 @@ const CardComponent = () => {
   };
 
   return (
-    <div className="p-6 max-w-lg mx-auto bg-white rounded-xl shadow-lg space-y-4 relative">
-      <h2 className="text-2xl font-bold mb-4 text-center">Services</h2>
+    <div className="p-6 max-w-lg mx-auto border bg-white rounded-xl shadow-lg space-y-4 relative">
+      <h2 className="text-2xl font-bold mb-4 ">Services</h2>
       <div className="space-y-4">
         {cards.map(card => (
           <div
             key={card.id}
-            className="bg-gray-100 shadow-md p-4 rounded-lg flex justify-between items-center transform transition-all hover:scale-105"
+            className="bg-gray border shadow-md p-4 rounded-lg flex justify-between items-center transform transition-all hover:scale-105"
           >
             <span className="text-lg font-semibold">{card.description}</span>
             <button
-              className="opacity:0 text-red-400 opacity-75 hover:bg-red-600 hover:text-zinc-50 hover:color-white   hover:opacity-100 text-white py-1 px-3 rounded-lg transition-colors"
+              className="opacity:0 text-red-400 opacity-75 hover:bg-red-600 hover:text-zinc-50 hover:color-white   hover:opacity-100 py-1 px-3 rounded-lg transition-colors"
               onClick={() => setCards(cards.filter(c => c.id !== card.id))}
             >
               Delete
