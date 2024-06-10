@@ -323,7 +323,7 @@ function VideoChat() {
                     </div>
             </section>
             <>
-                <FloatButtons />
+                <FloatButtons isVideoEnabled={isVideoEnabled} isAudioEnabled={isAudioEnabled} toggleVideo={toggleVideo} toggleAudio={toggleAudio} leaveCall={leaveCall} />
             </>
 
         </main>
