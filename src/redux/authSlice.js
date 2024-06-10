@@ -1,6 +1,7 @@
 // authSlice.js
 
 import { createSlice } from '@reduxjs/toolkit';
+import doctor from "@/public/img/doctor.png";
 
 const initialState = {
   isAuthenticated: false,
@@ -28,6 +29,7 @@ const doctorInitialState = {
   doctordescription: null,
   doctorhourlyRateInBirr: null,
   doctoravailableMoney: null,
+  doctoryearOfExperience:null
 };
 
 const authSlice = createSlice({
@@ -62,11 +64,17 @@ const doctorSlice = createSlice({
       state.doctorphone = action.payload.phonenumber;
       state.doctorgender = action.payload.gender;
     },
+    assignProfilePicture(state, action) {
+      state.doctorimageUrl = action.payload.doctorimageUrl;
+    },
+    assignSpecialization(state, action) {
+      state.doctorspecialization = action.payload.doctorspecialization;
+    },
   },
 });
 
 export const { login, logout, updateUserProfile } = authSlice.actions;
-export const { assignProfile } = doctorSlice.actions;
+export const { assignProfile, assignProfilePicture, assignSpecialization } = doctorSlice.actions;
 
 export const authReducer = authSlice.reducer;
 export const doctorReducer = doctorSlice.reducer;

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import edit from "@/public/icons/edit.svg";
-import back from "@/public/icons/back.svg";
 import { CompleteProfile } from "@/components/profile/completeProfile";
 import { CompleteProfile2 } from "@/components/profile/completeProfile";
 import ProfileKey from "@/components/profile/profileInfo";
@@ -15,6 +14,9 @@ import { Mutation, useMutation } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {assignSpecialization } from "@/redux/authSlice";
+
 // import {updateProfile, updateProfile} from "@/lib/auth/updatedoctorprofile";
 
 export const DoctorProfile = () => {
@@ -26,7 +28,7 @@ export const DoctorProfile = () => {
   const [fullname, setFullname] = useState("");
   const [gender, setGender] = useState("");
   const [id, setId] = useState("");
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState(doctor);
   const [licensePath, setLicensePath] = useState(null);
   const [location, setLocation] = useState(null);
   const [phonenumber, setPhonenumber] = useState("");
@@ -34,10 +36,34 @@ export const DoctorProfile = () => {
   const [specialization, setSpecialization] = useState("");
   const [verified, setVerified] = useState(true);
   const [yearOfExperience, setYearOfExperience] = useState(0);
+  const [hourlyRateInBirr, setHourlyRateInBirr] = useState(0);
+  const dispatch = useDispatch();
 
   const userData = useSelector((state) => state.auth.user);
-  console.log("name from state", userData.fullname);
+  const doctorEmail = useSelector((state) => state.doctor.doctoremail);
+  const doctorfullname = useSelector((state) => state.doctor.doctorname);
+  const doctorphonenumber = useSelector((state) => state.doctor.doctorphone);
+  const doctorgender = useSelector((state) => state.doctor.doctorgender);
+  const doctorlocation = useSelector((state) => state.doctor.doctorlocation);
+  const doctorspecialization = useSelector(
+    (state) => state.doctor.doctorspecialization
+  );
+  const doctorverified = useSelector((state) => state.doctor.doctorverified);
+  const doctoryearOfExperience = useSelector(
+    (state) => state.doctor.doctoryearOfExperience
+  );
+  const doctorid = useSelector((state) => state.doctor.doctorid);
+  const doctorassociatedHealthCenterId = useSelector(
+    (state) => state.doctor.doctorassociatedHealthCenterId
+  );
+  const doctorhourlyRateInBirr = useSelector(
+    (state) => state.doctor.doctorhourlyRateInBirr
+  );
+  const doctorimageUrl = useSelector((state) => state.doctor.doctorimageUrl);
 
+  console.log("email from docotr slice", doctorEmail);
+
+  console.log("name from state", userData.fullname);
 
   // const updateProfile = useMutation(updateProfile, {
   //   onSuccess: (data) => {
@@ -48,17 +74,34 @@ export const DoctorProfile = () => {
 
   useEffect(() => {
     if (userData) {
-      setFullname(userData.fullname);
-      setPhonenumber(userData.phonenumber);
-      setEmail(userData.email);
-      setGender(userData.gender);
-      setLocation(userData.location);
-      setSpecialization(userData.specialization);
-      setVerified(userData.verified);
-      setYearOfExperience(userData.yearOfExperience);
-      setId(userData.id);
+      setFullname(doctorfullname);
+      setPhonenumber(doctorphonenumber);
+      setEmail(doctorEmail);
+      setGender(doctorgender);
+      setLocation(doctorlocation);
+      setSpecialization(doctorspecialization);
+      setVerified(doctorverified);
+      setYearOfExperience(doctoryearOfExperience);
+      setId(doctorid);
+      setAssociatedHealthCenterId(doctorassociatedHealthCenterId);
+      setHourlyRateInBirr(doctorhourlyRateInBirr);
+      // setImageUrl(doctorimageUrl || doctor); // Use persisted image or default if not set
     }
-  }, [userData]);
+  }, [
+    userData,
+    doctorfullname,
+    doctorphonenumber,
+    doctorEmail,
+    doctorgender,
+    doctorlocation,
+    doctorspecialization,
+    doctorverified,
+    doctoryearOfExperience,
+    doctorid,
+    doctorassociatedHealthCenterId,
+    doctorhourlyRateInBirr,
+    doctorimageUrl,
+  ]);
 
   console.log("fullname state", fullname);
   console.log("year of experience", yearOfExperience);
@@ -89,12 +132,15 @@ export const DoctorProfile = () => {
     verified: verified,
     yearOfExperience: yearOfExperience,
     associatedHealthCenterId: associatedHealthCenterId,
+    hourlyRateInBirr: hourlyRateInBirr,
     role: role,
     id: id,
   };
 
   const handleSubmit = () => {
+    dispatch(assignSpecialization({ doctorspecialization: specialization }));
     setEditMode(true);
+
     // updatData.mutate(updatedData);
   };
 
@@ -109,7 +155,9 @@ export const DoctorProfile = () => {
           </div>
 
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
-            <DoctorPicture image={doctor} />
+            <DoctorPicture image={imageUrl} />
+            {/* <DoctorPicture /> */}
+            {console.log("image url", doctor)}
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
@@ -130,7 +178,7 @@ export const DoctorProfile = () => {
               <div className="">
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
-                  <ProfileValue value={userData.fullname} />
+                  <ProfileValue value={fullname} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setFullname)}
@@ -143,7 +191,7 @@ export const DoctorProfile = () => {
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
                 {editMode ? (
-                  <ProfileValue value={userData.phonenumber} />
+                  <ProfileValue value={phonenumber} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setPhonenumber)}
@@ -156,7 +204,7 @@ export const DoctorProfile = () => {
               <div className={`${editMode && "md:ml-12"} ml-2`}>
                 <ProfileKey keyName="Email" />
                 {editMode ? (
-                  <ProfileValue value={userData.email} />
+                  <ProfileValue value={email} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setEmail)}
@@ -171,7 +219,7 @@ export const DoctorProfile = () => {
               <div className="md:ml-8 md:pl-1">
                 <ProfileKey keyName="Gender" />
                 {editMode ? (
-                  <ProfileValue value={userData.gender} />
+                  <ProfileValue value={gender} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setGender)}
@@ -188,7 +236,7 @@ export const DoctorProfile = () => {
               <div className="">
                 <ProfileKey keyName="Specialization" />
                 {editMode ? (
-                  <ProfileValue value={userData.specialization} />
+                  <ProfileValue value={specialization} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setSpecialization)}
@@ -200,7 +248,14 @@ export const DoctorProfile = () => {
 
               <div className="ml-2">
                 <ProfileKey keyName="Hourly Price" />
-                {editMode ? <ProfileValue value="100$/hr" /> : <Input />}
+                {editMode ? (
+                  <ProfileValue value={hourlyRateInBirr} />
+                ) : (
+                  <Input
+                    value={hourlyRateInBirr}
+                    onChange={handleInputChange(setHourlyRateInBirr)}
+                  />
+                )}
               </div>
 
               <div className="">
@@ -223,7 +278,7 @@ export const DoctorProfile = () => {
                 <ProfileKey keyName="Verification status" />
                 {editMode ? (
                   <ProfileValue
-                    value={userData.verified ? "Verified " : "not Verified"}
+                    value={doctorverified ? "Verified " : "not Verified"}
                   />
                 ) : (
                   <Input
@@ -247,7 +302,7 @@ export const DoctorProfile = () => {
               <div>
                 <ProfileKey keyName="Year of experience" />
                 {editMode ? (
-                  <ProfileValue value={userData.yearOfExperience} />
+                  <ProfileValue value={yearOfExperience} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setYearOfExperience)}
