@@ -50,7 +50,7 @@ const LaboratoryProfile = () => {
               <div>
                 <img src={edit} alt="edit SVG" className="h-4 w-4 mt-1" />
               </div>
-              <div className="text-[#1F555D] cursor-pointer">Edit</div>
+              <div className="text- cursor-pointer">Edit</div>
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">Laboratory Info</div>
 

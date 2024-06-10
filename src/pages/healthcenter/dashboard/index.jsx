@@ -1,16 +1,16 @@
 import NavBar from "./navBar";
-import DoctorCard from "../DoctorsCard/doctorsCard"
-const ReceptionDashboard = () => {
+import DoctorList from "../DoctorsCard/doctorList"
+const HealthCenterDashboard = () => {
     return (
       <>
       <NavBar/>
       <div className="h-28"></div>
-    <div> <DoctorCard/></div>
+    <div className="m-10"> <DoctorList/></div>
      
       </>
     );
   };
 
 
-  export default ReceptionDashboard
+  export default HealthCenterDashboard
   
