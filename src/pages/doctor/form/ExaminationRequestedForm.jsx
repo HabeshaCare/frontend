@@ -100,7 +100,7 @@ const ExaminationRequestedForm = () => {
         <div className="mb-4">
           <label className="block font-semibold mb-1">Specific tests:</label>
           <div className="ml-6 grid grid-cols-3 gap-2">
-            {['G2000', 'G2000-X', 'GT9', 'GTI', 'NEO', 'ES', 'HB3', 'DFS', 'LFT', 'RFT', 'TFT', 'MAC', 'LGL', 'LIP', 'CEA', 'CA 1', 'CA 5', 'CA 9', 'PSA', 'AFP', 'Glucose', 'HIV 1 & 2', 'HbA1c', 'HBsAg', 'H. pylori', 'Uric Acid', 'Free T4', 'FBE (incl. ESR)', 'FBC', 'Hb', 'TWDC', 'Platelets', 'ABO & Rh (D)', 'Malaria parasites', 'Urine FEME', 'RPR (VDRL)','AFB (ZN) Smear Only', 'AFB Smear & Culture', 'Histology', 'Non-Gynae/FNASite','Microscopy/Culture/Sensitivity'].map((test) => (
+            {['G2000', 'G2000-X', 'GT9', 'GTI', 'NEO', 'ES', 'HB3', 'DFS', 'LFT', 'RFT', 'TFT', 'MAC', 'LGL', 'LIP', 'CEA', 'CA 1', 'CA 5', 'CA 9', 'PSA', 'AFP', 'Glucose', 'HIV 1 & 2', 'HbA1c', 'HBsAg', 'H. pylori', 'Uric Acid', 'Free T4', 'FBE (incl. ESR)', 'FBC', 'Hb', 'TWDC', 'Platelets', 'ABO & Rh (D)', 'Malaria parasites', 'Urine FEME', 'RPR (VDRL)', 'AFB (ZN) Smear Only', 'AFB Smear & Culture', 'Histology', 'Non-Gynae/FNASite', 'Microscopy/Culture/Sensitivity'].map((test) => (
               <label key={test} className="inline-flex items-center">
                 <input
                   type="checkbox"
