@@ -1,11 +1,13 @@
-import FloatButtons from "@/pages/video-call/FloatButtons";
 import { useEffect, useRef, useState } from "react";
+import FloatButtons from "@/pages/video-call/FloatButtons";
+import { useToast } from "@/components/ui/use-toast";
+
 
 import io from "socket.io-client";
 
 function VideoChat() {
     const [token, setToken] = useState("");
-    const [timeToConnect] = useState(15 * 1000000); // Time in milliseconds
+    const [timeToConnect] = useState(15 * 1000); // Time in milliseconds
     const [schedule] = useState({
         id: "6650b9598d0b9c0918efd4d0",
         from: "2024-05-24T15:59:56Z",
@@ -20,11 +22,11 @@ function VideoChat() {
 
     const [callAccepted, setCallAccepted] = useState(false);
     const [callEnded, setCallEnded] = useState(false);
-    const [receivingCall, setReceivingCall] = useState(false);
-    const [calling, setIsCalling] = useState(false);
     const [isVideoEnabled, setIsVideoEnabled] = useState(true);
     const [isAudioEnabled, setIsAudioEnabled] = useState(true);
     const [connectionId, setConnectionId] = useState("");
+
+    const { toast } = useToast();
 
     const streamRef = useRef();
     const localStreamRef = useRef();
@@ -32,7 +34,6 @@ function VideoChat() {
     const connectionRef = useRef();
 
     const didIOffer = useRef(false);
-    const [offers, setOffers] = useState([]);
 
     const socket = useRef(
         io.connect("http://localhost:8181", {
@@ -70,24 +71,18 @@ function VideoChat() {
             didIOffer.current = data.didIOffer;
             if (didIOffer.current) {
                 await callUser();
-                setIsCalling(true);
             } else {
-                setReceivingCall(true);
                 await answerCall(data.offerObj);
             }
         });
         //on connection get all available offers and call createOfferEls
         socket.current.on("availableOffers", (offers) => {
             console.log(offers);
-            setReceivingCall(true);
-            setOffers(offers);
         });
 
         //someone just made a new offer and we're already here - call createOfferEls
         socket.current.on("newOfferAwaiting", (offers) => {
             console.log(offers);
-            setReceivingCall(true);
-            setOffers(offers);
         });
 
         socket.current.on("answerResponse", (offerObj) => {
@@ -106,10 +101,12 @@ function VideoChat() {
 
         socket.current.on("notification", (data) => {
             console.log("Notification: ", data);
+            toast(data)
         });
 
-        socket.current.on("sessionEnded", () => {
+        socket.current.on("sessionEnded", (data) => {
             console.log("Session Ended event fired");
+            toast(data);
             leaveCall();
         });
 
@@ -176,6 +173,7 @@ function VideoChat() {
             });
             console.log(offerIceCandidates);
             socket.current.emit("sessionStarted", timeToConnect);
+            toast({ title: "Success!", description: "Session started successfully" })
             console.log("Session starting  socket event emitted");
         } catch (error) {
             console.log("Error in answerCall: ", error);
@@ -288,9 +286,6 @@ function VideoChat() {
     const resetStates = () => {
         setCallEnded(false);
         setCallAccepted(false);
-        setIsCalling(false);
-        setReceivingCall(false);
-        setOffers([]);
     };
 
     const toggleVideo = () => {
@@ -317,17 +312,17 @@ function VideoChat() {
                     <h1 className={callAccepted && !callEnded ? "absolute top-2 right-2 z-10 font-medium text-md pb-2 text-gray-200" : "absolute top-2 left-3 z-10 font-medium text-md mb-2 text-gray-200"}>{schedule.doctor}</h1>
                     <video playsInline muted={!isAudioEnabled} ref={localStreamRef} autoPlay className={callAccepted && !callEnded ? "scale-x-[-1] object-cover h-60 w-40 rounded-md" : "scale-x-[-1] object-cover h-full w-full"} />
                 </div>
-                    <div className="fixed top-0 left-0 right-0 bottom-0">
-                        <h1 className="absolute top-2 left-3 z-10 font-medium text-md pb-2 text-gray-200">{schedule.scheduler}</h1>
-                        <video playsInline ref={remoteStreamRef} autoPlay className="scale-x-[-1] object-cover h-full w-full" />
-                    </div>
+                <div className="fixed top-0 left-0 right-0 bottom-0">
+                    <h1 className="absolute top-2 left-3 z-10 font-medium text-md pb-2 text-gray-200">{schedule.scheduler}</h1>
+                    <video playsInline ref={remoteStreamRef} autoPlay className="scale-x-[-1] object-cover h-full w-full" />
+                </div>
             </section>
             <>
                 <FloatButtons isVideoEnabled={isVideoEnabled} isAudioEnabled={isAudioEnabled} toggleVideo={toggleVideo} toggleAudio={toggleAudio} leaveCall={leaveCall} />
             </>
 
         </main>
-    ); 
-} 
+    );
+}
 
 export default VideoChat;
