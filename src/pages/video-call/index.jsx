@@ -55,22 +55,23 @@ function VideoChat() {
         const urlParams = new URLSearchParams(window.location.search);
         const connectionId = urlParams.get('id');
         //TODO: Set appropriate token value from state here
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJKb2huIERvZSIsInJvbGUiOiJQYXRpZW50IiwiaWF0IjoxNTE2MjM5MDIyfQ.pDXNWt-uYmsz4sT5hYMGpjQcs0N31LytcbYv5CkiES4";
+        const token = prompt("JWT Token");
         setToken(token);
         setConnectionId(connectionId);
 
         socket.current.io.opts.query = { token: token, connectionId: connectionId };
         socket.current.connect();
         console.log("Trying to connect to socket");
+        return () => socket.current.disconnect();
     }, []);
 
     useEffect(() => {
         socket.current.on("connected", async (data) => {
             didIOffer.current = data.didIOffer;
-            if (didIOffer.current && !connectionRef.current) {
+            if (didIOffer.current) {
                 await callUser();
                 setIsCalling(true);
-            } else if (!connectionRef.current) {
+            } else {
                 setReceivingCall(true);
                 await answerCall(data.offerObj);
             }
@@ -316,14 +317,10 @@ function VideoChat() {
                     <h1 className={callAccepted && !callEnded ? "absolute top-2 right-2 z-10 font-medium text-md pb-2 text-gray-200" : "absolute top-2 left-3 z-10 font-medium text-md mb-2 text-gray-200"}>{schedule.doctor}</h1>
                     <video playsInline muted={!isAudioEnabled} ref={localStreamRef} autoPlay className={callAccepted && !callEnded ? "scale-x-[-1] object-cover h-60 w-40 rounded-md" : "scale-x-[-1] object-cover h-full w-full"} />
                 </div>
-                {
-                    !callAccepted && callEnded && (
                     <div className="fixed top-0 left-0 right-0 bottom-0">
                         <h1 className="absolute top-2 left-3 z-10 font-medium text-md pb-2 text-gray-200">{schedule.scheduler}</h1>
                         <video playsInline ref={remoteStreamRef} autoPlay className="scale-x-[-1] object-cover h-full w-full" />
                     </div>
-                    )
-                }
             </section>
             <>
                 <FloatButtons />
