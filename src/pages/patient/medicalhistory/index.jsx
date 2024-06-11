@@ -31,8 +31,8 @@ const MedicalHistory = () => {
   let content = null;
 
   switch (activeTab) {
-    case "Medical Record":
-      content = size > 740 ? <MedicalRecord /> : <MobileMedicalRecord />;
+    case "Medical Report":
+      content = <MedicalReport />;
       break;
     case "Laboratory Test":
       content = size > 740 ? <LaboratoryTest /> : <MobileLaboratoryTest />;
@@ -40,8 +40,8 @@ const MedicalHistory = () => {
     case "Prescribed Medicine":
       content = size > 740 ? <Prescription /> : <MobilePrescription />;
       break;
-    case "Medical Report":
-      content = <MedicalReport />;
+    case "Medical Record":
+      content = size > 740 ? <MedicalRecord /> : <MobileMedicalRecord />;
       break;
     default:
       content = null;

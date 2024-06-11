@@ -12,7 +12,7 @@ import { login as loginAction } from "@/redux/authSlice";
 import NavBar from "@/components/landingpage/navBar";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import {assignProfile as assignProfileAction} from "@/redux/authSlice";
+import {assignProfile as assignProfileAction} from "@/redux/doctorSlice";
 
 const initialFormData = { email: "", password: "" };
 

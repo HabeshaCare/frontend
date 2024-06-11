@@ -18,7 +18,7 @@ const Sidebar = ({ onLinkClick }) => {
       <div className="flex flex-col items-center py-8 h-full mt-16 mr-8">
         <button
           onClick={() => handleLinkClick("dashboard")}
-          className={linkClasses("dashboard") } 
+          className={linkClasses("dashboard")}
         >
           Dashboard
         </button>
@@ -44,7 +44,7 @@ const Sidebar = ({ onLinkClick }) => {
           onClick={() => handleLinkClick("medicalRecords")}
           className={linkClasses("medicalRecords")}
         >
-          Medical Records
+          Medical History
         </button>
       </div>
     </div>

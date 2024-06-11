@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { assignProfilePicture } from "@/redux/authSlice";
+import { assignProfilePicture } from "@/redux/doctorSlice";
 import edit from "@/public/icons/edit.svg";
 import doctor from "@/public/img/doctor.png";
 

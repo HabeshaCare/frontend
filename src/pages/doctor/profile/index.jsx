@@ -8,20 +8,15 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
-import { useQuery } from "react-query";
-import axios from "axios";
-import { Mutation, useMutation } from "react-query";
+import { useMutation } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { updateprofile } from "@/redux/authSlice";
+import { updateprofile } from "@/redux/doctorSlice";
 import { updateProfile } from "@/lib/auth/updatedoctorprofile";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { set } from "date-fns";
-
-// import {updateProfile, updateProfile} from "@/lib/auth/updatedoctorprofile";
 
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
