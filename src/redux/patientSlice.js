@@ -1,5 +1,3 @@
-
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const patientInitialState = {
@@ -55,3 +53,7 @@ const patientSlice = createSlice({
 
     }
 });
+
+
+export const { assignProfile, assignProfilePicture, updateprofile } = patientSlice.actions;
+export const patientReducer = patientSlice.reducer;
