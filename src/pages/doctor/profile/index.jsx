@@ -14,7 +14,7 @@ import doctor from "@/public/img/doctor.png";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { updateprofile } from "@/redux/doctorSlice";
-import { updateProfile } from "@/lib/auth/updatedoctorprofile";
+import { updateProfile } from "@/lib/update/updatedoctorprofile";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 
@@ -115,7 +115,6 @@ export const DoctorProfile = () => {
           description: "Profile updated successfully.",
           action: <ToastAction altText="Continue">Continue</ToastAction>,
         });
-        setEditMode(true);
         dispatch(
           updateprofile({
             doctorid: id,
@@ -131,6 +130,7 @@ export const DoctorProfile = () => {
             doctorlicensePath: licensePath,
           })
         );
+        setEditMode(true);
       },
       onError: (error) => {
         console.log("token from mutation", userToken);

@@ -5,7 +5,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { authReducer } from './authSlice';
 import { doctorReducer } from './doctorSlice';
-import { petientReducer } from './petientSlice';
+import {patientReducer } from './patientSlice';
 
 const authPersistConfig = {
   key: 'auth',
@@ -16,20 +16,20 @@ const doctorPersistConfig = {
   key: 'doctor',
   storage,
 };
-const petientPersistConfig = {
-  key: 'petient',
+const patientPersistConfig = {
+  key: 'patient',
   storage,
 };
 
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 const persistedDoctorReducer = persistReducer(doctorPersistConfig, doctorReducer);
-const persistedPetientReducer = persistReducer(petientPersistConfig, petientReducer);
+const persistedPatientReducer = persistReducer(patientPersistConfig, patientReducer);
 
 const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     doctor: persistedDoctorReducer,
-    petient: persistedPetientReducer,
+    patient: persistedPatientReducer,
   },
 });
 

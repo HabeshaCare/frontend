@@ -12,8 +12,8 @@ import { login as loginAction } from "@/redux/authSlice";
 import NavBar from "@/components/landingpage/navBar";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import {assignProfile as assignProfileAction} from "@/redux/doctorSlice";
-
+import { assignProfile as doctorAssignProfileAction } from "@/redux/doctorSlice";
+import { assignProfile as patientAssignProfileAction } from "@/redux/patientSlice";
 const initialFormData = { email: "", password: "" };
 
 const Login = () => {
@@ -25,9 +25,13 @@ const Login = () => {
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       const { token, data: userData } = data;
-      console.log("my token:", token);
-      dispatch(loginAction({ user: userData, role: userData.role, token: token}));
+      // console.log("my token:", token);
+      dispatch(
+        loginAction({ user: userData, role: userData.role, token: token })
+      );
       console.log("name", userData.fullname);
+      console.log("data", userData);
+
 
       switch (userData.role) {
         case "HealthCenterAdmin":
@@ -44,7 +48,7 @@ const Login = () => {
           break;
         case "Doctor":
           dispatch(
-            assignProfileAction({
+            doctorAssignProfileAction({
               email: userData.email,
               id: userData.id,
               fullname: userData.fullname,
@@ -55,6 +59,15 @@ const Login = () => {
           navigate("/doctor/dashboard");
           break;
         case "Patient":
+          dispatch(
+            patientAssignProfileAction({
+              email: userData.email,
+              id: userData.id,
+              fullname: userData.fullname,
+              phonenumber: userData.phonenumber,
+              gender: userData.gender,
+            })
+          );
           navigate("/patient/dashboard");
           break;
         default:
