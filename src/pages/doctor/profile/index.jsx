@@ -8,20 +8,15 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
-import { useQuery } from "react-query";
-import axios from "axios";
-import { Mutation, useMutation } from "react-query";
+import { useMutation } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { updateprofile } from "@/redux/authSlice";
-import { updateProfile } from "@/lib/auth/updatedoctorprofile";
+import { updateprofile } from "@/redux/doctorSlice";
+import { updateProfile } from "@/lib/update/updatedoctorprofile";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { set } from "date-fns";
-
-// import {updateProfile, updateProfile} from "@/lib/auth/updatedoctorprofile";
 
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
@@ -41,10 +36,12 @@ export const DoctorProfile = () => {
   const [verified, setVerified] = useState(true);
   const [yearOfExperience, setYearOfExperience] = useState(0);
   const [hourlyRateInBirr, setHourlyRateInBirr] = useState(0);
+
   const dispatch = useDispatch();
   const { toast } = useToast();
 
   const doctorData = useSelector((state) => state.doctor);
+  const userToken = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     if (doctorData) {
@@ -78,7 +75,7 @@ export const DoctorProfile = () => {
     }
   }, [doctorData]);
 
-  console.log("doctor iddd", id);
+  // console.log("doctor iddd", id);
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
@@ -108,56 +105,61 @@ export const DoctorProfile = () => {
     associatedHealthCenterId: associatedHealthCenterId,
     hourlyRateInBirr: hourlyRateInBirr,
   };
-  const updatedprofile = useMutation(updateProfile, {
-    onSuccess: (updatedData) => {
-      console.log("Profile updated successfully:", updatedData);
-      toast({
-        title: "Success!",
-        description: "Profile updated successfully.",
-        action: <ToastAction altText="Continue">Continue</ToastAction>,
-      });
-      setEditMode(true);
-      dispatch(
-        updateprofile({
-          doctorid: id,
-          doctorname: fullname,
-          doctorphone: phonenumber,
-          doctoremail: email,
-          doctorgender: gender,
-          doctorlocation: location,
-          doctorspecialization: specialization,
-          doctorhourlyRateInBirr: hourlyRateInBirr,
-          doctoryearOfExperience: yearOfExperience,
-          doctorlocation: location,
-          doctorlicensePath: licensePath,
-        })
-      );
-    },
-    onError: (error) => {
-      console.error("Error updating profile:", error);
-      console.log("id from error", id);
-      toast({
-        title: "Uh oh! Something went wrong.",
-        description: "There was an error updating profile.",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-      });
-    },
-  });
+  const updatedprofile = useMutation(
+    ({ token, data }) => updateProfile(data, token),
+    {
+      onSuccess: (updatedData) => {
+        console.log("Profile updated successfully:", updatedData);
+        toast({
+          title: "Success!",
+          description: "Profile updated successfully.",
+          action: <ToastAction altText="Continue">Continue</ToastAction>,
+        });
+        dispatch(
+          updateprofile({
+            doctorid: id,
+            doctorname: fullname,
+            doctorphone: phonenumber,
+            doctoremail: email,
+            doctorgender: gender,
+            doctorlocation: location,
+            doctorspecialization: specialization,
+            doctorhourlyRateInBirr: hourlyRateInBirr,
+            doctoryearOfExperience: yearOfExperience,
+            doctorlocation: location,
+            doctorlicensePath: licensePath,
+          })
+        );
+        setEditMode(true);
+      },
+      onError: (error) => {
+        console.log("token from mutation", userToken);
+        console.error("Error updating profile:", error);
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "There was an error updating profile.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      },
+    }
+  );
 
   const handleSubmit = () => {
+    console.log("Token before mutation:", userToken);
     updatedprofile.mutate({
-      id,
-      fullname,
-      gender,
-      email,
-      phonenumber,
-      location,
-      specialization,
-      verified,
-      yearOfExperience,
-      associatedHealthCenterId,
-      hourlyRateInBirr,
-      // Add other fields if needed
+      token: userToken,
+      data: {
+        id,
+        fullname,
+        gender,
+        email,
+        phonenumber,
+        location,
+        specialization,
+        yearOfExperience,
+        hourlyRateInBirr,
+        // Add other fields if needed
+      },
     });
     setEditMode(true);
   };
@@ -175,7 +177,7 @@ export const DoctorProfile = () => {
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
             <DoctorPicture image={imageUrl} />
             {/* <DoctorPicture /> */}
-            {console.log("image url", doctor)}
+            {/* {console.log("image url", doctor)} */}
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
