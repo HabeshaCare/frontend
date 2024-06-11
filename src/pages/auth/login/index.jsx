@@ -25,8 +25,8 @@ const Login = () => {
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       const { token, data: userData } = data;
-      console.log("user data:", userData);
-      dispatch(loginAction({ user: userData, role: userData.role }));
+      console.log("my token:", token);
+      dispatch(loginAction({ user: userData, role: userData.role, token: token}));
       console.log("name", userData.fullname);
 
       switch (userData.role) {

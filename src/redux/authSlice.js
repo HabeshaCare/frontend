@@ -7,6 +7,7 @@ const initialState = {
   isAuthenticated: false,
   user: null,
   role: null,
+  token: null,
 };
 
 const doctorInitialState = {
@@ -40,6 +41,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.role = action.payload.role;
+      state.token = action.payload.token;
     },
     logout(state) {
       state.isAuthenticated = false;
