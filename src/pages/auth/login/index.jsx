@@ -56,6 +56,7 @@ const Login = () => {
               gender: userData.gender,
             })
           );
+          console.log("doctor token", token)
           navigate("/doctor/dashboard");
           break;
         case "Patient":

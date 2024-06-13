@@ -3,23 +3,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { assignProfilePicture } from "@/redux/doctorSlice";
 import edit from "@/public/icons/edit.svg";
 import doctor from "@/public/img/doctor.png";
+import { updateProfilePicture } from "@/lib/update/updateprofilepicture";
+import { useMutation } from "react-query";
 
-
-const Picture = ({image}) => {
+const Picture = ({ image }) => {
   const dispatch = useDispatch();
   const doctorimageUrl = useSelector((state) => state.doctor.doctorimageUrl);
+  const id = useSelector((state) => state.doctor.doctorid);
+  const token = useSelector((state) => state.auth.token);
   const [profilePicture, setProfilePicture] = useState(image);
+
+  const updateprofile = useMutation(
+    ({ data, token }) => updateProfilePicture(data, token),
+    {
+      onSuccess: (data) => {
+        console.log("This should be the uploaded file path", data);
+        // Update the profile picture state and Redux state with the new file path
+        // setProfilePicture(data.filePath);
+        // dispatch(assignProfilePicture({ doctorimageUrl: data.filePath }));
+      },
+      onError: (error) => {
+        console.log("Error uploading data", error);
+      },
+    }
+  );
 
   const handlePictureUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfilePicture(imageUrl);
-      
-      // Dispatch the action to update the Redux state
-      dispatch(assignProfilePicture({ doctorimageUrl: imageUrl }));
-      console.log("IMAGE URL,,,,", doctorimageUrl)
-      console.log("I SHOULD BE PRINTED");
+      updateprofile.mutate({
+        data: { id, file },
+        token,
+      });
     }
   };
 
@@ -32,17 +47,16 @@ const Picture = ({image}) => {
         <img src={edit} alt="edit SVG" className="text-white" />
         <div className="text-sm text-white">Edit Profile Picture</div>
         <input
+          name="image"
           type="file"
           id="profile-picture"
           className="hidden"
-          // accept="image/*"
           onChange={handlePictureUpload}
         />
       </label>
       <div className="w-full max-w-[400px] mx-auto">
         <img
           src={profilePicture}
-          // src={doctorimageUrl || doctor}
           alt="doctor img"
           className="block mx-auto"
           style={{ maxWidth: "100%" }}
