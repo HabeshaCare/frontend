@@ -27,7 +27,7 @@ export const DoctorProfile = () => {
   const [fullname, setFullname] = useState("");
   const [gender, setGender] = useState("");
   const [id, setId] = useState("");
-  const [imageUrl, setImageUrl] = useState(doctor);
+  const [imageUrl, setImageUrl] = useState("");
   const [licensePath, setLicensePath] = useState(null);
   const [location, setLocation] = useState(null);
   const [phonenumber, setPhonenumber] = useState("");
@@ -59,7 +59,7 @@ export const DoctorProfile = () => {
         doctorimageUrl,
         doctorverified,
       } = doctorData;
-
+      console.log("doctor image url", doctorimageUrl);
       setFullname(doctorname);
       setPhonenumber(doctorphone);
       setEmail(doctoremail);
@@ -71,11 +71,11 @@ export const DoctorProfile = () => {
       setId(doctorid);
       setAssociatedHealthCenterId(doctorassociatedHealthCenterId);
       setHourlyRateInBirr(doctorhourlyRateInBirr);
-      setImageUrl(doctorimageUrl || doctor);
+      setImageUrl(doctorimageUrl);
     }
   }, [doctorData]);
 
-  // console.log("doctor iddd", id);
+  console.log("doctor iamge", imageUrl);
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
@@ -175,7 +175,8 @@ export const DoctorProfile = () => {
           </div>
 
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
-            <DoctorPicture image={imageUrl} />
+            <DoctorPicture image={ imageUrl ? "http://localhost:5072/"+imageUrl : doctor} />
+            {/* {console.log("image url", "http://localhost:5072/"+imageUrl)} */}
             {/* <DoctorPicture /> */}
             {/* {console.log("image url", doctor)} */}
             {isMdScreen ? "" : <CompleteProfile progress={80} />}

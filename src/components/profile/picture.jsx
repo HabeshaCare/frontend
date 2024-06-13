@@ -18,16 +18,17 @@ const Picture = ({ image }) => {
     {
       onSuccess: (data) => {
         console.log("This should be the uploaded file path", data);
+        console.log("data image,", data.data.imageUrl);
         // Update the profile picture state and Redux state with the new file path
-        // setProfilePicture(data.filePath);
-        // dispatch(assignProfilePicture({ doctorimageUrl: data.filePath }));
+        setProfilePicture(data.data.imageUrl);
+        dispatch(assignProfilePicture({ doctorimageUrl: data.data.imageUrl }));
       },
       onError: (error) => {
         console.log("Error uploading data", error);
       },
     }
   );
-
+   console.log("image from picture", image)
   const handlePictureUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -56,7 +57,7 @@ const Picture = ({ image }) => {
       </label>
       <div className="w-full max-w-[400px] mx-auto">
         <img
-          src={profilePicture}
+          src={image}
           alt="doctor img"
           className="block mx-auto"
           style={{ maxWidth: "100%" }}
