@@ -8,7 +8,6 @@ import { useMutation } from "react-query";
 
 const Picture = ({ image }) => {
   const dispatch = useDispatch();
-  const doctorimageUrl = useSelector((state) => state.doctor.doctorimageUrl);
   const id = useSelector((state) => state.doctor.doctorid);
   const token = useSelector((state) => state.auth.token);
   const [profilePicture, setProfilePicture] = useState(image);

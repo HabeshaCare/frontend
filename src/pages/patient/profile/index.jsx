@@ -160,7 +160,7 @@ export const PatientProfile = () => {
               <p>Personal Profile</p>
             </div>
           </div>
-          <PatientPicture />
+          <PatientPicture image = {"http://localhost:5072/" + imageUrl}/>
           {isMdScreen ? "" : <CompleteProfile progress={80} />}
           <div
             className="flex justify-end mr-8 mt-4 gap-2 cursor-pointer"

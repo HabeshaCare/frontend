@@ -175,10 +175,8 @@ export const DoctorProfile = () => {
           </div>
 
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
-            <DoctorPicture image={ imageUrl ? "http://localhost:5072/"+imageUrl : doctor} />
-            {/* {console.log("image url", "http://localhost:5072/"+imageUrl)} */}
-            {/* <DoctorPicture /> */}
-            {/* {console.log("image url", doctor)} */}
+            <DoctorPicture image={"http://localhost:5072/" + imageUrl} />
+
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
