@@ -25,6 +25,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import forgotpassword from "@/lib/auth/forgotpassword";
+
 const initialFormData = { email: "", password: "" };
 
 const Login = () => {
@@ -32,20 +34,23 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { toast } = useToast();
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   const handleResend = () => {
     navigate("/resendemail");
   };
 
+  const handleInputChange = (e) => {
+    setEmail(e.target.value);
+  };
+
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       const { token, data: userData } = data;
-      // console.log("my token:", token);
       dispatch(
         loginAction({ user: userData, role: userData.role, token: token })
       );
-      console.log("name", userData.fullname);
-      console.log("data", userData);
 
       switch (userData.role) {
         case "HealthCenterAdmin":
@@ -70,7 +75,6 @@ const Login = () => {
               gender: userData.gender,
             })
           );
-          console.log("doctor token", token);
           navigate("/doctor/dashboard");
           break;
         case "Patient":
@@ -108,7 +112,7 @@ const Login = () => {
             action: (
               <ToastAction
                 altText="Resend Verification"
-                onclick={handleResend()}
+                onclick={handleResend}
               >
                 Resend Verification
               </ToastAction>
@@ -131,6 +135,17 @@ const Login = () => {
     },
   });
 
+  const forgotpass = useMutation(({ email }) => forgotpassword(email), {
+    onSuccess: (data) => {
+      console.log("Email from component:", email);
+      console.log("Email sent successfully", data);
+      navigate("/forgetpassword");
+    },
+    onError: (error) => {
+      console.log("Error sending email", error);
+    },
+  });
+
   const handleFormInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -139,6 +154,15 @@ const Login = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     loginMutation.mutate(formData);
+  };
+
+  const handleresendEmail = () => {
+    if (!email) {
+      setError("Please insert your email");
+      return;
+    }
+    setError("");
+    forgotpass.mutate({ email });
   };
 
   return (
@@ -221,10 +245,36 @@ const Login = () => {
                       This action cannot be undone. This will permanently delete
                       your previous password and ask email verification.
                     </AlertDialogDescription>
+                    <AlertDialogDescription>
+                      <p className="font-bold">Insert your previously registered email</p>
+                      {error && <p className="text-red-500">{error}</p>}
+                      <input
+                        type="email"
+                        placeholder="Enter Email"
+                        value={email}
+                        onChange={handleInputChange}
+                        className="h-10 w-full border border-solid border-gray-300 rounded-md px-3"
+                      />
+                    </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
+                    <AlertDialogAction
+                      onClick={() => {
+                        if (email) {
+                          handleresendEmail();
+                        } else {
+                          setError("Please insert your email");
+                          toast({
+                            title: "Uh oh! Something went wrong.",
+                            description: "Please insert your email.",
+                            action: <ToastAction altText="Try again">Try again</ToastAction>,
+                          });
+                        }
+                      }}
+                    >
+                      Continue
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
