@@ -27,7 +27,7 @@ const Picture = ({ image }) => {
       },
     }
   );
-   console.log("image from picture", image)
+
   const handlePictureUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -41,7 +41,7 @@ const Picture = ({ image }) => {
   return (
     <div className="border border-solid w-full relative bg-[#1F555D]">
       <label
-        htmlFor="profile-picture"
+        htmlFor="profile-picture" // Ensure correct JSX attribute
         className="absolute top-0 end-0 mr-2 cursor-pointer"
       >
         <img src={edit} alt="edit SVG" className="text-white" />
@@ -56,7 +56,8 @@ const Picture = ({ image }) => {
       </label>
       <div className="w-full max-w-[400px] mx-auto">
         <img
-          src={image}
+          // Use profilePicture state if available, otherwise fallback to image prop
+          src={profilePicture || image} 
           alt="doctor img"
           className="block mx-auto"
           style={{ maxWidth: "100%" }}

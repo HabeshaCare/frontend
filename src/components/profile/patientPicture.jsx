@@ -55,7 +55,7 @@ const PatientPicture = ({ image }) => {
               type="file"
               id="profile-picture"
               className="hidden"
-              onChange={`handlePictureUpload`}
+              onChange={handlePictureUpload}
             />
           </label>
         </div>
