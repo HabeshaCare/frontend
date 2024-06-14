@@ -1,7 +1,6 @@
 // authSlice.js
 
 import { createSlice } from '@reduxjs/toolkit';
-import doctor from "@/public/img/doctor.png";
 
 const initialState = {
   isAuthenticated: false,
