@@ -9,8 +9,9 @@ const ResendEmail = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const resendmail = useMutation(({email}) => resendEmail({email}), {
+  const resendmail = useMutation(({ email }) => resendEmail(email), {
     onSuccess: (data) => {
+      console.log("Email from component:", email);
       console.log("Email sent successfully", data);
       navigate("/verifyEmail");
     },
@@ -29,7 +30,7 @@ const ResendEmail = () => {
       return;
     }
     setError("");
-    resendmail.mutate(email);
+    resendmail.mutate({ email });
   };
 
   return (
@@ -46,7 +47,7 @@ const ResendEmail = () => {
           placeholder="Enter Email"
           value={email}
           onChange={handleInputChange}
-          className="w-full h-10 border border-solid border-gray-300 rounded-md px-3"
+          className="h-10 w-1/2 border border-solid border-gray-300 rounded-md px-3"
         />
         {error && <p className="text-red-500">{error}</p>}
         <button

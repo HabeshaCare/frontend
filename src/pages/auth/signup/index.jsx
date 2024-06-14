@@ -80,6 +80,7 @@ const Register = () => {
               <Button
                 className="mt-2 w-full md:w-[40%] md:mt-4 text-white bg-[#1F555D] h-10"
                 type="submit"
+                disabled={isLoading}
               >
                 {progress < 100 ? "Next" : isLoading ? "Loading..." : "Submit"}
               </Button>

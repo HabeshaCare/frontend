@@ -24,7 +24,7 @@ const VarifyEmail = () => {
     navigate("/login");
   };
   const handleResend = () => {
-    navigate("/verifyEmail");
+    navigate("/resendemail");
   };
 
   return (
@@ -81,6 +81,7 @@ const VarifyEmail = () => {
           >
             <p>Verify</p>
           </a>
+            <button onClick={handleResend}>Resend Email</button>
         </div>
       )}
     </>

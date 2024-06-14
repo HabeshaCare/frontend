@@ -5,27 +5,28 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import store, { persistor } from './redux/store';
 
-import Register from "./pages/auth/signup";
-import Login from './pages/auth/login';
+import Register from "@/pages/auth/signup";
+import Login from '@/pages/auth/login';
 // import PatientProfile from "./pages/patient/profile/";
 import PatientDashboard from '@/pages/patient/dashboard';
 import DoctorsDashboard from '@/pages/doctor/dashboard';
 import LaboratoryDashboard from '@/pages/laboratory/dashboard';
-import LaboratoryProfile from "./pages/laboratory/profile";
+import LaboratoryProfile from "@/pages/laboratory/profile";
 import HealthCenterDashboard from '@/pages/healthcenter/dashboard';
-import HealthCenterProfile from "./pages/healthcenter/profile";
+import HealthCenterProfile from "@/pages/healthcenter/profile";
 import PharmacyDashboard from '@/pages/pharmacy/dashboard';
-import PharmacyProfile from "./pages/pharmacy/profile";
+import PharmacyProfile from "@/pages/pharmacy/profile";
 import ReceptionDashboard from '@/pages/reception/dashboard';
-import VarifyEmail from "./components/auth/varifyEmail";
+import VarifyEmail from "@/components/auth/varifyEmail";
 import DoctorProfile from '@/pages/doctor/profile/'
 // import MedicalHistory from "@/pages/patient/medicalhistory"
 import ReceptionProfile from "@/pages/reception/profile";
 import Appointement from "@/pages/doctor/appointments";
-import Patient from "./pages/doctor/patients";
-import ProtectedRoute from './components/ProtectedRoute';
-import HomePage from './pages/homepage';
+import Patient from "@/pages/doctor/patients";
+import ProtectedRoute from '@/components/ProtectedRoute';
+import HomePage from '@/pages/homepage';
 import ResendEmail from '@/components/auth/resendEmail';
+import ResetPassword from '@/components/auth/forgetPassword';
 const queryClient = new QueryClient();
 
 function App() {
@@ -56,6 +57,7 @@ function App() {
               <Route path="/patient/medicalhistory" element={<ProtectedRoute requiredRole="Patient"><MedicalHistory /></ProtectedRoute>} />
               <Route path="/patient/profile" element={<ProtectedRoute requiredRole="Patient"><PatientProfile /></ProtectedRoute>} /> */}
               <Route path="/patient/dashboard" element={<ProtectedRoute requiredRole="Patient"><PatientDashboard /></ProtectedRoute>} />
+              <Route path="/forgetpassword" element={<ResetPassword />} />
               <Route path="/resendemail" element={<ResendEmail />} />
               <Route path="/verifyEmail" element={<VarifyEmail />} />
               <Route path="/login" element={<Login />} />
