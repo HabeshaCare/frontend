@@ -14,6 +14,17 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { assignProfile as doctorAssignProfileAction } from "@/redux/doctorSlice";
 import { assignProfile as patientAssignProfileAction } from "@/redux/patientSlice";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 const initialFormData = { email: "", password: "" };
 
 const Login = () => {
@@ -196,6 +207,28 @@ const Login = () => {
             <h1 className="font-primary text-md mt-4 text-center">
               Don&apos;t have an account? <a href="/register"> Sign Up</a>
             </h1>
+            <div className="font-primary text-md mt-4 text-center">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline">Forget Password</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure? do you want to Reset your password?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your previous password and ask email verification.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction>Continue</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
           </div>
         </section>
       </main>
