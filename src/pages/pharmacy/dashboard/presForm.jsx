@@ -10,12 +10,18 @@ import {
 } from "@/components/ui/dialog";
 import PrescriptionCard from "./prescription";
 import usePatientSearch from './searcBarHook'; // Import the custom hook
-
+import { useSelector } from 'react-redux';
+import {selectPharmacyId} from "@/redux/pharmacySlice";
+import {selectToken} from "@/redux/authSlice"
+ 
 const FormComponent = ({ placeholder }) => {
   const [input, setInput] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { data, error, isLoading } = usePatientSearch(isDialogOpen ? input : '');
+  
+
+ 
 
   const handleChange = (event) => {
     setInput(event.target.value);

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const DynamicForm = ({ authToken }) => {
     const { data, isLoading, isError } = useQuery('formFields', () =>
-        axios.get('https://your-api-url.com/form', {
+        axios.get('http://localhost:5072/api/Laboratory/{id}/test-requests/{requestId}', {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }

@@ -1,6 +1,21 @@
 import React from 'react';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 
-const DisplayPatientInfo = ({ data }) => {
+const DisplayPatientInfo = () => {
+    let id = localStorage.getItem('userId');
+    let token = localStorage.getItem('userToken');
+    console.log()
+  const { data, isLoading, isError } = useQuery('patientInfo', fetchPatientInfo);
+
+  async function fetchPatientInfo() {
+    const response = await axios.get('http://localhost:5072/index/api/Laboratory/{id}/test-requests'); // Replace with your API endpoint
+    return response.data;
+  }
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error fetching patient information!</div>;
+
   const {
     name,
     address,

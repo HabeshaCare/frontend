@@ -2,11 +2,13 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { authReducer } from './authSlice';
 import { doctorReducer } from './doctorSlice';
 import { patientReducer } from './patientSlice';
+import {pharmacyReducer} from "./pharmacySlice";
 
 const appReducer = combineReducers({
   auth: authReducer,
   doctor: doctorReducer,
   patient: patientReducer,
+  pharmacy:pharmacyReducer
 });
 
 const rootReducer = (state, action) => {
