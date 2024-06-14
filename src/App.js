@@ -25,6 +25,7 @@ import Appointement from "@/pages/doctor/appointments";
 import Patient from "./pages/doctor/patients";
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/homepage';
+import ResendEmail from '@/components/auth/resendEmail';
 const queryClient = new QueryClient();
 
 function App() {
@@ -55,7 +56,7 @@ function App() {
               <Route path="/patient/medicalhistory" element={<ProtectedRoute requiredRole="Patient"><MedicalHistory /></ProtectedRoute>} />
               <Route path="/patient/profile" element={<ProtectedRoute requiredRole="Patient"><PatientProfile /></ProtectedRoute>} /> */}
               <Route path="/patient/dashboard" element={<ProtectedRoute requiredRole="Patient"><PatientDashboard /></ProtectedRoute>} />
-              
+              <Route path="/resendemail" element={<ResendEmail />} />
               <Route path="/verifyEmail" element={<VarifyEmail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/Register" element={<Register />} />

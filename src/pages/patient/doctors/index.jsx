@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import doc from "@/public/img/docprofile.webp";
 import doc2 from "@/public/img/docprofile2.webp";
 import doc3 from "@/public/img/docprofile3.jpg";
@@ -15,6 +15,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { useMutation } from "react-query";
+import getdoctors from "@/lib/profile/getdoctors";
+import { useSelector } from "react-redux";
+
 const Card = ({ doctor }) => {
   const [showBookingForm, setShowBookingForm] = useState(false);
 
@@ -282,6 +286,31 @@ const Doctors = () => {
       profilePicture: doc3, // Replace with actual image URL
     },
   ];
+  const token = useSelector((state) => state.auth.token);
+
+  const { mutate, data, isLoading, isError } = useMutation(
+    () => getdoctors({ token }),
+    {
+      onSuccess: (data) => {
+        console.log("List of doctors:", data);
+      },
+      onError: (error) => {
+        console.error("Error fetching doctors:", error);
+      },
+    }
+  );
+
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error fetching doctors.</div>;
+  }
 
   return (
     <>
