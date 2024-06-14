@@ -52,34 +52,6 @@ const RoleInfoForm = () => {
           />
         </>
       )}
-      {selectedRole === "Doctor" && (
-        <>
-          <InputField
-            name="experiance"
-            label="Year of Experiance"
-            placeholder="Enter your year of Experiance"
-            type="number"
-            rules={{
-              required: "Experiance required",
-            }}
-          />
-
-          <InputField
-            name="specialization"
-            label="Specialization"
-            placeholder="Type your specialization"
-            type="text"
-            rules={{ required: "specialization required", maxLength: 50 }}
-          />
-          <InputField
-            name="location"
-            label="City Name"
-            placeholder="Type your city name"
-            type="text"
-            rules={{ required: "location required", maxLength: 50 }}
-          />
-        </>
-      )}
 
       {selectedRole === "Reception" && (
         <InputField

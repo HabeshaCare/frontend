@@ -59,7 +59,6 @@ export const DoctorProfile = () => {
         doctorimageUrl,
         doctorverified,
       } = doctorData;
-      console.log("doctor image url", doctorimageUrl);
       setFullname(doctorname);
       setPhonenumber(doctorphone);
       setEmail(doctoremail);
@@ -74,8 +73,6 @@ export const DoctorProfile = () => {
       setImageUrl(doctorimageUrl);
     }
   }, [doctorData]);
-
-  console.log("doctor iamge", imageUrl);
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
@@ -109,7 +106,6 @@ export const DoctorProfile = () => {
     ({ token, data }) => updateProfile(data, token),
     {
       onSuccess: (updatedData) => {
-        console.log("Profile updated successfully:", updatedData);
         toast({
           title: "Success!",
           description: "Profile updated successfully.",
@@ -133,8 +129,6 @@ export const DoctorProfile = () => {
         setEditMode(true);
       },
       onError: (error) => {
-        console.log("token from mutation", userToken);
-        console.error("Error updating profile:", error);
         toast({
           title: "Uh oh! Something went wrong.",
           description: "There was an error updating profile.",
@@ -145,7 +139,6 @@ export const DoctorProfile = () => {
   );
 
   const handleSubmit = () => {
-    console.log("Token before mutation:", userToken);
     updatedprofile.mutate({
       token: userToken,
       data: {
@@ -175,7 +168,9 @@ export const DoctorProfile = () => {
           </div>
 
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
-            <DoctorPicture image={imageUrl ? "http://localhost:5072/" + imageUrl : doctor} />
+            <DoctorPicture
+              image={imageUrl ? "http://localhost:5072/" + imageUrl : doctor}
+            />
 
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">

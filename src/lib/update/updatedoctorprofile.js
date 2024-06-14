@@ -1,8 +1,6 @@
 import axios from 'axios';
 
 export const updateProfile = async (data, token) => {
-  console.log("Received token in API call:", token);
-  console.log("Received data in API call:", data);
 
   const requestData = {
     ...data,

@@ -5,25 +5,35 @@ import edit from "@/public/icons/edit.svg";
 import doctor from "@/public/img/doctor.png";
 import { updateProfilePicture } from "@/lib/update/updateprofilepicture";
 import { useMutation } from "react-query";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 const Picture = ({ image }) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.doctor.doctorid);
   const token = useSelector((state) => state.auth.token);
   const [profilePicture, setProfilePicture] = useState(image);
+  const { toast } = useToast();
 
   const updateprofile = useMutation(
     ({ data, token }) => updateProfilePicture(data, token),
     {
       onSuccess: (data) => {
-        console.log("This should be the uploaded file path", data);
-        console.log("data image,", data.data.imageUrl);
-        // Update the profile picture state and Redux state with the new file path
         setProfilePicture(data.data.imageUrl);
         dispatch(assignProfilePicture({ doctorimageUrl: data.data.imageUrl }));
+        toast({
+          title: "Success!",
+          description: "Profile picture updated successfully.",
+          action: <ToastAction altText="Continue">Continue</ToastAction>,
+        });
       },
       onError: (error) => {
-        console.log("Error uploading data", error);
+        toast({
+          title: "Error!",
+          description:
+            "invalid file type. Please insert PNG and JPG file type.",
+          type: "error",
+        });
       },
     }
   );
@@ -57,7 +67,7 @@ const Picture = ({ image }) => {
       <div className="w-full max-w-[400px] mx-auto">
         <img
           // Use profilePicture state if available, otherwise fallback to image prop
-          src={image} 
+          src={image}
           alt="doctor img"
           className="block mx-auto"
           style={{ maxWidth: "100%" }}
