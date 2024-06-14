@@ -67,6 +67,5 @@ const doctorSlice = createSlice({
 
 export const { login, logout, updateUserProfile } = authSlice.actions;
 export const { assignProfile } = doctorSlice.actions;
-
 export const authReducer = authSlice.reducer;
 export const doctorReducer = doctorSlice.reducer;

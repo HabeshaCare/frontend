@@ -12,6 +12,8 @@ import Picture from '@/components/profile/picture';
 import laboratory from '@/public/img/laboratory.jpg';
 import { Link } from 'react-router-dom';
 import CardComponent from './servicesCard';
+import { useQuery } from 'react-query';
+
 
 const LaboratoryProfile = () => {
   const [editMode, setEditMode] = useState(true);

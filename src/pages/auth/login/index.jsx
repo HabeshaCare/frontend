@@ -17,7 +17,7 @@ import {assignProfile as assignProfileAction} from "@/redux/authSlice";
 const initialFormData = { email: "", password: "" };
 
 const Login = () => {
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState(initialFormData); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -25,7 +25,7 @@ const Login = () => {
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       const { token, data: userData } = data;
-      console.log("user data:", userData);
+      console.log("user data:", userData,"token",token);
       dispatch(loginAction({ user: userData, role: userData.role }));
       console.log("name", userData.fullname);
 

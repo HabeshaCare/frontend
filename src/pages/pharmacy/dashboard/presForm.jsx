@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import {
   Dialog,
@@ -8,60 +8,58 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import PrescriptionCard from "./prescription"
-class FormComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      input: ''
-    };
-  }
+import PrescriptionCard from "./prescription";
+import usePatientSearch from './searcBarHook'; // Import the custom hook
 
-  handleChange = (event) => {
-    const { value } = event.target;
-    this.setState({ input: value });
-  }
+const FormComponent = ({ placeholder }) => {
+  const [input, setInput] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  handleSubmit = (event) => {
+  const { data, error, isLoading } = usePatientSearch(isDialogOpen ? input : '');
+
+  const handleChange = (event) => {
+    setInput(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    // alert(`Input: ${this.state.input}`);
-  }
+    setIsDialogOpen(true);
+  };
 
-  render() {
-    const { placeholder } = this.props;
-
-    return (
-      <form className="flex items-center mt-12 w-full justify-center" onSubmit={this.handleSubmit}>
-        <div className="w-3/5 flex">
-          <input
-            type="text"
-            value={this.state.input}
-            onChange={this.handleChange}
-            placeholder={placeholder}
-            className="flex-grow px-6 py-2 text-lg border-2 border-blue-500 rounded-l-3xl focus:outline-none focus:border-blue-800 transition-all duration-300"
-          />
-          <Dialog>
-            <DialogTrigger>
-              <button className="bg-blue-500 text-white px-4 py-2  mr-4 h-14 rounded-r-3xl">Search</button>
-            </DialogTrigger>
-            <DialogContent className="lg:w-1/2">
-              <DialogHeader>
-                {/* <DialogTitle>Result form</DialogTitle> */}
-                <DialogDescription>
-                  <PrescriptionCard />
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-
-          <Dialog />
-
-        </div>
-      </form>
-    );
-  }
-}
-
-
+  return (
+    <form className="flex items-center mt-12 w-full justify-center" onSubmit={handleSubmit}>
+      <div className="w-3/5 flex">
+        <input
+          type="text"
+          value={input}
+          onChange={handleChange}
+          placeholder={placeholder}
+          className="flex-grow px-6 py-2 text-lg border-2 border-blue-500 rounded-l-3xl focus:outline-none focus:border-blue-800 transition-all duration-300"
+        />
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <button className="bg-blue-500 text-white px-4 py-2 mr-4 h-14 rounded-r-3xl" type="submit" >
+              Search
+            </button>
+          </DialogTrigger>
+          <DialogContent className="lg:w-1/2">
+            <DialogHeader>
+              <DialogTitle>Search Results</DialogTitle>
+              <DialogDescription>
+                {isLoading ? (
+                  <p>Loading...</p>
+                ) : error ? (
+                  <p>Error loading data</p>
+                ) : (
+                  <PrescriptionCard data={data} />
+                )}
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </form>
+  );
+};
 
 export default FormComponent;

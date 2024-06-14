@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+
 const LaboratoryDashboard = () => {
   const cardData = [
     { name: 'John Doe', hospital: 'Hospital A' },
