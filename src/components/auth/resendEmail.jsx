@@ -9,8 +9,9 @@ const ResendEmail = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const resendmail = useMutation(({email}) => resendEmail({email}), {
+  const resendmail = useMutation(({ email }) => resendEmail(email), {
     onSuccess: (data) => {
+      console.log("Email from component:", email);
       console.log("Email sent successfully", data);
       navigate("/verifyEmail");
     },
@@ -29,7 +30,7 @@ const ResendEmail = () => {
       return;
     }
     setError("");
-    resendmail.mutate(email);
+    resendmail.mutate({ email });
   };
 
   return (
