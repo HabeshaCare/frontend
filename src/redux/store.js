@@ -1,28 +1,18 @@
-// store.js
-
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { authReducer, doctorReducer } from './authSlice';
+import rootReducer from './rootReducer'; // import the root reducer
 
-const authPersistConfig = {
-  key: 'auth',
+const persistConfig = {
+  key: 'root',
   storage,
+  // blacklist: ['someTransientReducer'], // Add reducers you don't want to persist
 };
 
-const doctorPersistConfig = {
-  key: 'doctor',
-  storage,
-};
-
-const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
-const persistedDoctorReducer = persistReducer(doctorPersistConfig, doctorReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: {
-    auth: persistedAuthReducer,
-    doctor: persistedDoctorReducer,
-  },
+  reducer: persistedReducer,
 });
 
 export const persistor = persistStore(store);

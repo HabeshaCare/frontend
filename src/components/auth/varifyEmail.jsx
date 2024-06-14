@@ -23,6 +23,9 @@ const VarifyEmail = () => {
   const handleVerify = () => {
     navigate("/login");
   };
+  const handleResend = () => {
+    navigate("/resendemail");
+  };
 
   return (
     <>
@@ -52,7 +55,7 @@ const VarifyEmail = () => {
               <div>
                 <button
                   className="w-32 h-10 text-white bg-[#1F555D]"
-                  onClick={() => handleVerify()}
+                  onClick={() => handleResend()}
                 >
                   Resend Email
                 </button>
@@ -78,6 +81,7 @@ const VarifyEmail = () => {
           >
             <p>Verify</p>
           </a>
+            <button onClick={handleResend}>Resend Email</button>
         </div>
       )}
     </>

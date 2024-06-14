@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import edit from "@/public/icons/edit.svg";
-import back from "@/public/icons/back.svg";
 import { CompleteProfile } from "@/components/profile/completeProfile";
 import { CompleteProfile2 } from "@/components/profile/completeProfile";
 import ProfileKey from "@/components/profile/profileInfo";
@@ -9,13 +8,15 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
-import { useQuery } from "react-query";
-import axios from "axios";
-import { Mutation, useMutation } from "react-query";
+import { useMutation } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 import { useSelector } from "react-redux";
-// import {updateProfile, updateProfile} from "@/lib/auth/updatedoctorprofile";
+import { useDispatch } from "react-redux";
+import { updateprofile } from "@/redux/doctorSlice";
+import { updateProfile } from "@/lib/update/updatedoctorprofile";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
@@ -26,7 +27,7 @@ export const DoctorProfile = () => {
   const [fullname, setFullname] = useState("");
   const [gender, setGender] = useState("");
   const [id, setId] = useState("");
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [licensePath, setLicensePath] = useState(null);
   const [location, setLocation] = useState(null);
   const [phonenumber, setPhonenumber] = useState("");
@@ -34,34 +35,47 @@ export const DoctorProfile = () => {
   const [specialization, setSpecialization] = useState("");
   const [verified, setVerified] = useState(true);
   const [yearOfExperience, setYearOfExperience] = useState(0);
+  const [hourlyRateInBirr, setHourlyRateInBirr] = useState(0);
 
-  const userData = useSelector((state) => state.auth.user);
-  console.log("name from state", userData.fullname);
+  const dispatch = useDispatch();
+  const { toast } = useToast();
 
-
-  // const updateProfile = useMutation(updateProfile, {
-  //   onSuccess: (data) => {
-  //     console.log("data from mutation", data);
-  //   },
-
-  // });
+  const doctorData = useSelector((state) => state.doctor);
+  const userToken = useSelector((state) => state.auth.token);
 
   useEffect(() => {
-    if (userData) {
-      setFullname(userData.fullname);
-      setPhonenumber(userData.phonenumber);
-      setEmail(userData.email);
-      setGender(userData.gender);
-      setLocation(userData.location);
-      setSpecialization(userData.specialization);
-      setVerified(userData.verified);
-      setYearOfExperience(userData.yearOfExperience);
-      setId(userData.id);
+    if (doctorData) {
+      const {
+        doctorname,
+        doctorphone,
+        doctoremail,
+        doctorgender,
+        doctorlocation,
+        doctorspecialization,
+        doctoryearOfExperience,
+        doctorid,
+        doctorassociatedHealthCenterId,
+        doctorhourlyRateInBirr,
+        doctorimageUrl,
+        doctorverified,
+      } = doctorData;
+      console.log("doctor image url", doctorimageUrl);
+      setFullname(doctorname);
+      setPhonenumber(doctorphone);
+      setEmail(doctoremail);
+      setGender(doctorgender);
+      setLocation(doctorlocation);
+      setSpecialization(doctorspecialization);
+      setYearOfExperience(doctoryearOfExperience);
+      setVerified(doctorverified);
+      setId(doctorid);
+      setAssociatedHealthCenterId(doctorassociatedHealthCenterId);
+      setHourlyRateInBirr(doctorhourlyRateInBirr);
+      setImageUrl(doctorimageUrl);
     }
-  }, [userData]);
+  }, [doctorData]);
 
-  console.log("fullname state", fullname);
-  console.log("year of experience", yearOfExperience);
+  console.log("doctor iamge", imageUrl);
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
@@ -89,13 +103,65 @@ export const DoctorProfile = () => {
     verified: verified,
     yearOfExperience: yearOfExperience,
     associatedHealthCenterId: associatedHealthCenterId,
-    role: role,
-    id: id,
+    hourlyRateInBirr: hourlyRateInBirr,
   };
+  const updatedprofile = useMutation(
+    ({ token, data }) => updateProfile(data, token),
+    {
+      onSuccess: (updatedData) => {
+        console.log("Profile updated successfully:", updatedData);
+        toast({
+          title: "Success!",
+          description: "Profile updated successfully.",
+          action: <ToastAction altText="Continue">Continue</ToastAction>,
+        });
+        dispatch(
+          updateprofile({
+            doctorid: id,
+            doctorname: fullname,
+            doctorphone: phonenumber,
+            doctoremail: email,
+            doctorgender: gender,
+            doctorlocation: location,
+            doctorspecialization: specialization,
+            doctorhourlyRateInBirr: hourlyRateInBirr,
+            doctoryearOfExperience: yearOfExperience,
+            doctorlocation: location,
+            doctorlicensePath: licensePath,
+          })
+        );
+        setEditMode(true);
+      },
+      onError: (error) => {
+        console.log("token from mutation", userToken);
+        console.error("Error updating profile:", error);
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "There was an error updating profile.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      },
+    }
+  );
 
   const handleSubmit = () => {
+    console.log("Token before mutation:", userToken);
+    updatedprofile.mutate({
+      token: userToken,
+      data: {
+        id,
+        fullname,
+        gender,
+        email,
+        phonenumber,
+        location,
+        specialization,
+        yearOfExperience,
+        hourlyRateInBirr,
+        // Add other fields if needed
+      },
+    });
     setEditMode(true);
-    // updatData.mutate(updatedData);
   };
 
   return (
@@ -109,7 +175,8 @@ export const DoctorProfile = () => {
           </div>
 
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
-            <DoctorPicture image={doctor} />
+            <DoctorPicture image={imageUrl ? "http://localhost:5072/" + imageUrl : doctor} />
+
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
@@ -130,7 +197,7 @@ export const DoctorProfile = () => {
               <div className="">
                 <ProfileKey keyName="Full Name" />
                 {editMode ? (
-                  <ProfileValue value={userData.fullname} />
+                  <ProfileValue value={fullname} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setFullname)}
@@ -143,7 +210,7 @@ export const DoctorProfile = () => {
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
                 {editMode ? (
-                  <ProfileValue value={userData.phonenumber} />
+                  <ProfileValue value={phonenumber} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setPhonenumber)}
@@ -156,7 +223,7 @@ export const DoctorProfile = () => {
               <div className={`${editMode && "md:ml-12"} ml-2`}>
                 <ProfileKey keyName="Email" />
                 {editMode ? (
-                  <ProfileValue value={userData.email} />
+                  <ProfileValue value={email} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setEmail)}
@@ -171,7 +238,7 @@ export const DoctorProfile = () => {
               <div className="md:ml-8 md:pl-1">
                 <ProfileKey keyName="Gender" />
                 {editMode ? (
-                  <ProfileValue value={userData.gender} />
+                  <ProfileValue value={gender} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setGender)}
@@ -188,7 +255,7 @@ export const DoctorProfile = () => {
               <div className="">
                 <ProfileKey keyName="Specialization" />
                 {editMode ? (
-                  <ProfileValue value={userData.specialization} />
+                  <ProfileValue value={specialization} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setSpecialization)}
@@ -200,7 +267,14 @@ export const DoctorProfile = () => {
 
               <div className="ml-2">
                 <ProfileKey keyName="Hourly Price" />
-                {editMode ? <ProfileValue value="100$/hr" /> : <Input />}
+                {editMode ? (
+                  <ProfileValue value={hourlyRateInBirr} />
+                ) : (
+                  <Input
+                    value={hourlyRateInBirr}
+                    onChange={handleInputChange(setHourlyRateInBirr)}
+                  />
+                )}
               </div>
 
               <div className="">
@@ -223,7 +297,7 @@ export const DoctorProfile = () => {
                 <ProfileKey keyName="Verification status" />
                 {editMode ? (
                   <ProfileValue
-                    value={userData.verified ? "Verified " : "not Verified"}
+                    value={verified ? "Verified " : "not Verified"}
                   />
                 ) : (
                   <Input
@@ -247,7 +321,7 @@ export const DoctorProfile = () => {
               <div>
                 <ProfileKey keyName="Year of experience" />
                 {editMode ? (
-                  <ProfileValue value={userData.yearOfExperience} />
+                  <ProfileValue value={yearOfExperience} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setYearOfExperience)}

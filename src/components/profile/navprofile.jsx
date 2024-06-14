@@ -9,13 +9,16 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { logout as logoutAction } from "@/redux/authSlice";
 import { useToast } from "@/components/ui/use-toast";
+import { persistor } from "@/redux/store"; // import persistor from store
 
 const Profile = () => {
   const { toast } = useToast();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.user);
+
   const handleLogout = () => {
     dispatch(logoutAction());
+    persistor.purge();
     toast({
       title: "Success!",
       description: "You have logged out successfully.",
