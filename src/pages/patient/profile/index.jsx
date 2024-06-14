@@ -15,6 +15,7 @@ import { updateprofile } from "@/redux/patientSlice";
 import { useMutation } from "react-query";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import user from "@/public/img/PHOTO.jpg";
 
 export const PatientProfile = () => {
   const [editMode, setEditMode] = useState(true);
@@ -160,7 +161,7 @@ export const PatientProfile = () => {
               <p>Personal Profile</p>
             </div>
           </div>
-          <PatientPicture image={"http://localhost:5072/" + imageUrl} />
+          <PatientPicture image={imageUrl? "http://localhost:5072/" + imageUrl : user} />
 
           {isMdScreen ? "" : <CompleteProfile progress={80} />}
           <div
