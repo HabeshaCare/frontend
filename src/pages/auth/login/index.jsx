@@ -23,7 +23,7 @@ const Login = () => {
   const { toast } = useToast();
 
   const handleResend = () => {
-    navigate("/verifyEmail");
+    navigate("/resendemail");
   };
 
   const loginMutation = useMutation(login, {

@@ -46,7 +46,7 @@ const ResendEmail = () => {
           placeholder="Enter Email"
           value={email}
           onChange={handleInputChange}
-          className="w-full h-10 border border-solid border-gray-300 rounded-md px-3"
+          className="h-10 w-1/2 border border-solid border-gray-300 rounded-md px-3"
         />
         {error && <p className="text-red-500">{error}</p>}
         <button
