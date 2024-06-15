@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 
 
-function Chatbot({context}) {
+function Chatbot({ context }) {
   const [input, setInput] = useState("");
   const [chatLog, setChatLog] = useState([
     { sender: "bot", message: "Hello, how can I help you?" },
@@ -113,11 +113,11 @@ function Chatbot({context}) {
             <SheetTitle className="mb-4 bg-teal-900 text-white px-4 py-2 mr-4 rounded-md">
               GuideBot
             </SheetTitle>
-            <SheetDescription className="h-96 mt-4 rounded-lg px-2 py-2 text-black overflow-y-auto">
+            <SheetDescription className="h-[530px] mt-4 rounded-lg px-2 py-2 text-black overflow-y-auto">
               {chatLog.map((entry, index) => (
                 <div
                   key={index}
-                  className={`p-2 rounded-md ${entry.sender === "bot" ? "bg-white" : "bg-blue-100"
+                  className={`p-2 m-2 rounded-md ${entry.sender === "bot" ? "bg-white" : "bg-blue-100"
                     }`}
                 >
                   {entry.message}
