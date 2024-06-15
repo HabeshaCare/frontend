@@ -47,8 +47,8 @@ const Card = (props) => {
                         <DialogHeader>
                             <DialogTitle>Result form</DialogTitle>
                             <DialogDescription>
-<ResultFormComponent/>
-                               
+                                <ResultFormComponent />
+
                             </DialogDescription>
                         </DialogHeader>
                     </DialogContent>

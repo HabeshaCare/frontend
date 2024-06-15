@@ -11,13 +11,16 @@ import PrescriptionCard from "./prescription";
 import usePatientSearch from './searcBarHook'; // Import the custom hook
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import PrescriptionList from './prescriptionList';
 
 const FormComponent = ({ placeholder }) => {
   const [input, setInput] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { data, error, isLoading } = usePatientSearch(isDialogOpen ? input : null);
-  if (isDialogOpen){
-      console.log("dataa===",data)
+  if (isDialogOpen) {
+    console.log("dataa===", data)
+    console.log("prescriptions",data?.data.data.prescriptions)
+  
   }
   const { toast } = useToast();
 
@@ -39,7 +42,8 @@ const FormComponent = ({ placeholder }) => {
     }
     setIsDialogOpen(true)
   };
-
+ 
+  const prescriptions = data?.data.data.prescriptions
   return (
     <form className="flex items-center mt-12 w-full justify-center" onSubmit={handleSubmit}>
       <div className="w-3/5 flex">
@@ -66,7 +70,7 @@ const FormComponent = ({ placeholder }) => {
                 ) : error ? (
                   <p>Error loading data</p>
                 ) : data ? (
-                  <PrescriptionCard data={data} />
+                  <PrescriptionList prescriptions={prescriptions} />
                 ) : null}
               </DialogDescription>
             </DialogHeader>
