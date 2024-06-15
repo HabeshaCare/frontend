@@ -1,3 +1,5 @@
+// Doctors.jsx
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
@@ -8,16 +10,12 @@ import doc3 from "@/public/img/docprofile3.jpg";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { useMutation } from "react-query";
-import getdoctors from "@/lib/profile/getdoctors";
 import { useSelector } from "react-redux";
+import  getdoctors  from "@/lib/profile/getdoctors";
+import searchDoctors from "@/lib/search/doctorsearch" // Import the new searchDoctors function
 
 const Card = ({ doctor }) => {
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -25,14 +23,20 @@ const Card = ({ doctor }) => {
   const handleBookAppointmentClick = () => {
     setShowBookingForm(true);
   };
+  const about =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporincididunt ut labore et dolore magna aliqua.";
+  const doctorImageUrl = doctor.imageUrl
+    ? `http://localhost:5072/${doctor.imageUrl}`
+    : doc;
+
   return (
     <div
       className="relative flex justify-center items-end m-2 p-2 w-1/5 h-48 rounded-lg bg-cover bg-center overflow-hidden transition-transform transform hover:scale-105"
-      style={{ backgroundImage: `url(${doctor.profilePicture})` }}
+      style={{ backgroundImage: `url(${doctorImageUrl})` }}
     >
       <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-[#1F555D] to-transparent text-white">
-        <p className="font-bold text-sm">{doctor.name}</p>
-        <p className="text-xs">{doctor.speciality}</p>
+        <p className="font-bold text-sm">{doctor.fullname}</p>
+        <p className="text-xs">{doctor.specialization}</p>
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline" className="bg-inherit border-none ">
@@ -44,27 +48,23 @@ const Card = ({ doctor }) => {
               {/* Left Section */}
               <div className="flex flex-col items-center md:w-1/2 bg-[#1F555D] p-6 rounded-lg">
                 <img
-                  src={doctor.profilePicture}
+                  src={doctorImageUrl}
                   alt="Doctor"
                   className="rounded-full w-32 h-32 mb-4"
                 />
                 <h2 className="text-2xl font-semibold text-white">
-                  {doctor.name}
+                  {doctor.fullname}
                 </h2>
-                <p className="text-white">{doctor.speciality}</p>
-                <p className="text-white">Addis Ababa, Ethiopia</p>
+                <p className="text-white">{doctor.specialization}</p>
+                <p className="text-white">{doctor.location}</p>
                 <div className="flex justify-between w-full mb-4">
                   <div className="flex flex-col items-center">
                     <p className="text-xl font-semibold text-white">
                       Experience
                     </p>
-                    <p className="text-white">6+ years</p>
-                  </div>
-                  <div className="flex items-center">
-                    <i className="ml-2 fa fa-thumbs-up"></i>
-                    <span className="text-lg font-semibold text-white">
-                      149 likes
-                    </span>
+                    <p className="text-white">
+                      {doctor.yearOfExperience} years
+                    </p>
                   </div>
                 </div>
               </div>
@@ -73,38 +73,32 @@ const Card = ({ doctor }) => {
               <div className="md:w-1/2 mt-6 md:mt-0 md:ml-6">
                 <h3 className="text-2xl font-semibold mb-4">About</h3>
                 <p className="text-gray-600 mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Ut enim ad
-                  minim veniam, quis nostrud exercitation ullamco laboris nisi
-                  ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-                  amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua.
+                  {doctor.description || about}
                 </p>
                 <h3 className="text-2xl font-semibold mb-4">
                   Current Health Centers
                 </h3>
                 <div className="flex mb-4">
                   <img src={doc3} alt="Hospital" className="w-12 h-12 mr-2" />
-                  <p>Kebede General Hospital - Permanent</p>
+                  <p>
+                    {doctor.associatedHealthCenterId ||
+                      "No health center available"}
+                  </p>
                 </div>
 
                 <h3 className="text-2xl font-semibold mb-4">
                   Available times for TeleMed service
                 </h3>
+                {/* Assuming there are available times in the data */}
+                {/* Replace this with actual data if available */}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between mb-2">
                     <span>Mon</span>
                     <span>1:00 pm - 6:00 pm</span>
                   </div>
                   <div className="flex justify-between mb-2">
-                    <span>Mon</span>
-                    <span>1:00 pm - 6:00 pm</span>
-                  </div>
-                  <div className="flex justify-between mb-2">
-                    <span>Mon</span>
-                    <span>1:00 pm - 6:00 pm</span>
+                    <span>Tue</span>
+                    <span>2:00 pm - 5:00 pm</span>
                   </div>
                 </div>
                 <button
@@ -164,134 +158,15 @@ const Card = ({ doctor }) => {
 };
 
 const Doctors = () => {
-  const doctors = [
-    {
-      name: "Doctor Yeabsira Nigusse",
-      speciality: "General Practitioner",
-      profilePicture: doc, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Jane Doe",
-      speciality: "Cardiologist",
-      profilePicture: doc2, // Replace with actual image URL
-    },
-    {
-      name: "Doctor John Smith",
-      speciality: "Neurologist",
-      profilePicture: doc3, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc2, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc3, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc2, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc3, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc2, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc3, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc2, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc3, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc2, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc3, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc2, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc3, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc2, // Replace with actual image URL
-    },
-    {
-      name: "Doctor Emily Johnson",
-      speciality: "Dermatologist",
-      profilePicture: doc3, // Replace with actual image URL
-    },
-  ];
+  const [doctors, setDoctors] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const token = useSelector((state) => state.auth.token);
 
-  const { mutate, data, isLoading, isError } = useMutation(
+  const { mutate: getDoctorsMutate, data, isLoading, isError } = useMutation(
     () => getdoctors({ token }),
     {
       onSuccess: (data) => {
+        setDoctors(data.data); // Assuming the doctors array is inside `data.data`
         console.log("List of doctors:", data);
       },
       onError: (error) => {
@@ -300,22 +175,58 @@ const Doctors = () => {
     }
   );
 
-  useEffect(() => {
-    mutate();
-  }, [mutate]);
+  const { mutate: searchDoctorsMutate, data: searchData, isLoading: isSearching, isError: searchError } = useMutation(
+    (searchQuery) => searchDoctors({ token, searchQuery }),
+    {
+      onSuccess: (data) => {
+        // setDoctors(data.data); // Assuming the doctors array is inside `data.data`
+        console.log("Search results:", data);
+      },
+      onError: (error) => {
+        console.error("Error searching doctors:", error);
+      },
+    }
+  );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  useEffect(() => {
+    getDoctorsMutate();
+  }, [getDoctorsMutate]);
+
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchButtonClick = () => {
+    searchDoctorsMutate(searchQuery);
+  };
+
+  if (isLoading || isSearching) {
+    return <div className="flex justify-center items-center">Loading...</div>;
   }
 
-  if (isError) {
-    return <div>Error fetching doctors.</div>;
+  if (isError || searchError) {
+    return (
+      <div className="flex justify-center items-center">
+        Error fetching doctors.
+      </div>
+    );
   }
 
   return (
     <>
-      <div className="mx-10 sm:mx-32 lg:mx-72 mt-4">
-        <Input placeholder="Search Your doctor" className="h-12" />
+      <div className="flex mx-10 sm:mx-32 lg:mx-72 mt-4">
+        <Input
+          placeholder="Search Your doctor"
+          className="h-12"
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
+        <Button
+          className="ml-2 bg-[#1F555D] text-white mt-2"
+          onClick={handleSearchButtonClick}
+        >
+          Search
+        </Button>
       </div>
       <div className="flex flex-wrap justify-around mt-6">
         {doctors.map((doctor, index) => (

@@ -6,6 +6,7 @@ import { CompleteProfile2 } from "@/components/profile/completeProfile";
 import ProfileKey from "@/components/profile/profileInfo";
 import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
 import { useMutation } from "react-query";
@@ -36,6 +37,7 @@ export const DoctorProfile = () => {
   const [verified, setVerified] = useState(true);
   const [yearOfExperience, setYearOfExperience] = useState(0);
   const [hourlyRateInBirr, setHourlyRateInBirr] = useState(0);
+  const [description, setDescription] = useState("");
 
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -58,8 +60,8 @@ export const DoctorProfile = () => {
         doctorhourlyRateInBirr,
         doctorimageUrl,
         doctorverified,
+        doctordescription,
       } = doctorData;
-      console.log("doctor image url", doctorimageUrl);
       setFullname(doctorname);
       setPhonenumber(doctorphone);
       setEmail(doctoremail);
@@ -72,10 +74,9 @@ export const DoctorProfile = () => {
       setAssociatedHealthCenterId(doctorassociatedHealthCenterId);
       setHourlyRateInBirr(doctorhourlyRateInBirr);
       setImageUrl(doctorimageUrl);
+      setDescription(doctordescription);
     }
   }, [doctorData]);
-
-  console.log("doctor iamge", imageUrl);
 
   const handleInputChange = (setStateFunction) => {
     return (event) => {
@@ -104,12 +105,12 @@ export const DoctorProfile = () => {
     yearOfExperience: yearOfExperience,
     associatedHealthCenterId: associatedHealthCenterId,
     hourlyRateInBirr: hourlyRateInBirr,
+    description: description,
   };
   const updatedprofile = useMutation(
     ({ token, data }) => updateProfile(data, token),
     {
       onSuccess: (updatedData) => {
-        console.log("Profile updated successfully:", updatedData);
         toast({
           title: "Success!",
           description: "Profile updated successfully.",
@@ -128,13 +129,12 @@ export const DoctorProfile = () => {
             doctoryearOfExperience: yearOfExperience,
             doctorlocation: location,
             doctorlicensePath: licensePath,
+            doctordescription: description,
           })
         );
         setEditMode(true);
       },
       onError: (error) => {
-        console.log("token from mutation", userToken);
-        console.error("Error updating profile:", error);
         toast({
           title: "Uh oh! Something went wrong.",
           description: "There was an error updating profile.",
@@ -145,7 +145,6 @@ export const DoctorProfile = () => {
   );
 
   const handleSubmit = () => {
-    console.log("Token before mutation:", userToken);
     updatedprofile.mutate({
       token: userToken,
       data: {
@@ -158,6 +157,7 @@ export const DoctorProfile = () => {
         specialization,
         yearOfExperience,
         hourlyRateInBirr,
+        description,
         // Add other fields if needed
       },
     });
@@ -175,7 +175,9 @@ export const DoctorProfile = () => {
           </div>
 
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
-            <DoctorPicture image={imageUrl ? "http://localhost:5072/" + imageUrl : doctor} />
+            <DoctorPicture
+              image={imageUrl ? "http://localhost:5072/" + imageUrl : doctor}
+            />
 
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
@@ -189,6 +191,24 @@ export const DoctorProfile = () => {
                 Edit
               </div>
             </div>
+            
+            {/* Bio Section */}
+            <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
+              Bio
+            </div>
+            <div className="pl-8 mb-4">
+              {editMode ? (
+                <ProfileValue value={description} />
+              ) : (
+                <Textarea
+                  onChange={handleInputChange(setDescription)}
+                  value={description}
+                  placeholder="Write a short bio..."
+                  rows={4}
+                />
+              )}
+            </div>
+
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               General Info
             </div>
@@ -248,7 +268,7 @@ export const DoctorProfile = () => {
               </div>
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
-              specific Info
+              Specific Info
             </div>
 
             <div className={`${editMode && "md:flex justify-between mx-8"}`}>

@@ -6,29 +6,37 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateProfilePicture } from "@/lib/update/updatepatientprofilpicture";
 import { assignProfilePicture } from "@/redux/patientSlice";
 import { useMutation } from "react-query";
-
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 const PatientPicture = ({ image }) => {
   const dispatch = useDispatch();
   const [profilePicture, setProfilePicture] = useState(image);
   const id = useSelector((state) => state.patient.patientid);
   const token = useSelector((state) => state.auth.token);
+  const { toast } = useToast();
 
   const updateprofile = useMutation(
     ({ data, token }) => updateProfilePicture(data, token),
     {
       onSuccess: (data) => {
-        console.log("This should be the uploaded file path", data);
-        console.log("data image,", data.data.imageUrl);
-        // Update the profile picture state and Redux state with the new file path
         setProfilePicture(data.data.imageUrl);
         dispatch(assignProfilePicture({ patientimageUrl: data.data.imageUrl }));
+        toast({
+          title: "Success!",
+          description: "Profile picture updated successfully.",
+          action: <ToastAction altText="Continue">Continue</ToastAction>,
+        });
       },
       onError: (error) => {
-        console.log("Error uploading data", error);
+        toast({
+          title: "Error!",
+          description:
+            "invalid file type. Please insert PNG and JPG file type.",
+          type: "error",
+        });
       },
     }
   );
-  console.log("image from picture", image);
   const handlePictureUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
