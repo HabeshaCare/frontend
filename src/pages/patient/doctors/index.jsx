@@ -166,8 +166,7 @@ const Doctors = () => {
     () => getdoctors({ token }),
     {
       onSuccess: (data) => {
-        setDoctors(data.data); // Assuming the doctors array is inside `data.data`
-        console.log("List of doctors:", data);
+        setDoctors(data.data); 
       },
       onError: (error) => {
         console.error("Error fetching doctors:", error);
@@ -180,7 +179,7 @@ const Doctors = () => {
     {
       onSuccess: (data) => {
         setDoctors(data.data.map(item => item.doctor)); // Extract doctor objects
-        console.log("Search results:", data);
+        // console.log("Search results:", data);
       },
       onError: (error) => {
         console.error("Error searching doctors:", error);

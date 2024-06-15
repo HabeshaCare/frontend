@@ -1,9 +1,7 @@
 import axios from "axios";
 
 const searchDoctors = async ({ token, searchQuery }) => {
-  console.log("searchQuery: ", searchQuery);
-  console.log("token: ", token);
-  
+
   const config = {
     headers: {
       'Authorization': `Bearer ${token}`,
