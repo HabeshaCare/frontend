@@ -179,7 +179,7 @@ const Doctors = () => {
     (searchQuery) => searchDoctors({ token, searchQuery }),
     {
       onSuccess: (data) => {
-        // setDoctors(data.data); // Assuming the doctors array is inside `data.data`
+        setDoctors(data.data.map(item => item.doctor)); // Extract doctor objects
         console.log("Search results:", data);
       },
       onError: (error) => {
