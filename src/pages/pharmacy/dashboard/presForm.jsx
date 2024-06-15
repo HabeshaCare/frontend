@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'tailwindcss/tailwind.css';
 import {
   Dialog,
@@ -6,22 +6,21 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import PrescriptionCard from "./prescription";
 import usePatientSearch from './searcBarHook'; // Import the custom hook
-import { useSelector } from 'react-redux';
-import {selectPharmacyId} from "@/redux/pharmacySlice";
-import {selectToken} from "@/redux/authSlice"
- 
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+
 const FormComponent = ({ placeholder }) => {
   const [input, setInput] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { data, error, isLoading } = usePatientSearch(isDialogOpen ? input : null);
+  if (isDialogOpen){
+      console.log("dataa===",data)
+  }
+  const { toast } = useToast();
 
-  const { data, error, isLoading } = usePatientSearch(isDialogOpen ? input : '');
-  
-
- 
 
   const handleChange = (event) => {
     setInput(event.target.value);
@@ -29,7 +28,16 @@ const FormComponent = ({ placeholder }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsDialogOpen(true);
+    if (input.trim() === '') {
+      toast({
+        title: "Uh oh! empty input ",
+        description: "Please enter a search query.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+      return;
+
+    }
+    setIsDialogOpen(true)
   };
 
   return (
@@ -42,12 +50,13 @@ const FormComponent = ({ placeholder }) => {
           placeholder={placeholder}
           className="flex-grow px-6 py-2 text-lg border-2 border-blue-500 rounded-l-3xl focus:outline-none focus:border-blue-800 transition-all duration-300"
         />
+        <button
+          className="bg-blue-500 text-white px-4 py-2 mr-4 h-14 rounded-r-3xl"
+          type="submit"
+        >
+          Search
+        </button>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <button className="bg-blue-500 text-white px-4 py-2 mr-4 h-14 rounded-r-3xl" type="submit" >
-              Search
-            </button>
-          </DialogTrigger>
           <DialogContent className="lg:w-1/2">
             <DialogHeader>
               <DialogTitle>Search Results</DialogTitle>
@@ -56,9 +65,9 @@ const FormComponent = ({ placeholder }) => {
                   <p>Loading...</p>
                 ) : error ? (
                   <p>Error loading data</p>
-                ) : (
+                ) : data ? (
                   <PrescriptionCard data={data} />
-                )}
+                ) : null}
               </DialogDescription>
             </DialogHeader>
           </DialogContent>

@@ -23,17 +23,17 @@ const PrescriptionCard = ({ patientName, doctorName, date, medication, dosage, i
   }
 
 // Usage example
-const App = () => (
-    <div className="flex items-center justify-center ">
-      <PrescriptionCard
-        patientName="John Doe"
-        doctorName="Dr. Smith"
-        date="2024-05-20"
-        medication="Ibuprofen"
-        dosage="200mg"
-        instructions="Take one pill every 6 hours with food."
-      />
-    </div>
-  );
+// const App = () => (
+//     <div className="flex items-center justify-center ">
+//       <PrescriptionCard
+//         patientName="John Doe"
+//         doctorName="Dr. Smith"
+//         date="2024-05-20"
+//         medication="Ibuprofen"
+//         dosage="200mg"
+//         instructions="Take one pill every 6 hours with food."
+//       />
+//     </div>
+//   );
 
-  export default App;
+  export default PrescriptionCard;
