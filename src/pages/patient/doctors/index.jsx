@@ -1,3 +1,5 @@
+// Doctors.jsx
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
@@ -8,16 +10,12 @@ import doc3 from "@/public/img/docprofile3.jpg";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { useMutation } from "react-query";
-import getdoctors from "@/lib/profile/getdoctors";
 import { useSelector } from "react-redux";
+import  getdoctors  from "@/lib/profile/getdoctors";
+import searchDoctors from "@/lib/search/doctorsearch" // Import the new searchDoctors function
 
 const Card = ({ doctor }) => {
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -161,9 +159,10 @@ const Card = ({ doctor }) => {
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const token = useSelector((state) => state.auth.token);
 
-  const { mutate, data, isLoading, isError } = useMutation(
+  const { mutate: getDoctorsMutate, data, isLoading, isError } = useMutation(
     () => getdoctors({ token }),
     {
       onSuccess: (data) => {
@@ -176,15 +175,36 @@ const Doctors = () => {
     }
   );
 
-  useEffect(() => {
-    mutate();
-  }, [mutate]);
+  const { mutate: searchDoctorsMutate, data: searchData, isLoading: isSearching, isError: searchError } = useMutation(
+    (searchQuery) => searchDoctors({ token, searchQuery }),
+    {
+      onSuccess: (data) => {
+        // setDoctors(data.data); // Assuming the doctors array is inside `data.data`
+        console.log("Search results:", data);
+      },
+      onError: (error) => {
+        console.error("Error searching doctors:", error);
+      },
+    }
+  );
 
-  if (isLoading) {
+  useEffect(() => {
+    getDoctorsMutate();
+  }, [getDoctorsMutate]);
+
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchButtonClick = () => {
+    searchDoctorsMutate(searchQuery);
+  };
+
+  if (isLoading || isSearching) {
     return <div className="flex justify-center items-center">Loading...</div>;
   }
 
-  if (isError) {
+  if (isError || searchError) {
     return (
       <div className="flex justify-center items-center">
         Error fetching doctors.
@@ -194,8 +214,19 @@ const Doctors = () => {
 
   return (
     <>
-      <div className="mx-10 sm:mx-32 lg:mx-72 mt-4">
-        <Input placeholder="Search Your doctor" className="h-12" />
+      <div className="flex mx-10 sm:mx-32 lg:mx-72 mt-4">
+        <Input
+          placeholder="Search Your doctor"
+          className="h-12"
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
+        <Button
+          className="ml-2 bg-[#1F555D] text-white mt-2"
+          onClick={handleSearchButtonClick}
+        >
+          Search
+        </Button>
       </div>
       <div className="flex flex-wrap justify-around mt-6">
         {doctors.map((doctor, index) => (
