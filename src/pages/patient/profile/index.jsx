@@ -12,10 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { set } from "date-fns";
 import { updateProfile } from "@/lib/update/updatepatientprofile";
 import { updateprofile } from "@/redux/patientSlice";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import user from "@/public/img/PHOTO.jpg";
+import GetPatient from "@/lib/profile/getpatient";
 
 export const PatientProfile = () => {
   const [editMode, setEditMode] = useState(true);
@@ -128,6 +129,42 @@ export const PatientProfile = () => {
       },
     }
   );
+
+  const { data, isLoading, isError, refetch } = useQuery(
+    ["patientProfile", userToken, patientData?.patientid],
+    () => GetPatient({ token: userToken, id: patientData?.patientid }),
+    {
+      enabled: !!userToken && !!patientData?.patientid,
+      onSuccess: (data) => {
+        console.log("Patient data fetched successfully:", data);
+        dispatch(
+          updateprofile({
+            patientid: id,
+            patientname: data.data.fullname,
+            patientphone: data.data.phonenumber,
+            patientemail: data.data.email,
+            patientgender: data.data.gender,
+            patientlocation: data.data.location,
+            patientnationalId: data.data.nationalId,
+            patientweight: data.data.weight,
+            patientheight: data.data.height,
+            patientdateOfBirth: data.data.dateOfBirth,
+            patientcurrentBalance: data.data.currentBalance,
+          })
+        );
+      },
+      onError: (error) => {
+        console.error("Error fetching patient data:", error);
+      },
+      refetchOnMount: true,
+    }
+  );
+  // useEffect(() => {
+  //   if (updatedprofile.isSuccess) {
+  //     // Optionally trigger refetch to ensure the UI is up to date
+  //     refetch();
+  //   }
+  // }, [updatedprofile.isSuccess, refetch]);
 
   const handleSubmit = () => {
     console.log("Token before mutation:", userToken);

@@ -78,6 +78,7 @@ const Login = () => {
           navigate("/doctor/dashboard");
           break;
         case "Patient":
+          
           dispatch(
             patientAssignProfileAction({
               email: userData.email,
