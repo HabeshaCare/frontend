@@ -1,79 +1,93 @@
 import { useState } from "react";
+
+import { useMutation, useQuery } from "react-query";
 import VerificationRequestNavBar from "./requestNavBar";
 
-const UserContent = ({ userData }) => {
-    return (
-        <>
-            <div className="flex justify-around mt-8">
-                <div className="flex items-center gap-4">
-                    <img src={userData?.imageUrl} className="w-10 h-10 rounded-lg bg-gray-300" alt="profile pic" />
-                    <div className="flex flex-col">
-                        <p className="text-left font-bold">{userData?.fullname}</p>
-                        <p className="text-left text-[#B5B5C3]">{userData?.gender}</p>
-                    </div>
-                </div>
-                <div >{userData?.phonenumber}</div>
-                <div className="border border-solid flex flex-col items-center h-8 w-24 rounded-2xl bg-gray-200">
-                    <p>{userData?.role}</p>
-                </div>
-                <div>
-                    <a className="text-[#B5B5C3]" target="_blank" href={userData?.licenseUrl} rel="noreferrer" >View License Info</a>
-                </div>
-            </div>
+import { useSelector } from "react-redux";
+import { useToast } from "@/components/ui/use-toast";
 
-        </>
-    );
-};
+import UserContent from "./UserContent";
+import InstitutionContent from "./InstitutionContent";
 
-const InstitutionContent = ({ institutionData }) => {
-    return (
-        <>
-            <div className="flex justify-around mt-8">
+import { getUsers, UpdateInstitutionVerification, UpdateUserVerification } from "./lib";
 
-                <div>{institutionData?.name}</div>
-                <div>{institutionData?.createdBy}</div>
-                <div className="pl-24">{institutionData?.location}</div>
-                <div className="border border-solid flex flex-col items-center h-8 w-24 rounded-2xl bg-red-100 text-red-600">
-                    <p>{institutionData?.type}</p>
-                </div>
-                <div>
-                    <a className="text-[#B5B5C3]" target="_blank" href={institutionData?.licenseUrl} rel="noreferrer" >View License Info</a>
-                </div>
-            </div>
-        </>
-    );
-};
 
 const VerificationRequest = () => {
     const [activeTab, setActiveTab] = useState("Users");
-    const [users, setUsers] = useState([
+    const token = useSelector((state) => state.admin.token);
+    const healthCenterId = useSelector((state) => state.admin.institutionId)
+
+    const { toast } = useToast();
+    const { data: users, isError, isLoading, refetch } = useQuery(
+        "verificationRequests",
+        () => getUsers({ token, healthCenterId }),
         {
-            fullname: "Abebe Kebede", imageUrl: "https://randomuser.me/api/portraits", gender: "Male", licenseUrl: "https://randomuser.me/api/portraits", phonenumber: "0912345678", role: "Doctor"
-        },
-        {
-            fullname: "Zuvan Belay", imageUrl: "https://randomuser.me/api/portraits", gender: "Female", licenseUrl: "https://randomuser.me/api/portraits", phonenumber: "0912345678", role: "Reception"
+            refetchInterval: 10000, // Refetch every 10 seconds
         }
-    ]);
-    const [institutions, setInsitutions] = useState([
+    );
+    const [institutions, setInsitutions] = [];
+
+    const verifyUserMutation = useMutation(
+        (userId, userRole, verificationStatus) => UpdateUserVerification({ token, userId, userRole, verificationStatus }),
         {
-            name: "Institution 1",
-            createdBy: "John Doe",
-            location: "New York",
-            type: "Hospital",
-            licenseUrl: "https://example.com/license1"
-        },
-        {
-            name: "Institution 2",
-            createdBy: "Jane Smith",
-            location: "London",
-            type: "Clinic",
-            licenseUrl: "https://example.com/license2"
+            onSuccess: () => {
+                refetch(); // Refetch the verification after a successful confirmation
+                toast({
+                    title: "Success!",
+                    description: "User verified successfully.",
+                });
+            },
+            onError: (error) => {
+                console.error("Error verifying user:", error);
+                toast({
+                    title: "Error!",
+                    description: "An error occurred while verifying the user.",
+                });
+            },
         }
-    ]);
+    );
+
+    const verifyInstitutionMutation = useMutation(
+        (institutionId, institutionType, verificationStatus) => UpdateInstitutionVerification({ token, institutionId, institutionType, verificationStatus }),
+        {
+            onSuccess: () => {
+                refetch(); // Refetch the verification after a successful confirmation
+                toast({
+                    title: "Success!",
+                    description: "Institution verified successfully.",
+                });
+            },
+            onError: (error) => {
+                console.error("Error verifying institution:", error);
+                toast({
+                    title: "Error!",
+                    description: "An error occurred while verifying the institution.",
+                });
+            },
+        }
+    )
 
     const handleTabClick = (tabName) => {
         setActiveTab(tabName);
     };
+
+    const handleUserConfirm = (userId, userRole, verificationStatus) => {
+        verifyUserMutation.mutate(userId, userRole, verificationStatus);
+    };
+
+    const handleInstitutionConfirm = (institutionId, institutionType, verificationStatus) => {
+        verifyInstitutionMutation.mutate(institutionId, institutionType, verificationStatus);
+    }
+
+    if (isLoading)
+        return <div className="flex justify-center items-center">Loading...</div>;
+
+    if (isError)
+        toast({
+            title: "Error!",
+            description: "An error occurred while fetching verification requests.",
+        })
+
     return (
         <>
             <VerificationRequestNavBar
@@ -100,9 +114,9 @@ const VerificationRequest = () => {
             )}
             {console.log(activeTab === "Institutions")}
             {activeTab === "Users" && (
-                (users.map((user, index) => <UserContent key={index} userData={user} />)))}
+                (users.map((user, index) => <UserContent key={index} onConfirm={handleUserConfirm} userData={user} />)))}
             {activeTab === "Institutions" && (
-                (institutions.map((institution, index) => <InstitutionContent key={index} institutionData={institution} />)))}
+                (institutions.map((institution, index) => <InstitutionContent key={index} onConfirm={handleInstitutionConfirm} institutionData={institution} />)))}
         </>
     );
 };
