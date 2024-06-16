@@ -41,7 +41,7 @@ export const PatientProfile = () => {
   const patientData = useSelector((state) => state.patient);
   const userToken = useSelector((state) => state.auth.token);
 
-  console.log("pateint data", patientData);
+  console.log("pateint image url", patientData.patientimageUrl);
 
   useEffect(() => {
     if (patientData) {
@@ -150,6 +150,7 @@ export const PatientProfile = () => {
             patientheight: data.data.height,
             patientdateOfBirth: data.data.dateOfBirth,
             patientcurrentBalance: data.data.currentBalance,
+            patientimageUrl: data.data.imageUrl,
           })
         );
       },

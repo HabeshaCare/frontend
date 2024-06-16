@@ -49,6 +49,7 @@ const patientSlice = createSlice({
             state.patientdateOfBirth = action.payload.patientdateOfBirth;
             state.patientcurrentBalance = action.payload.patientcurrentBalance;
             state.patientpaymentVerified = action.payload.patientpaymentVerified;
+            state.patientimageUrl = action.payload.patientimageUrl;
         }
 
     }

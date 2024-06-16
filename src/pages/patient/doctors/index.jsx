@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import doc from "@/public/img/docprofile.webp";
 import doc2 from "@/public/img/docprofile2.webp";
 import doc3 from "@/public/img/docprofile3.jpg";
-import sendappointment from "@/lib/schedule/schedule";
+import sendappointment from "@/lib/schedule/sendschedule";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useMutation } from "react-query";
 import { useSelector } from "react-redux";

@@ -25,13 +25,13 @@ const AppointementNavBar = ({ activeTab, handleTabClick }) => {
       </div>
       <div
         className={`h-full flex flex-col justify-center items-center md:w-32 bg-white text-[#1F555D] cursor-pointer ${
-          activeTab === "Wait List"
+          activeTab === "Waiting"
             ? "rounded-t-lg border-b-4 border-[#1F555D]"
             : "bg-[#1F555D]" // Add hover effect for inactive tabs
         }`}
-        onClick={() => handleTabClick("Wait List")}
+        onClick={() => handleTabClick("Waiting")}
       >
-        <p>Wait List</p>
+        <p>Waiting</p>
       </div>
     </div>
   );
