@@ -8,7 +8,7 @@ const getFirstName = (fullName) => {
   return fullName.split(' ')[0];
 };
 
-const PatientDashboard = () => {
+const HealthCenterDashboard = () => {
   const [activeLink, setActiveLink] = useState('dashboard');
   const userData = useSelector((state) => state.auth.user);
 
@@ -23,7 +23,7 @@ const PatientDashboard = () => {
         <Sidebar onLinkClick={handleLinkClick} />
         <div className="flex-1 flex flex-col">
           <div className="flex justify-start bg-gray-100 p-4 text-gray-800">
-            <div className="text-lg font-semibold">Welcome, Doctor {getFirstName(userData.fullname)}</div>
+            <div className="text-lg font-semibold">Welcome, {getFirstName(userData.fullname)}</div>
           </div>
           <MainContent activeLink={activeLink} />
         </div>
@@ -32,4 +32,4 @@ const PatientDashboard = () => {
   );
 };
 
-export default PatientDashboard;
+export default HealthCenterDashboard;

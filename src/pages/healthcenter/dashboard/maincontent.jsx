@@ -1,10 +1,5 @@
 import React from "react";
 import Chatbot from "@/components/landingpage/chatbot";
-import MedicalHistory from "@/pages/patient/medicalhistory";
-import Appointment from "@/pages/doctor/appointments";
-// import ProfileInfo from "@/components/profile/profileInfo";
-import PatientProfile from "../profile";
-import Patient from "../patients";
 
 const Card = ({ text }) => {
   return (
@@ -16,7 +11,7 @@ const Card = ({ text }) => {
 const MainContent = ({ activeLink }) => {
   return (
     <div className="flex-1 overflow-y-auto">
-      {activeLink === "dashboard" && (
+      {activeLink === "requests" && (
         <>
           <div className="flex justify-around w-full mb-8">
             {/* <div className="flex justify-center items-center m-2 p-4 text-white w-1/3 h-36 rounded-lg bg-gradient-to-b from-[#095FAF] to-[#02C27D]">
@@ -36,22 +31,17 @@ const MainContent = ({ activeLink }) => {
           </div>
         </>
       )}
-      {activeLink === "appointments" && (
-        <div>
-          <Appointment />
-        </div>
-      )}
       {activeLink === "profile" && (
-        
-          <PatientProfile />
-        
+
+        <>HealthCenter Profile</>
+
       )}
-      {activeLink === "medicalRecords" && (
+      {activeLink === "institutions" && (
         <div>
-          <MedicalHistory />
+          Institutions
         </div>
       )}
-      {activeLink === "petient" && <Patient />}
+      {activeLink === "users" && <>Users</>}
     </div>
   );
 };

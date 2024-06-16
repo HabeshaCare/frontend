@@ -9,18 +9,17 @@ const Sidebar = ({ onLinkClick }) => {
   };
 
   const linkClasses = (link) =>
-    `mb-2 text-left w-full px-6 h-10 ${
-      selectedLink === link ? "bg-[#809ea3]" : "bg-none"
+    `mb-2 text-left w-full px-6 h-10 ${selectedLink === link ? "bg-[#809ea3]" : "bg-none"
     }`;
 
   return (
     <div className="bg-[#1F555D] h-screen w-64 text-white flex justify-center items-">
       <div className="flex flex-col items-center py-8 h-full mt-16 mr-8">
         <button
-          onClick={() => handleLinkClick("dashboard")}
-          className={linkClasses("dashboard")}
+          onClick={() => handleLinkClick("requests")}
+          className={linkClasses("requests")}
         >
-          Dashboard
+          Verification Requests
         </button>
         <button
           onClick={() => handleLinkClick("profile")}
@@ -28,24 +27,17 @@ const Sidebar = ({ onLinkClick }) => {
         >
           Profile
         </button>
-
         <button
-          onClick={() => handleLinkClick("appointments")}
-          className={linkClasses("appointments")}
+          onClick={() => handleLinkClick("users")}
+          className={linkClasses("users")}
         >
-          Appointments
+          Associated Users
         </button>
         <button
-          onClick={() => handleLinkClick("petient")}
-          className={linkClasses("petient")}
+          onClick={() => handleLinkClick("institutions")}
+          className={linkClasses("institutions")}
         >
-          Petients
-        </button>
-        <button
-          onClick={() => handleLinkClick("medicalRecords")}
-          className={linkClasses("medicalRecords")}
-        >
-          Medical Records
+          Associated Institutions
         </button>
       </div>
     </div>
