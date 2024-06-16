@@ -1,63 +1,93 @@
-import React from 'react';
-import { useQuery } from 'react-query';
+import React, { useState } from 'react';
+import { useMutation } from 'react-query';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { selectToken } from '@/redux/authSlice';
+import { selectLaboratoryId } from "@/redux/laboratorySlice";
 
-const DynamicForm = ({ authToken }) => {
-    const { data, isLoading, isError } = useQuery('formFields', () =>
-        axios.get('http://localhost:5072/api/Laboratory/{id}/test-requests/{requestId}', {
-            headers: {
-                Authorization: `Bearer ${authToken}`
-            }
-        }).then(res => res.data)
+const submitTestValues = async ({ token, testData, id, requestId }) => {
+    const response = await axios.put(`http://localhost:5072/api/Laboratory/${id}/test-requests/${requestId}`, testData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    });
+    return response.data;
+};
+
+const TestRequestCard = ({ data }) => {
+    console.log("dataaa", data)
+    const { doctorName, laboratoryName, requestedDate, tests, id: requestId } = data;
+
+
+    const [testValues, setTestValues] = useState(
+        tests.reduce((acc, test) => {
+            acc[test.id] = test.testValue || '';
+            return acc;
+        }, {})
     );
+    const token = useSelector(selectToken);
+    const id = useSelector(selectLaboratoryId);
+    const mutation = useMutation( submitTestValues);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        try {
-            const response = await axios.post('https://your-api-url.com/submit', formData, {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            console.log('Form submission response:', response.data);
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        }
+    const handleChange = (e, testId) => {
+        setTestValues({
+            ...testValues,
+            [testId]: e.target.value,
+        });
     };
 
-    if (isLoading) return <div>Loading...</div>;
-    if (isError) return <div>Error fetching form fields!</div>;
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const testData = tests.map(test => ({
+            id: test.id,
+            testName: test.testName,
+            testValue: testValues[test.id],
+        }));
+        const data = {results: testData}
+        console.log("tdata",testData)
+        mutation.mutate({ token, testData: data, id, requestId });
+    };
 
     return (
-        <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-            <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-                <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow-md rounded-3xl sm:p-10">
-                    <div className="max-w-md mx-auto">
-                        <div className="text-center">
-                            <h1 className="text-2xl font-semibold text-gray-900 mb-3">Dynamic Form</h1>
-                            <p className="text-gray-500">This form is dynamically generated from API.</p>
-                        </div>
-                        <form className="py-8 text-base leading-6 space-y-4 text-gray-700" onSubmit={handleSubmit}>
-                            {data.fields.map((field) => (
-                                <div key={field.id} className="relative">
+        <div className="bg-white shadow-md rounded-lg p-6 mb-4">
+            <form onSubmit={handleSubmit}>
+                <div className="flex justify-between mb-4">
+                    <h2 className="text-lg font-bold">{doctorName}</h2>
+                </div>
+                <div>
+                    <p className="text-sm text-gray-600 mb-2">Laboratory: <span className="font-bold">{laboratoryName}</span></p>
+                    <p className="text-sm text-gray-600 mb-2">Requested Date: <span className="font-bold">{new Date(requestedDate).toLocaleDateString()}</span></p>
+                    <div className="mb-4">
+                        <h3 className="text-sm text-gray-600 font-bold mb-2">Tests:</h3>
+                        <ul className="text-sm text-gray-600">
+                            {tests.map((test, index) => (
+                                <li key={index} className="mb-2">
+                                    <span className="font-bold">{test.testName}:</span>
                                     <input
                                         type="text"
-                                        name={field.name}
-                                        placeholder={field.label}
-                                        className="w-full border rounded-md pl-3 py-2 mt-2 focus:outline-none focus:border-blue-500"
-                                        required
+                                        value={testValues[test.id]}
+                                        onChange={(e) => handleChange(e, test.id)}
+                                        placeholder={`Enter value for ${test.testName}`}
+                                        className="ml-2 border rounded-md px-2 py-1"
                                     />
-                                </div>
+                                </li>
                             ))}
-                            <button type="submit" className="bg-blue-500 text-white rounded-md px-4 py-2 mt-6 hover:bg-blue-600 transition-colors duration-300">Submit</button>
-                        </form>
+                        </ul>
                     </div>
                 </div>
-            </div>
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
+                    disabled={mutation.isLoading}
+                >
+                    {mutation.isLoading ? 'Submitting...' : 'Submit'}
+                </button>
+                {mutation.isError && <div className="text-red-500 mt-2">Error: {mutation.error.message}</div>}
+                {mutation.isSuccess && <div className="text-green-500 mt-2">Successfully submitted!</div>}
+            </form>
         </div>
     );
 };
 
-export default DynamicForm;
+export default TestRequestCard;

@@ -15,6 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { assignProfile as doctorAssignProfileAction } from "@/redux/doctorSlice";
 import { assignProfile as patientAssignProfileAction } from "@/redux/patientSlice";
 import {login as pharmacyAssignProfileAction} from "@/redux/pharmacySlice";
+import {login as laboratoryAssignProfileAction } from "@/redux/laboratorySlice";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,9 +68,20 @@ const Login = () => {
           navigate("/pharmacy/dashboard");
           break;
         case "LaboratoryAdmin":
+          dispatch(
+            laboratoryAssignProfileAction({
+              email: userData.email,
+              id: userData.id,
+              fullname: userData.fullname,
+              phonenumber: userData.phonenumber,
+              gender: userData.gender,
+            })
+          );
+          console.log("added")
           navigate("/laboratory/dashboard");
           break;
         case "Reception":
+          
           navigate("/reception/dashboard");
           break;
         case "Doctor":

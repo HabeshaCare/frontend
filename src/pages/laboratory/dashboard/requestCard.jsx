@@ -8,29 +8,14 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import ReqForm from "../../doctor/form/requestForm";
-import DisplayPatientInfo from "./cardForm";
-import ResultFormComponent from "./resultForm";
+import TestRequestCard from "./cardForm";
+import TestRequestForm from "./resultForm";
 
 const Card = (props) => {
-    const data = {
-        name: 'John Doe',
-        address: '123 Main St',
-        organization: 'Acme Corp',
-        phoneNumber: '+251912345678',
-        dateOfBirth: '1990-01-01',
-        gender: 'Male',
-        drugTherapy: 'None',
-        lastDose: 'N/A',
-        clinicalInfo: 'No relevant clinical information.',
-        urgency: 'Normal',
-        sampleDate: '2024-06-14',
-        fasting: 'Non-fasting',
-        sampleType: 'Blood',
-        profileTests: ['Biochemistry', 'Hematology'],
-        specificTests: ['G2000', 'GT11', 'HB3'],
-        additionalTests: ['Cervical Cytology: Pap smear'],
-        site: 'Cervix'
-    };
+    
+    const data = props.item
+    console.log("the data ",data)
+
     return (
         <div className="w-10/12 bg-white rounded-lg shadow-md p-6 mx-auto mb-6 flex items-center justify-between">
             <div className="flex-1">
@@ -47,7 +32,7 @@ const Card = (props) => {
                         <DialogHeader>
                             <DialogTitle>Result form</DialogTitle>
                             <DialogDescription>
-                                <ResultFormComponent />
+                                <TestRequestForm data={data}/>
 
                             </DialogDescription>
                         </DialogHeader>
@@ -63,7 +48,7 @@ const Card = (props) => {
                         <DialogHeader>
                             <DialogTitle>request</DialogTitle>
                             <DialogDescription>
-                                <DisplayPatientInfo data={data} />
+                                <TestRequestCard data={data} />
                             </DialogDescription>
                         </DialogHeader>
                     </DialogContent>
