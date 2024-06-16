@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import NavBar from "./navbar";
 import Sidebar from "./sidebar";
 import MainContent from "./maincontent";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "react-query";
+import { fetchAdminInfo } from "./requests/lib";
+import { addAdminData } from "@/redux/adminSlice";
+import { useToast } from "@/components/ui/use-toast";
+
 
 const getFirstName = (fullName) => {
   return fullName.split(' ')[0];
@@ -11,6 +16,15 @@ const getFirstName = (fullName) => {
 const HealthCenterDashboard = () => {
   const [activeLink, setActiveLink] = useState('requests');
   const userData = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
+  const { toast } = useToast();
+  const dispatch = useDispatch()
+
+  const { isLoading, isError, data } = useQuery("adminInfo", () => fetchAdminInfo({ token, adminId: userData?.id }), {
+    onSuccess: (adminInfo) => {
+      dispatch(addAdminData(adminInfo));
+    }
+  });
 
   const handleLinkClick = (link) => {
     setActiveLink(link);

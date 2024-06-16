@@ -14,7 +14,7 @@ import { getUsers, UpdateInstitutionVerification, UpdateUserVerification } from 
 
 const VerificationRequest = () => {
     const [activeTab, setActiveTab] = useState("Users");
-    const token = useSelector((state) => state.admin.token);
+    const token = useSelector((state) => state.auth.token);
     const healthCenterId = useSelector((state) => state.admin.institutionId)
 
     const { toast } = useToast();
