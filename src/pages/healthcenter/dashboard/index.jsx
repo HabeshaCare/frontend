@@ -9,7 +9,7 @@ const getFirstName = (fullName) => {
 };
 
 const HealthCenterDashboard = () => {
-  const [activeLink, setActiveLink] = useState('dashboard');
+  const [activeLink, setActiveLink] = useState('requests');
   const userData = useSelector((state) => state.auth.user);
 
   const handleLinkClick = (link) => {

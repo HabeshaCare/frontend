@@ -62,7 +62,7 @@ function App() {
               <Route path="/verifyEmail" element={<VarifyEmail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/Register" element={<Register />} />
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<HealthCenterDashboard />} />
               <Route path="/unauthorized" element={<div>Unauthorized Access <a href="/login" className='text-primary '>Login</a></div>} />
             </Routes>
           </Router>
