@@ -10,28 +10,55 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { useToast } from "@/components/ui/use-toast";
 
-function Chatbot() {
+
+function Chatbot({ context }) {
   const [input, setInput] = useState("");
   const [chatLog, setChatLog] = useState([
     { sender: "bot", message: "Hello, how can I help you?" },
   ]);
+  const token = useSelector((state) => state.auth.token);
+  const id = useSelector((state) => state.auth.user.id);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (input.trim() === "") return;
 
     const newChatLog = [...chatLog, { sender: "user", message: input }];
     setChatLog(newChatLog);
     setInput("");
 
-    // Simulate LLM response
-    setTimeout(() => {
-      const response = {
-        sender: "bot",
-        message: "This is a simulated response from the LLM.",
-      };
-      setChatLog([...newChatLog, response]);
-    }, 1000);
+    const data = { query: input, patientHistory: context ? context : [] };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
+    };
+    setIsLoading(true);
+    console.log(data);
+    try {
+      const response = await axios.post(
+        `http://localhost:5072/api/ai/conversation/${id}/chat`,
+        data,
+        config
+      );
+      const aiResponse = { sender: "bot", message: response.data.data.content };
+      setChatLog([...newChatLog, aiResponse]);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error! Error Occurred",
+        description: error.message ? error.message : "Something Went wrong"
+      });
+      setIsLoading(false);
+    }
+    setIsLoading(false);
   };
 
   const handleKeyDown = (event) => {
@@ -86,17 +113,17 @@ function Chatbot() {
             <SheetTitle className="mb-4 bg-teal-900 text-white px-4 py-2 mr-4 rounded-md">
               GuideBot
             </SheetTitle>
-            <SheetDescription className="h-96 mt-4 rounded-lg px-2 py-2 text-black overflow-y-auto">
+            <SheetDescription className="h-[530px] mt-4 rounded-lg px-2 py-2 text-black overflow-y-auto">
               {chatLog.map((entry, index) => (
                 <div
                   key={index}
-                  className={`p-2 rounded-md ${
-                    entry.sender === "bot" ? "bg-white" : "bg-blue-100"
-                  }`}
+                  className={`p-2 m-2 rounded-md ${entry.sender === "bot" ? "bg-white" : "bg-blue-100"
+                    }`}
                 >
                   {entry.message}
                 </div>
               ))}
+              {isLoading && <p>Generating response...</p>}
             </SheetDescription>
           </SheetHeader>
           <SheetFooter>

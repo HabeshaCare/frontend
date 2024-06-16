@@ -6,22 +6,64 @@ import React, { useEffect, useState } from "react";
 import doc from "@/public/img/docprofile.webp";
 import doc2 from "@/public/img/docprofile2.webp";
 import doc3 from "@/public/img/docprofile3.jpg";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import sendappointment from "@/lib/schedule/sendschedule";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
-import  getdoctors  from "@/lib/profile/getdoctors";
-import searchDoctors from "@/lib/search/doctorsearch" // Import the new searchDoctors function
+import getdoctors from "@/lib/profile/getdoctors";
+import searchDoctors from "@/lib/search/doctorsearch"; // Import the new searchDoctors function
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const Card = ({ doctor }) => {
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [date, setDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const userId = useSelector((state) => state.auth.user.id);
+  const userToken = useSelector((state) => state.auth.token);
+  const { toast } = useToast();
+
 
   const handleBookAppointmentClick = () => {
     setShowBookingForm(true);
+  };
+
+
+   const { mutate: scheduleAppointment, isLoading, isError, isSuccess } = useMutation(sendappointment, {
+    onSuccess: (data) => {
+      console.log("Appointment scheduled successfully:", data);
+      setShowBookingForm(false);
+      toast({
+        title: "Success!",
+        description: "You have Booked Appointment successfully.",
+        action: <ToastAction altText="Continue">Continue</ToastAction>,
+      });
+      // Handle success (e.g., show a success message or close the form)
+    },
+    onError: (error) => {
+      console.error("Error scheduling appointment:", error);
+      toast({
+        title: "Error!",
+        description: "An error occurred while scheduling appointment.",
+        action: <ToastAction altText="Retry">Retry</ToastAction>,
+      });
+      // Handle error (e.g., show an error message)
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const to = `${date}T${endTime}:00.000Z`;
+    const from = `${date}T${startTime}:00.000Z`;
+
+    scheduleAppointment({
+      token: userToken,
+      userId,
+      to,
+      from,
+      doctorId: doctor.id,
+    });
   };
   const about =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporincididunt ut labore et dolore magna aliqua.";
@@ -112,7 +154,7 @@ const Card = ({ doctor }) => {
                     <h3 className="text-xl font-semibold mb-4">
                       Schedule an Appointment
                     </h3>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                       <div className="mb-4">
                         <label
                           htmlFor="date"
@@ -124,19 +166,41 @@ const Card = ({ doctor }) => {
                           type="date"
                           id="date"
                           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          value={date}
+                          onChange={(e) => setDate(e.target.value)}
+                          required
                         />
                       </div>
                       <div className="mb-4">
                         <label
-                          htmlFor="time"
+                          htmlFor="start-time"
                           className="block text-sm font-medium text-gray-700"
                         >
-                          Select Time
+                          Select starting Time
                         </label>
                         <input
                           type="time"
-                          id="time"
+                          id="start-time"
                           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          value={startTime}
+                          onChange={(e) => setStartTime(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          htmlFor="end-time"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Select finishing Time
+                        </label>
+                        <input
+                          type="time"
+                          id="end-time"
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          value={endTime}
+                          onChange={(e) => setEndTime(e.target.value)}
+                          required
                         />
                       </div>
                       <button
@@ -166,7 +230,7 @@ const Doctors = () => {
     () => getdoctors({ token }),
     {
       onSuccess: (data) => {
-        setDoctors(data.data); 
+        setDoctors(data.data);
       },
       onError: (error) => {
         console.error("Error fetching doctors:", error);
@@ -174,18 +238,20 @@ const Doctors = () => {
     }
   );
 
-  const { mutate: searchDoctorsMutate, data: searchData, isLoading: isSearching, isError: searchError } = useMutation(
-    (searchQuery) => searchDoctors({ token, searchQuery }),
-    {
-      onSuccess: (data) => {
-        setDoctors(data.data.map(item => item.doctor)); // Extract doctor objects
-        // console.log("Search results:", data);
-      },
-      onError: (error) => {
-        console.error("Error searching doctors:", error);
-      },
-    }
-  );
+  const {
+    mutate: searchDoctorsMutate,
+    data: searchData,
+    isLoading: isSearching,
+    isError: searchError,
+  } = useMutation((searchQuery) => searchDoctors({ token, searchQuery }), {
+    onSuccess: (data) => {
+      setDoctors(data.data.map((item) => item.doctor)); // Extract doctor objects
+      // console.log("Search results:", data);
+    },
+    onError: (error) => {
+      console.error("Error searching doctors:", error);
+    },
+  });
 
   useEffect(() => {
     getDoctorsMutate();
