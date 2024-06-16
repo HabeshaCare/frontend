@@ -24,13 +24,16 @@ const Card = ({ doctor }) => {
   const userToken = useSelector((state) => state.auth.token);
   const { toast } = useToast();
 
-
   const handleBookAppointmentClick = () => {
     setShowBookingForm(true);
   };
 
-
-   const { mutate: scheduleAppointment, isLoading, isError, isSuccess } = useMutation(sendappointment, {
+  const {
+    mutate: scheduleAppointment,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useMutation(sendappointment, {
     onSuccess: (data) => {
       console.log("Appointment scheduled successfully:", data);
       setShowBookingForm(false);
@@ -43,11 +46,26 @@ const Card = ({ doctor }) => {
     },
     onError: (error) => {
       console.error("Error scheduling appointment:", error);
-      toast({
-        title: "Error!",
-        description: "An error occurred while scheduling appointment.",
-        action: <ToastAction altText="Retry">Retry</ToastAction>,
-      });
+      if (error.response && error.response.status === 409) {
+        if (
+          error.response.data &&
+          error.response.data.errors &&
+          error.response.data.errors.includes("Schedule conflict")
+        ) {
+          toast({
+            title: "Error!",
+            description:
+              "You have a schedule conflict. you have scheduled another appointment at this time. Please select another time.",
+            action: <ToastAction altText="Retry">Retry</ToastAction>,
+          });
+        }
+      } else {
+        toast({
+          title: "Error!",
+          description: "An error occurred while scheduling appointment.",
+          action: <ToastAction altText="Retry">Retry</ToastAction>,
+        });
+      }
       // Handle error (e.g., show an error message)
     },
   });
