@@ -53,4 +53,5 @@ const laboratorySlice = createSlice({
 });
 
 export const { assignProfile, assignProfilePicture, updateProfile } = laboratorySlice.actions;
+export const selectLaboratoryId = (state) => state.laboratory.laboratoryId;
 export const laboratoryReducer = laboratorySlice.reducer;

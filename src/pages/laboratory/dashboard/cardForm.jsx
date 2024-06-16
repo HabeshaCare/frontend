@@ -1,16 +1,26 @@
 import React from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux'; // Import useSelector from react-redux
+import { selectToken } from "@/redux/authSlice"; // Adjust the path based on your actual file structure
 
 const DisplayPatientInfo = () => {
-    let id = localStorage.getItem('userId');
-    let token = localStorage.getItem('userToken');
-    console.log()
+  const token = useSelector(selectToken); // Fetch token using useSelector
+  const id = localStorage.getItem('userId');
+
   const { data, isLoading, isError } = useQuery('patientInfo', fetchPatientInfo);
 
   async function fetchPatientInfo() {
-    const response = await axios.get('http://localhost:5072/index/api/Laboratory/{id}/test-requests'); // Replace with your API endpoint
-    return response.data;
+    try {
+      const response = await axios.get(`http://localhost:5072/index/api/Laboratory/${id}/test-requests`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Pass token in Authorization header
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to fetch patient information');
+    }
   }
 
   if (isLoading) return <div>Loading...</div>;
@@ -35,7 +45,6 @@ const DisplayPatientInfo = () => {
     additionalTests,
     site
   } = data;
-
   return (
     <div className="container mx-auto p-4 overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -90,7 +99,7 @@ const DisplayPatientInfo = () => {
             <p className="text-gray-900">{clinicalInfo}</p>
           </div>
         </div>
-        
+
         <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="shadow-md rounded-lg p-6 mb-4 bg-white">
             <h2 className="mb-4 text-gray-700 text-lg font-bold">Sample Details Form</h2>
