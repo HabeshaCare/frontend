@@ -19,6 +19,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useNavigate } from "react-router-dom";
+
+
+
 const Content = ({
   fullname,
   gender,
@@ -29,7 +33,14 @@ const Content = ({
   imageUrl,
   onConfirm,
   scheduleId,
+  meetingUrl,
 }) => {
+  const navigate = useNavigate();
+
+  const handleJoin = () => {
+    navigate(`/videochat?url=${meetingUrl}`);
+  };
+
   return (
     <>
       <div className="flex justify-between mt-8 mx-6">
@@ -83,8 +94,8 @@ const Content = ({
                 </AlertDialogContent>
               </AlertDialog>
             ) : (
-              <Button variant="outline" disabled>
-                {status}
+              <Button variant="outline" onClick={handleJoin}>
+                Join
               </Button>
             )}
           </div>
@@ -93,6 +104,7 @@ const Content = ({
     </>
   );
 };
+
 
 const Appointement = () => {
   const [activeTab, setActiveTab] = useState("Queue");
@@ -193,6 +205,7 @@ const Appointement = () => {
             status={status}
             onConfirm={handleConfirm}
             scheduleId={schedule.id}
+            meetingUrl={schedule.meetingUrl} // Pass the meeting URL to the Content component
           />
         );
       })}
