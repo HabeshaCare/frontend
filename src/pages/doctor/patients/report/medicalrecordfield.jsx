@@ -8,7 +8,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -19,7 +18,7 @@ import { useSelector } from "react-redux";
 
 const ReportForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
-    methodOfTreatment: "",
+    treatmentMethod: "",
     weight: "",
     height: "",
     generalAppearance: "",
@@ -37,26 +36,25 @@ const ReportForm = ({ onSubmit }) => {
 
   const userToken = useSelector((state) => state.auth.token);
 
-  const sendData = useMutation(
-    (data) => sendMedicalRecord(userToken, data),
-    {
-      onSuccess: () => {
-        toast({
-          title: "Success!",
-          description: "Medical data inserted successfully.",
-          action: <ToastAction altText="Continue">Continue</ToastAction>,
-        });
-        if (onSubmit) onSubmit(formData);
-      },
-      onError: (error) => {
-        toast({
-          title: "Error!",
-          description: error.message || "Error inserting medical data.",
-          action: <ToastAction altText="Continue">Continue</ToastAction>,
-        });
-      },
-    }
-  );
+  const sendData = useMutation((data) => sendMedicalRecord(userToken, data), {
+    onSuccess: (data) => {
+      console.log("Medical record ID:", data.data.id);
+      console.log("data", data);
+      toast({
+        title: "Success!",
+        description: "Medical data inserted successfully.",
+        action: <ToastAction altText="Continue">Continue</ToastAction>,
+      });
+      if (onSubmit) onSubmit(data); // Pass the full data object to get the medical record ID
+    },
+    onError: (error) => {
+      toast({
+        title: "Error!",
+        description: error.message || "Error inserting medical data.",
+        action: <ToastAction altText="Retry">Retry</ToastAction>,
+      });
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();

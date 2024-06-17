@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const sendPrescription = async (token, data, medicalRecordId) => {
+  console.log("prescription data", data);
   try {
     const res = await axios.post(
       `http://localhost:5072/api/records/${medicalRecordId}/prescriptions`,
@@ -8,6 +9,7 @@ const sendPrescription = async (token, data, medicalRecordId) => {
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       }
     );

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import ReportForm from "./medicalrecordfield";
 import PrescriptionForm from "./prescriptionform";
-import sendMedicalRecord from "@/lib/service/sendmedicalrecord";
 import sendPrescription from "@/lib/service/sendprescription";
 import { useMutation } from "react-query";
 import { useToast } from "@/components/ui/use-toast";
@@ -11,30 +10,8 @@ import { useSelector } from "react-redux";
 
 const CombinedForm = ({ onSubmit }) => {
   const [medicalRecordId, setMedicalRecordId] = useState(null);
-  const [reportData, setReportData] = useState(null);
   const { toast } = useToast();
   const userToken = useSelector((state) => state.auth.token);
-
-  const sendMedicalRecordMutation = useMutation(
-    ({ token, data }) => sendMedicalRecord(token, data),
-    {
-      onSuccess: (data) => {
-        setMedicalRecordId(data.id); // Assuming the response contains the medical record ID
-        toast({
-          title: "Success!",
-          description: "Medical report submitted successfully.",
-          action: <ToastAction altText="Continue">Continue</ToastAction>,
-        });
-      },
-      onError: (error) => {
-        toast({
-          title: "Error!",
-          description: "Error submitting medical report.",
-          action: <ToastAction altText="Retry">Retry</ToastAction>,
-        });
-      },
-    }
-  );
 
   const sendPrescriptionMutation = useMutation(
     ({ token, data, recordId }) => sendPrescription(token, data, recordId),
@@ -57,9 +34,10 @@ const CombinedForm = ({ onSubmit }) => {
     }
   );
 
-  const handleReportSubmit = (formData) => {
-    sendMedicalRecordMutation.mutate({ token: userToken, data: formData });
-    setReportData(formData); // Store report data in case it's needed later
+  const handleReportSubmit = (data) => {
+    const recordId = data.data.id; // Extract medical record ID from the response
+    console.log("Medical record ID:", recordId);
+    setMedicalRecordId(recordId);
   };
 
   const handlePrescriptionSubmit = (formData) => {
