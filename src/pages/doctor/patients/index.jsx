@@ -1,42 +1,36 @@
 import { Button } from "@/components/ui/button";
-import back from "@/public/icons/back.svg";
 import { useQuery } from "react-query";
 import getPatient from "@/lib/patient/getpatient";
-import { use } from "react";
 import { useSelector } from "react-redux";
-const Content = () => {
+const Content = ({ patient }) => {
   return (
     <>
-      <div className="flex justify-around mt-8">
+      <div className="flex justify-between mx-8 mt-8">
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 rounded-lg bg-gray-300"></div>
           <div className="flex flex-col">
-            <p className="text-left font-bold">David chandler</p>
-            <p className="text-left text-[#B5B5C3]">Male, 32</p>
+            <p className="text-left font-bold">{patient.fullname}</p>
+            <p className="text-left text-[#B5B5C3]">{patient.gender}, {patient.age}</p>
           </div>
         </div>
         <div>
-          <p className="text-[#5B5B3C]">12345678</p>
-        </div>
-        <div className="text-[#5B5B3C]">22/12/2023</div>
-        {/* <div className="border border-solid flex flex-col items-center h-8 w-24 rounded-2xl bg-red-100 text-red-600">
-          <p>Waiting</p>
-        </div> */}
-        <div>
-          <p className="text-center text-lg font-bold text-[#1F555D]">
-            Hospital
-          </p>
-          <p className="text-[#B5B5C3]">Amin General Hospital</p>
+          <p className="text-[#5B5B3C]">{patient.phonenumber}</p>
         </div>
         <div>
-          <Button className="bg-[#1F555D] text-white w-36 h-10 rounded-3xl hover:bg-blue-300">
-            View Reports
+          <Button className="bg-[#1F555D] text-white w-44 h-10 rounded-3xl hover:bg-blue-300">
+            Add
+          </Button>
+        </div>
+        <div>
+          <Button className="bg-[#1F555D] text-white w-44 h-10 rounded-3xl hover:bg-blue-300">
+            View
           </Button>
         </div>
       </div>
     </>
   );
 };
+
 
 const Patient = () => {
   const userId = useSelector((state) => state.auth.user.id);
@@ -45,40 +39,31 @@ const Patient = () => {
   const { data, isLoading, isError } = useQuery(
     "patient",
     () => getPatient({ id: userId, token: userToken }),
-    {
-      refetchInterval: 10000, // Refetch every 10 seconds
-    }
+    // {
+    //   refetchInterval: 100000000, // Refetch every 10 seconds
+    // }
   );
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
-  if (data) {
-    console.log("Patient data:", data);
-  }
 
   return (
     <>
-      <div className="flex justify-between items-center h-16 px-4">
-        <div className="ml-2 cursor-pointer">
-          <img src={back} alt="back icon" />
-        </div>
+      <div className="flex justify-center items-center h-16">
         <div className="text-xl font-bold font-serif">My Patients</div>
-        <div>Filter</div>
       </div>
       <div>
         <hr />
       </div>
-      <div className="flex justify-around my-4 text-[#1F555D] text-lg font-bold w-5/6">
+      <div className="flex justify-between my-4 text-[#1F555D] text-lg font-bold mx-16">
         <div>Patient Name</div>
-        <div className="pl-24">ID</div>
-        <div>Last Visit</div>
-        <div>Method of treatment</div>
+        <div className="">Phone Number</div>
+        <div className="">Add New Report</div>
+        <div className="">View past Report</div>
       </div>
-      <Content />
-      <Content />
-      <Content />
-      <Content />
-      <Content />
+      {data && data.data.map((patient, index) => (
+        <Content key={index} patient={patient} />
+      ))}
     </>
   );
 };
