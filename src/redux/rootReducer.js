@@ -2,7 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { authReducer } from './authSlice';
 import { doctorReducer } from './doctorSlice';
 import { patientReducer } from './patientSlice';
-import { adminReducer } from "./adminSlice"
+import adminReducer  from "./adminSlice"
 
 const appReducer = combineReducers({
   auth: authReducer,

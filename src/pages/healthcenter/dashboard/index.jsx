@@ -22,7 +22,9 @@ const HealthCenterDashboard = () => {
 
   const { isLoading, isError, data } = useQuery("adminInfo", () => fetchAdminInfo({ token, adminId: userData?.id }), {
     onSuccess: (adminInfo) => {
-      dispatch(addAdminData(adminInfo));
+      console.log("adminInfo: ", adminInfo);
+      if (adminInfo !== null && adminInfo !== undefined)
+        dispatch(addAdminData(adminInfo));
     }
   });
 

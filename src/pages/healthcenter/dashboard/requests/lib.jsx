@@ -15,9 +15,9 @@ export const UpdateUserVerification = async ({ token, userId, userRole, verifica
             {},
             config
         );
-        return response.data;
+        return response.data.data;
     } catch (error) {
-        throw error;
+        console.log(error);
     }
 }
 
@@ -35,16 +35,16 @@ export const UpdateInstitutionVerification = async ({ token, institutionId, inst
             {},
             config
         );
-        return response.data;
+        return response.data.data;
     } catch (error) {
-        throw error;
+        console.log(error);
     }
 
 }
 
 export const getUsers = async ({ token, healthCenterId }) => {
     const doctorsRequest = axios.get(
-        `http://localhost:5072/api/doctor/`,
+        `http://localhost:5072/api/doctor`,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ export const getUsers = async ({ token, healthCenterId }) => {
         }
     );
 
-    const adminsRequest = axios.get(`http://localhost:5072/api/doctor/`,
+    const adminsRequest = axios.get(`http://localhost:5072/api/admin`,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -67,13 +67,35 @@ export const getUsers = async ({ token, healthCenterId }) => {
             }
         });
     try {
-        const responses = await Promise.all([adminsRequest, doctorsRequest]);
-        const data = responses.map((response) => response.data);
-        console.log(data);
+        const responses = await Promise.allSettled([doctorsRequest, adminsRequest]);
+        const data = responses.map((response) => response.value?.data?.data).filter((item) => item !== null && item !== undefined).reduce((acc, curr) => acc.concat(curr), []);
+        console.log("Promise data: ", data);
         return data;
     } catch (error) {
-        throw error;
+        console.log(error);
     }
+}
+
+export const getInstitutions = async ({ token, type, healthCenterId }) => {
+    const institutionsRequest = axios.get(
+        `http://localhost:5072/api/${type}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                AssociatedHealthCenterId: healthCenterId,
+                Verified: false
+            }
+        }
+    );
+    try {
+        const response = await institutionsRequest;
+        return response.data.data;
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
 export const fetchAdminInfo = async ({ token, adminId }) => {
@@ -84,11 +106,11 @@ export const fetchAdminInfo = async ({ token, adminId }) => {
     };
     try {
         const response = await axios.get(
-            `http://localhost:5072/api/admin/${adminId}`,
+            `http://localhost:5072/api/admin/${adminId}/profile`,
             config
         );
-        return response.data;
+        return response.data.data;
     } catch (error) {
-        throw error;
+        console.log(error);
     }
 }

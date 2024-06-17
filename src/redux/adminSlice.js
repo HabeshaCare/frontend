@@ -38,4 +38,5 @@ const adminSlice = createSlice({
     },
 });
 const adminReducer = adminSlice.reducer;
+export const {addAdminData, toggleVerification} = adminSlice.actions;
 export default adminReducer;

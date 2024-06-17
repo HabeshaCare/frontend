@@ -5,11 +5,21 @@ import VerificationRequestNavBar from "./requestNavBar";
 
 import { useSelector } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 
 import UserContent from "./UserContent";
 import InstitutionContent from "./InstitutionContent";
 
-import { getUsers, UpdateInstitutionVerification, UpdateUserVerification } from "./lib";
+import { getUsers, UpdateInstitutionVerification, UpdateUserVerification, getInstitutions } from "./lib";
 
 
 const VerificationRequest = () => {
@@ -18,20 +28,28 @@ const VerificationRequest = () => {
     const healthCenterId = useSelector((state) => state.admin.institutionId)
 
     const { toast } = useToast();
-    const { data: users, isError, isLoading, refetch } = useQuery(
-        "verificationRequests",
+    const { data: users, isError: userHasError, isLoading: userIsLoading, refetch: userRefetch } = useQuery(
+        "userRequests",
         () => getUsers({ token, healthCenterId }),
         {
             refetchInterval: 10000, // Refetch every 10 seconds
         }
     );
-    const [institutions, setInsitutions] = [];
+    // const { data: institutions, isError: institutionHasError, isLoading: institutionIsLoading, refetch: institutionRefetch } = { data: null, isError: false, isLoading: false, refetch: () => { } }
+
+    const { data: institutions, isError: institutionHasError, isLoading: institutionIsLoading, refetch: institutionRefetch } = useQuery(
+        "institutionRequests",
+        () => getInstitutions({ token, healthCenterId }),
+        {
+            refetchInterval: 10000, // Refetch every 10 seconds
+        }
+    );
 
     const verifyUserMutation = useMutation(
         (userId, userRole, verificationStatus) => UpdateUserVerification({ token, userId, userRole, verificationStatus }),
         {
             onSuccess: () => {
-                refetch(); // Refetch the verification after a successful confirmation
+                userRefetch(); // Refetch the verification after a successful confirmation
                 toast({
                     title: "Success!",
                     description: "User verified successfully.",
@@ -51,7 +69,7 @@ const VerificationRequest = () => {
         (institutionId, institutionType, verificationStatus) => UpdateInstitutionVerification({ token, institutionId, institutionType, verificationStatus }),
         {
             onSuccess: () => {
-                refetch(); // Refetch the verification after a successful confirmation
+                institutionRefetch(); // Refetch the verification after a successful confirmation
                 toast({
                     title: "Success!",
                     description: "Institution verified successfully.",
@@ -79,14 +97,12 @@ const VerificationRequest = () => {
         verifyInstitutionMutation.mutate(institutionId, institutionType, verificationStatus);
     }
 
-    if (isLoading)
-        return <div className="flex justify-center items-center">Loading...</div>;
+    if (userIsLoading || institutionIsLoading) return <div>Loading...</div>
 
-    if (isError)
-        toast({
-            title: "Error!",
-            description: "An error occurred while fetching verification requests.",
-        })
+    if (userHasError || institutionHasError) toast({
+        title: "Error!",
+        description: "An error occurred while fetching the verification requests.",
+    })
 
     return (
         <>
@@ -95,28 +111,61 @@ const VerificationRequest = () => {
                 handleTabClick={handleTabClick}
             />
             {activeTab === "Users" && (
-                <div className="flex justify-around my-4 text-[#1F555D] text-lg font-bold">
-                    <div>Name</div>
-                    <div className="pl-24">Contact</div>
-                    <div>Role</div>
-                    <div>License Information</div>
+                <div className="mx-8">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="font-bold text-lg">Name</TableHead>
+                                <TableHead className="font-bold text-lg">Contact</TableHead>
+                                <TableHead className="font-bold text-lg">Gender</TableHead>
+                                <TableHead className="font-bold text-lg">License</TableHead>
+                                <TableHead className="font-bold text-lg">Action</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {activeTab === "Users" && !userIsLoading && !userHasError && (
+                                (users?.map((user, index) => <UserContent key={index} onConfirm={handleUserConfirm} userData={user} />)))}
+                        </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TableCell colSpan={4}></TableCell>
+                            </TableRow>
+                        </TableFooter>
+                    </Table>
                 </div>)
             }
             {activeTab === "Institutions" && (
-                <div className="flex justify-around my-4 text-[#1F555D] text-lg font-bold">
-                    <div>Name</div>
-                    <div>Created by</div>
-                    <div className="pl-24">Location</div>
-                    <div>Type</div>
-                    <div>License Information</div>
+                <div className="mx-8">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="font-bold text-lg">Name</TableHead>
+                                <TableHead className="font-bold text-lg">Created By</TableHead>
+                                <TableHead className="font-bold text-lg">Location</TableHead>
+                                <TableHead className="font-bold text-lg">Type</TableHead>
+                                <TableHead className="font-bold text-lg">License</TableHead>
+                                <TableHead className="font-bold text-lg">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {activeTab === "Institutions" && !institutionHasError && !institutionIsLoading && (
+                                (institutions?.map((institution, index) => <InstitutionContent key={index} onConfirm={handleInstitutionConfirm} institutionData={institution} />)))}
+                        </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TableCell colSpan={4}></TableCell>
+                            </TableRow>
+                        </TableFooter>
+                    </Table>
+                    {activeTab === "Institutions" && institutions == null && (
+                        <div className="flex justify-center items-center h-96">No Institutions verification requests</div>
+                    )}
+                    {activeTab === "Users" && users == null && (
+                        <div className="flex justify-center items-center h-96">No Users verification requests</div>
+                    )}
                 </div>
 
             )}
-            {console.log(activeTab === "Institutions")}
-            {activeTab === "Users" && (
-                (users.map((user, index) => <UserContent key={index} onConfirm={handleUserConfirm} userData={user} />)))}
-            {activeTab === "Institutions" && (
-                (institutions.map((institution, index) => <InstitutionContent key={index} onConfirm={handleInstitutionConfirm} institutionData={institution} />)))}
         </>
     );
 };
