@@ -9,6 +9,10 @@ const PrescriptionForm = ({ onSubmit }) => {
   const [medicineName, setMedicineName] = useState("");
 
   const doctorId = useSelector((state) => state.auth.user.id);
+  const associatedhealthcenter = useSelector(
+    (state) => state.doctor.associatedhealthcenter);
+
+    
 
   const handleSubmit = (event) => {
     event.preventDefault();

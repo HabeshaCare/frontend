@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "react-query";
-import getPatient from "@/lib/patient/getpatient";
+import getPatient from "@/lib/patient/getsharedpatient";
 import { useSelector } from "react-redux";
 import ReqForm from "./Labtest/requestForm";
 import CombinedForm from "./report/combinedform";
+import getLab from "@/lib/service/getassciatedlab";
 import {
   Select,
   SelectContent,
@@ -82,6 +83,13 @@ const Patient = () => {
     }
   };
 
+  const { } = useQuery("lab", () => getLab({ token: userToken }));
+
+  if (labdata) {
+    console.log("labdata", labdata);
+  }
+
+
   const handleCloseDialog = () => {
     setOpenDialog(null);
   };
@@ -92,6 +100,11 @@ const Patient = () => {
     // Perform your API call or any other actions here
     handleCloseDialog();
   };
+  const associatedhealthcenter = useSelector(
+    (state) => state.doctor.doctorassociatedHealthCenterId
+  );
+
+  console.log("associatedhealthcenter", associatedhealthcenter);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
