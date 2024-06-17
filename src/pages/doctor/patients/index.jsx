@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "react-query";
 import getPatient from "@/lib/patient/getpatient";
 import { useSelector } from "react-redux";
-import ReqForm from "../form/requestForm";
+import ReqForm from "./requestForm";
 import ReportForm from "./medicalrecordfield"; // Import the ReportForm component
 import PrescriptionForm from "./prescriptionform"; // Import the PrescriptionForm component
 import {
@@ -113,8 +113,12 @@ const Patient = () => {
           <TableCaption>A list of your patients.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-1/4 font-bold text-lg">Patient Name</TableHead>
-              <TableHead className="w-1/4 font-bold text-lg">Phone Number</TableHead>
+              <TableHead className="w-1/4 font-bold text-lg">
+                Patient Name
+              </TableHead>
+              <TableHead className="w-1/4 font-bold text-lg">
+                Phone Number
+              </TableHead>
               <TableHead className="w-1/4 font-bold text-lg">
                 <Select onValueChange={(value) => setSelectedService(value)}>
                   <SelectTrigger className="w-full">
@@ -124,8 +128,12 @@ const Patient = () => {
                     <SelectGroup>
                       <SelectLabel>Services</SelectLabel>
                       <SelectItem value="report">Add Report</SelectItem>
-                      <SelectItem value="lab">Request Laboratory Test</SelectItem>
-                      <SelectItem value="prescription">Attach Prescription</SelectItem>
+                      <SelectItem value="lab">
+                        Request Laboratory Test
+                      </SelectItem>
+                      <SelectItem value="prescription">
+                        Attach Prescription
+                      </SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -162,19 +170,25 @@ const Patient = () => {
             )}
             {openDialog.service === "report" && (
               <>
-                <h3 className="font-bold text-lg">Add Report for {openDialog.patient.fullname}</h3>
+                <h3 className="font-bold text-lg">
+                  Add Report for {openDialog.patient.fullname}
+                </h3>
                 <ReportForm onSubmit={handleFormSubmit} />
               </>
             )}
             {openDialog.service === "lab" && (
               <>
-                <h3 className="font-bold text-lg">Request Laboratory Test for {openDialog.patient.fullname}</h3>
+                <h3 className="font-bold text-lg">
+                  Request Laboratory Test for {openDialog.patient.fullname}
+                </h3>
                 <ReqForm />
               </>
             )}
             {openDialog.service === "prescription" && (
               <>
-                <h3 className="font-bold text-lg">Attach Prescription for {openDialog.patient.fullname}</h3>
+                <h3 className="font-bold text-lg">
+                  Attach Prescription for {openDialog.patient.fullname}
+                </h3>
                 <PrescriptionForm onSubmit={handleFormSubmit} />
               </>
             )}
