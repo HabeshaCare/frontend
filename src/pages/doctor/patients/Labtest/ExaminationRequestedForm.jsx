@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ExaminationRequestedForm = () => {
   const [formData, setFormData] = useState({
-    profileTests: {
-      biochemistry: false,
-      hematology: false,
-      microbiology: false,
-      anatomicalPathology: false,
-    },
+   
     specificTests: [],
     additionalTests: {
       cervicalCytology: {
@@ -15,31 +10,19 @@ const ExaminationRequestedForm = () => {
         normal: false,
         positiveMonoBlood: false,
         suspiciousLesion: false,
-        other: '',
+        other: "",
       },
       site: {
         cervix: false,
         vault: false,
-        otherSite: '',
+        otherSite: "",
       },
-      lmpDate: '',
+      lmpDate: "",
       postMenopausal: false,
       hrt: false,
-      other: '',
+      other: "",
     },
   });
-
-  const handleProfileTestsChange = (e) => {
-    const { name, checked } = e.target;
-    setFormData({
-      ...formData,
-      profileTests: {
-        ...formData.profileTests,
-        [name]: checked,
-      },
-    });
-  };
-
   const handleSpecificTestsChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -57,7 +40,7 @@ const ExaminationRequestedForm = () => {
 
   const handleAdditionalTestsChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const newValue = type === 'checkbox' ? checked : value;
+    const newValue = type === "checkbox" ? checked : value;
     setFormData({
       ...formData,
       additionalTests: {
@@ -77,30 +60,52 @@ const ExaminationRequestedForm = () => {
     <div className="max-w-xl mx-auto mt-10 p-6 border border-gray-300 rounded-md">
       <h2 className="text-lg font-semibold mb-4">Examination Requested Form</h2>
       <form onSubmit={handleSubmit}>
-        {/* Profile Tests */}
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Profile tests:</label>
-          <div className="ml-6 grid grid-cols-3 gap-2">
-            {Object.entries(formData.profileTests).map(([test, checked]) => (
-              <label key={test} className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  name={test}
-                  checked={checked}
-                  onChange={handleProfileTestsChange}
-                  className="mr-2"
-                />
-                {test.charAt(0).toUpperCase() + test.slice(1)}
-              </label>
-            ))}
-          </div>
-        </div>
-
-        {/* Specific Tests */}
         <div className="mb-4">
           <label className="block font-semibold mb-1">Specific tests:</label>
           <div className="ml-6 grid grid-cols-3 gap-2">
-            {['G2000', 'G2000-X', 'GT9', 'GTI', 'NEO', 'ES', 'HB3', 'DFS', 'LFT', 'RFT', 'TFT', 'MAC', 'LGL', 'LIP', 'CEA', 'CA 1', 'CA 5', 'CA 9', 'PSA', 'AFP', 'Glucose', 'HIV 1 & 2', 'HbA1c', 'HBsAg', 'H. pylori', 'Uric Acid', 'Free T4', 'FBE (incl. ESR)', 'FBC', 'Hb', 'TWDC', 'Platelets', 'ABO & Rh (D)', 'Malaria parasites', 'Urine FEME', 'RPR (VDRL)','AFB (ZN) Smear Only', 'AFB Smear & Culture', 'Histology', 'Non-Gynae/FNASite','Microscopy/Culture/Sensitivity'].map((test) => (
+            {[
+              "G2000",
+              "G2000-X",
+              "GT9",
+              "GTI",
+              "NEO",
+              "ES",
+              "HB3",
+              "DFS",
+              "LFT",
+              "RFT",
+              "TFT",
+              "MAC",
+              "LGL",
+              "LIP",
+              "CEA",
+              "CA 1",
+              "CA 5",
+              "CA 9",
+              "PSA",
+              "AFP",
+              "Glucose",
+              "HIV 1 & 2",
+              "HbA1c",
+              "HBsAg",
+              "H. pylori",
+              "Uric Acid",
+              "Free T4",
+              "FBE (incl. ESR)",
+              "FBC",
+              "Hb",
+              "TWDC",
+              "Platelets",
+              "ABO & Rh (D)",
+              "Malaria parasites",
+              "Urine FEME",
+              "RPR (VDRL)",
+              "AFB (ZN) Smear Only",
+              "AFB Smear & Culture",
+              "Histology",
+              "Non-Gynae/FNASite",
+              "Microscopy/Culture/Sensitivity",
+            ].map((test) => (
               <label key={test} className="inline-flex items-center">
                 <input
                   type="checkbox"
@@ -157,7 +162,6 @@ const ExaminationRequestedForm = () => {
             {/* Add more additional fields here */}
           </div>
         </div>
-
       </form>
     </div>
   );

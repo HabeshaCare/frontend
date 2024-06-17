@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const getPatient = async ({ token, id }) => {
-    console.log("token from api:", token)
+    // console.log("token from api:", token)
     try {
         const config = {
             headers: {
