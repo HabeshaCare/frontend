@@ -57,6 +57,9 @@ function App() {
               <Route path="/patient/medicalhistory" element={<ProtectedRoute requiredRole="Patient"><MedicalHistory /></ProtectedRoute>} />
               <Route path="/patient/profile" element={<ProtectedRoute requiredRole="Patient"><PatientProfile /></ProtectedRoute>} /> */}
               <Route path="/patient/dashboard" element={<ProtectedRoute requiredRole="Patient"><PatientDashboard /></ProtectedRoute>} />
+              <Route path="/videochat" element={<div>Video Chat</div>} />
+              <Route path="/videochat" element={<div>Video Chat</div>} />
+
               <Route path="/forgetpassword" element={<ResetPassword />} />
               <Route path="/resendemail" element={<ResendEmail />} />
               <Route path="/verifyEmail" element={<VarifyEmail />} />
