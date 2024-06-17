@@ -19,13 +19,12 @@ import {
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 const UserContent = ({ userData, onConfirm }) => {
-    console.log("UserContent data: ", userData);
     const [isVerified, setIsVerified] = useState(userData?.verified);
     return (
         <>
             <TableRow>
                 <TableCell>
-                    <div>
+                    <div className="flex flex-row gap-2 items-center" >
                         <img src={userData?.imageUrl} className="w-10 h-10 rounded-lg bg-gray-300" alt="profile pic" />
                         <p>{userData?.fullname ?? "N/A"}</p>
                     </div>
@@ -33,8 +32,8 @@ const UserContent = ({ userData, onConfirm }) => {
                 <TableCell>{userData?.phonenumber ? userData?.phonenumber : userData?.email ? userData.email : "N/A"}</TableCell>
                 <TableCell>{userData?.gender === "M" ? "Male" : "Female"}</TableCell>
                 <TableCell>{userData?.role}</TableCell>
-                <TableCell> <a className="text-[#B5B5C3]" target="_blank" href={userData?.licenseUrl} rel="noreferrer" >View License Info <FaExternalLinkAlt />
-                </a></TableCell>
+                <TableCell> <Button variant="link" target="_blank" href={userData?.licenseUrl} rel="noreferrer" > <div className="flex flex-row gap-1 items-center"> <p>View License Info</p> <FaExternalLinkAlt /></div>
+                </Button></TableCell>
                 <TableCell>
                     <AlertDialog className="h-8 w-24">
                         <AlertDialogTrigger asChild>
@@ -49,7 +48,7 @@ const UserContent = ({ userData, onConfirm }) => {
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>No</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => { onConfirm(userData?.id, userData?.role, !isVerified); setIsVerified(!isVerified) }}>
+                                <AlertDialogAction className="ghost" onClick={() => { onConfirm(userData?.id, userData?.role, !isVerified); setIsVerified(!isVerified) }}>
                                     Yes
                                 </AlertDialogAction>
                             </AlertDialogFooter>

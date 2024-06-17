@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const UpdateUserVerification = async ({ token, userId, userRole, verificationStatus }) => {
+
     const config = {
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -17,7 +18,6 @@ export const UpdateUserVerification = async ({ token, userId, userRole, verifica
         );
         return response.data.data;
     } catch (error) {
-        console.log(error);
     }
 }
 
@@ -35,6 +35,7 @@ export const UpdateInstitutionVerification = async ({ token, institutionId, inst
             {},
             config
         );
+        console.log(response.data.data)
         return response.data.data;
     } catch (error) {
         console.log(error);
@@ -69,16 +70,27 @@ export const getUsers = async ({ token, healthCenterId }) => {
     try {
         const responses = await Promise.allSettled([doctorsRequest, adminsRequest]);
         const data = responses.map((response) => response.value?.data?.data).filter((item) => item !== null && item !== undefined).reduce((acc, curr) => acc.concat(curr), []);
-        console.log("Promise data: ", data);
         return data;
     } catch (error) {
-        console.log(error);
     }
 }
 
-export const getInstitutions = async ({ token, type, healthCenterId }) => {
-    const institutionsRequest = axios.get(
-        `http://localhost:5072/api/${type}`,
+export const getInstitutions = async ({ token, healthCenterId }) => {
+    const laboratoryRequest = axios.get(
+        `http://localhost:5072/api/laboratory`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                AssociatedHealthCenterId: healthCenterId,
+                Verified: false
+            }
+        }
+    );
+
+    const pharmacyRequest = axios.get(
+        `http://localhost:5072/api/pharmacy`,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -90,10 +102,10 @@ export const getInstitutions = async ({ token, type, healthCenterId }) => {
         }
     );
     try {
-        const response = await institutionsRequest;
-        return response.data.data;
+        const responses = await Promise.allSettled([pharmacyRequest, laboratoryRequest]);
+        const data = responses.map((response) => response.value?.data?.data).filter((item) => item !== null && item !== undefined).reduce((acc, curr) => acc.concat(curr), []);
+        return data;
     } catch (error) {
-        console.log(error);
     }
 
 }
@@ -111,6 +123,5 @@ export const fetchAdminInfo = async ({ token, adminId }) => {
         );
         return response.data.data;
     } catch (error) {
-        console.log(error);
     }
 }

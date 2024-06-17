@@ -8,7 +8,6 @@ import { useToast } from "@/components/ui/use-toast";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableFooter,
     TableHead,
@@ -35,7 +34,6 @@ const VerificationRequest = () => {
             refetchInterval: 10000, // Refetch every 10 seconds
         }
     );
-    // const { data: institutions, isError: institutionHasError, isLoading: institutionIsLoading, refetch: institutionRefetch } = { data: null, isError: false, isLoading: false, refetch: () => { } }
 
     const { data: institutions, isError: institutionHasError, isLoading: institutionIsLoading, refetch: institutionRefetch } = useQuery(
         "institutionRequests",
@@ -46,7 +44,7 @@ const VerificationRequest = () => {
     );
 
     const verifyUserMutation = useMutation(
-        (userId, userRole, verificationStatus) => UpdateUserVerification({ token, userId, userRole, verificationStatus }),
+        ({ userId, userRole, verificationStatus }) => UpdateUserVerification({ token, userId, userRole, verificationStatus }),
         {
             onSuccess: () => {
                 userRefetch(); // Refetch the verification after a successful confirmation
@@ -66,7 +64,7 @@ const VerificationRequest = () => {
     );
 
     const verifyInstitutionMutation = useMutation(
-        (institutionId, institutionType, verificationStatus) => UpdateInstitutionVerification({ token, institutionId, institutionType, verificationStatus }),
+        ({ institutionId, institutionType, verificationStatus }) => UpdateInstitutionVerification({ token, institutionId, institutionType, verificationStatus }),
         {
             onSuccess: () => {
                 institutionRefetch(); // Refetch the verification after a successful confirmation
@@ -90,11 +88,11 @@ const VerificationRequest = () => {
     };
 
     const handleUserConfirm = (userId, userRole, verificationStatus) => {
-        verifyUserMutation.mutate(userId, userRole, verificationStatus);
+        verifyUserMutation.mutate({ userId, userRole, verificationStatus });
     };
 
     const handleInstitutionConfirm = (institutionId, institutionType, verificationStatus) => {
-        verifyInstitutionMutation.mutate(institutionId, institutionType, verificationStatus);
+        verifyInstitutionMutation.mutate({ institutionId, institutionType, verificationStatus });
     }
 
     if (userIsLoading || institutionIsLoading) return <div>Loading...</div>
@@ -118,6 +116,7 @@ const VerificationRequest = () => {
                                 <TableHead className="font-bold text-lg">Name</TableHead>
                                 <TableHead className="font-bold text-lg">Contact</TableHead>
                                 <TableHead className="font-bold text-lg">Gender</TableHead>
+                                <TableHead className="font-bold text-lg">Role</TableHead>
                                 <TableHead className="font-bold text-lg">License</TableHead>
                                 <TableHead className="font-bold text-lg">Action</TableHead>
                             </TableRow>
@@ -128,7 +127,7 @@ const VerificationRequest = () => {
                         </TableBody>
                         <TableFooter>
                             <TableRow>
-                                <TableCell colSpan={4}></TableCell>
+                                <TableCell colSpan={6}></TableCell>
                             </TableRow>
                         </TableFooter>
                     </Table>
@@ -153,7 +152,7 @@ const VerificationRequest = () => {
                         </TableBody>
                         <TableFooter>
                             <TableRow>
-                                <TableCell colSpan={4}></TableCell>
+                                <TableCell colSpan={6}></TableCell>
                             </TableRow>
                         </TableFooter>
                     </Table>
