@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import back from "@/public/icons/back.svg";
-
+import { useQuery } from "react-query";
+import getPatient from "@/lib/patient/getpatient";
+import { use } from "react";
+import { useSelector } from "react-redux";
 const Content = () => {
   return (
     <>
@@ -26,7 +29,9 @@ const Content = () => {
           <p className="text-[#B5B5C3]">Amin General Hospital</p>
         </div>
         <div>
-          <Button className="bg-[#1F555D] text-white w-36 h-10 rounded-3xl hover:bg-blue-300">View Reports</Button>
+          <Button className="bg-[#1F555D] text-white w-36 h-10 rounded-3xl hover:bg-blue-300">
+            View Reports
+          </Button>
         </div>
       </div>
     </>
@@ -34,6 +39,23 @@ const Content = () => {
 };
 
 const Patient = () => {
+  const userId = useSelector((state) => state.auth.user.id);
+  const userToken = useSelector((state) => state.auth.token);
+  console.log("token:", userToken);
+  const { data, isLoading, isError } = useQuery(
+    "patient",
+    () => getPatient({ id: userId, token: userToken }),
+    {
+      refetchInterval: 10000, // Refetch every 10 seconds
+    }
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading data</div>;
+  if (data) {
+    console.log("Patient data:", data);
+  }
+
   return (
     <>
       <div className="flex justify-between items-center h-16 px-4">
