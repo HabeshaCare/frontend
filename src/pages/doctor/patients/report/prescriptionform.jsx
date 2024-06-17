@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useSelector } from "react-redux";
 
 const PrescriptionForm = ({ onSubmit }) => {
   const [diagnosis, setDiagnosis] = useState("");
   const [medicineName, setMedicineName] = useState("");
+
+  const doctorId = useSelector((state) => state.auth.user.id);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = {
       diagnosis,
       medicineName,
+      doctorId: doctorId,
+      timestamp: new Date().toISOString(),
     };
     onSubmit(formData);
   };
