@@ -18,31 +18,37 @@ import {
 } from "@/components/ui/table";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-const InstitutionContent = ({ institutionData, onConfirm }) => {
-    const [isVerified, setIsVerified] = useState(institutionData?.verified);
+const UserContent = ({ userData, onConfirm }) => {
+    const [isVerified, setIsVerified] = useState(userData?.verified);
     return (
         <>
             <TableRow>
-                <TableCell>{institutionData?.name}</TableCell>
-                <TableCell>{institutionData?.location}</TableCell>
-                <TableCell>{institutionData?.type}</TableCell>
-                <TableCell> <Button variant="link" target="_blank" href={institutionData?.licenseUrl} rel="noreferrer" ><div className="flex flex-row gap-1">View License Info <FaExternalLinkAlt /></div>
+                <TableCell>
+                    <div className="flex flex-row gap-2 items-center" >
+                        <img src={userData?.imageUrl} className="w-10 h-10 rounded-lg bg-gray-300" alt="profile pic" />
+                        <p>{userData?.fullname ?? "N/A"}</p>
+                    </div>
+                </TableCell>
+                <TableCell>{userData?.phonenumber ? userData?.phonenumber : userData?.email ? userData.email : "N/A"}</TableCell>
+                <TableCell>{userData?.gender === "M" ? "Male" : "Female"}</TableCell>
+                <TableCell>{userData?.role}</TableCell>
+                <TableCell> <Button variant="link" target="_blank" href={userData?.licenseUrl} rel="noreferrer" > <div className="flex flex-row gap-1 items-center"> <p>View License Info</p> <FaExternalLinkAlt /></div>
                 </Button></TableCell>
                 <TableCell>
                     <AlertDialog className="h-8 w-24">
                         <AlertDialogTrigger asChild>
-                            <Button variant="outline">{institutionData?.verified ? "remove" : "verify"}</Button>
+                            <Button variant="outline">{userData?.verified ? "remove" : "verify"}</Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Verifying User</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Are you sure you have reviewed the profile and want to verify the institution?
+                                    Are you sure you have reviewed the profile and want to {isVerified ? "remove" : "verify"} the user?
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>No</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => { onConfirm(institutionData?.id, institutionData?.type, !isVerified); setIsVerified(!isVerified) }}>
+                                <AlertDialogAction className="ghost" onClick={() => { onConfirm(userData?.id, userData?.role, !isVerified); setIsVerified(!isVerified) }}>
                                     Yes
                                 </AlertDialogAction>
                             </AlertDialogFooter>
@@ -50,8 +56,8 @@ const InstitutionContent = ({ institutionData, onConfirm }) => {
                     </AlertDialog>
                 </TableCell>
             </TableRow>
-
         </>
     );
 };
-export default InstitutionContent;
+
+export default UserContent

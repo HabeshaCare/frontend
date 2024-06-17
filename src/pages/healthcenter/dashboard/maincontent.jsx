@@ -1,6 +1,8 @@
 import React from "react";
 import Chatbot from "@/components/landingpage/chatbot";
 import VerificationRequest from "./requests";
+import AssociatedUsers from "./associatedUsers";
+import AssociatedInstitutions from "./associatedInstitutions";
 
 const Card = ({ text }) => {
   return (
@@ -22,10 +24,10 @@ const MainContent = ({ activeLink }) => {
       )}
       {activeLink === "institutions" && (
         <div>
-          Institutions
+          <AssociatedInstitutions />
         </div>
       )}
-      {activeLink === "users" && <>Users</>}
+      {activeLink === "users" && <AssociatedUsers />}
     </div>
   );
 };

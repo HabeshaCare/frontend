@@ -139,7 +139,6 @@ const VerificationRequest = () => {
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="font-bold text-lg">Name</TableHead>
-                                <TableHead className="font-bold text-lg">Created By</TableHead>
                                 <TableHead className="font-bold text-lg">Location</TableHead>
                                 <TableHead className="font-bold text-lg">Type</TableHead>
                                 <TableHead className="font-bold text-lg">License</TableHead>
