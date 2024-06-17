@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "react-query";
 import getPatient from "@/lib/patient/getpatient";
 import { useSelector } from "react-redux";
-import ReqForm from "./requestForm";
-import ReportForm from "./medicalrecordfield"; // Import the ReportForm component
-import PrescriptionForm from "./prescriptionform"; // Import the PrescriptionForm component
+import ReqForm from "./Labtest/requestForm";
+import CombinedForm from "./report/combinedform";
 import {
   Select,
   SelectContent,
@@ -35,14 +34,11 @@ import {
 const Content = ({ patient, selectedService, onButtonClick }) => {
   let buttonText = "Add";
   switch (selectedService) {
-    case "report":
-      buttonText = "Add Report";
+    case "combined":
+      buttonText = "Add Report and Prescription";
       break;
     case "lab":
       buttonText = "Request Laboratory Test";
-      break;
-    case "prescription":
-      buttonText = "Attach Prescription";
       break;
     default:
       buttonText = "Add";
@@ -54,7 +50,7 @@ const Content = ({ patient, selectedService, onButtonClick }) => {
       <TableCell>{patient.phonenumber}</TableCell>
       <TableCell>
         <Button
-          className="bg-[#1F555D] text-white w-44 h-10 rounded-3xl hover:bg-blue-300"
+          className="bg-[#1F555D] text-white w-52 h-10 rounded-3xl hover:bg-blue-300"
           onClick={() => onButtonClick(patient, selectedService)}
         >
           {buttonText}
@@ -127,12 +123,11 @@ const Patient = () => {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Services</SelectLabel>
-                      <SelectItem value="report">Add Report</SelectItem>
+                      <SelectItem value="combined">
+                        Add Report and Prescription
+                      </SelectItem>
                       <SelectItem value="lab">
                         Request Laboratory Test
-                      </SelectItem>
-                      <SelectItem value="prescription">
-                        Attach Prescription
                       </SelectItem>
                     </SelectGroup>
                   </SelectContent>
@@ -168,12 +163,12 @@ const Patient = () => {
                 <h3 className="font-bold text-lg">Please choose a service</h3>
               </>
             )}
-            {openDialog.service === "report" && (
+            {openDialog.service === "combined" && (
               <>
                 <h3 className="font-bold text-lg">
-                  Add Report for {openDialog.patient.fullname}
+                  Add Report and Prescription for {openDialog.patient.fullname}
                 </h3>
-                <ReportForm onSubmit={handleFormSubmit} />
+                <CombinedForm onSubmit={handleFormSubmit} />
               </>
             )}
             {openDialog.service === "lab" && (
@@ -182,14 +177,6 @@ const Patient = () => {
                   Request Laboratory Test for {openDialog.patient.fullname}
                 </h3>
                 <ReqForm />
-              </>
-            )}
-            {openDialog.service === "prescription" && (
-              <>
-                <h3 className="font-bold text-lg">
-                  Attach Prescription for {openDialog.patient.fullname}
-                </h3>
-                <PrescriptionForm onSubmit={handleFormSubmit} />
               </>
             )}
           </DialogContent>

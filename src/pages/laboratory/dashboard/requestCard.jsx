@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ReqForm from "../../doctor/patients/requestForm";
+import ReqForm from "../../doctor/patients/Labtest/requestForm";
 
 const Card = (props) => {
   return (
