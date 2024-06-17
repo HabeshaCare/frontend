@@ -4,6 +4,8 @@ import { useQuery } from "react-query";
 import getPatient from "@/lib/patient/getpatient";
 import { useSelector } from "react-redux";
 import ReqForm from "../form/requestForm";
+import ReportForm from "./medicalrecordfield"; // Import the ReportForm component
+import PrescriptionForm from "./prescriptionform"; // Import the PrescriptionForm component
 import {
   Select,
   SelectContent,
@@ -88,6 +90,13 @@ const Patient = () => {
     setOpenDialog(null);
   };
 
+  const handleFormSubmit = (formData) => {
+    // Handle form submission here
+    console.log("Form Data:", formData);
+    // Perform your API call or any other actions here
+    handleCloseDialog();
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
 
@@ -154,22 +163,19 @@ const Patient = () => {
             {openDialog.service === "report" && (
               <>
                 <h3 className="font-bold text-lg">Add Report for {openDialog.patient.fullname}</h3>
-                {/* Render your Add Report form here */}
-                <ReqForm />
+                <ReportForm onSubmit={handleFormSubmit} />
               </>
             )}
             {openDialog.service === "lab" && (
               <>
                 <h3 className="font-bold text-lg">Request Laboratory Test for {openDialog.patient.fullname}</h3>
-                {/* Render your Request Laboratory Test form here */}
                 <ReqForm />
               </>
             )}
             {openDialog.service === "prescription" && (
               <>
                 <h3 className="font-bold text-lg">Attach Prescription for {openDialog.patient.fullname}</h3>
-                {/* Render your Attach Prescription form here */}
-                <ReqForm />
+                <PrescriptionForm onSubmit={handleFormSubmit} />
               </>
             )}
           </DialogContent>
