@@ -73,9 +73,10 @@ const PatientAppointments = () => {
         return (
           <PatientContent
             key={schedule.id}
-            doctorName={schedule.doctor.fullname}
-            doctorImageUrl={schedule.doctor.imageUrl}
-            doctorContact={schedule.doctor.phonenumber}
+            schedule={schedule}
+            doctorName={schedule.doctor?.fullname}
+            doctorImageUrl={schedule.doctor?.imageUrl}
+            doctorContact={schedule.doctor?.phonenumber}
             date={date}
             time={time}
             status={status}
