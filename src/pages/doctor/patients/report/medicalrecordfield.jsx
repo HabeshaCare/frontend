@@ -16,8 +16,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useSelector } from "react-redux";
 
-const ReportForm = ({ onSubmit }) => {
+const ReportForm = ({ onSubmit, patientId }) => {
   const [formData, setFormData] = useState({
+    patientId: patientId,
     treatmentMethod: "",
     weight: "",
     height: "",

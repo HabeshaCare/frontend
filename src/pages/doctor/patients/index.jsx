@@ -185,7 +185,10 @@ const Patient = () => {
                 <h3 className="font-bold text-lg">
                   Add Report and Prescription for {openDialog.patient.fullname}
                 </h3>
-                <CombinedForm onSubmit={handleFormSubmit} />
+                <CombinedForm
+                  onSubmit={handleFormSubmit}
+                  patientId={openDialog.patient.id}
+                />
               </>
             )}
             {openDialog.service === "lab" && (

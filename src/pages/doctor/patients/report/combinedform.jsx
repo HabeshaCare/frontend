@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useSelector } from "react-redux";
 
-const CombinedForm = ({ onSubmit }) => {
+const CombinedForm = ({ onSubmit, patientId }) => {
   const [medicalRecordId, setMedicalRecordId] = useState(null);
   const { toast } = useToast();
   const userToken = useSelector((state) => state.auth.token);
@@ -59,7 +59,7 @@ const CombinedForm = ({ onSubmit }) => {
   return (
     <div className="space-y-4">
       <h3 className="font-bold text-lg">Medical Report</h3>
-      <ReportForm onSubmit={handleReportSubmit} />
+      <ReportForm onSubmit={handleReportSubmit} patientId={patientId} />
       {medicalRecordId && (
         <>
           <h3 className="font-bold text-lg">Prescription</h3>

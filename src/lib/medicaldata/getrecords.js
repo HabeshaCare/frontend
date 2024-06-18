@@ -3,7 +3,7 @@ import axios from "axios";
 
 const getRecords = async ({ token, patientId }) => {
     // console.log("Token:", token);
-    console.log("Patient ID:", patientId);
+    // console.log("Patient ID:", patientId);
     try {
         const config = {
             headers: {

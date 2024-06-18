@@ -11,6 +11,7 @@ import getPrescriptions from "@/lib/medicaldata/getprescriptions";
 import { useSelector } from "react-redux";
 import getRecords from "@/lib/medicaldata/getrecords";
 import { useQuery } from "react-query";
+import getLabTest from "@/lib/medicaldata/getlabtest";
 
 const MedicalHistory = () => {
   const [size, setSize] = useState(window.innerWidth);
@@ -18,15 +19,27 @@ const MedicalHistory = () => {
   const userToken = useSelector((state) => state.auth.token);
   const patientId = useSelector((state) => state.auth.user.id);
 
-  const { data: recordsData, isLoading: isLoadingRecords, isError: isErrorRecords } = useQuery(
-    ["records", patientId],
-    () => getRecords({ token: userToken, patientId: patientId})
+  const {
+    data: recordsData,
+    isLoading: isLoadingRecords,
+    isError: isErrorRecords,
+  } = useQuery(["records", patientId], () =>
+    getRecords({ token: userToken, patientId: patientId })
   );
 
-  const { data: prescriptionsData, isLoading: isLoadingPrescriptions, isError: isErrorPrescriptions } = useQuery(
-    ["prescriptions", patientId],
-    () => getPrescriptions({ token: userToken, patientId: patientId })
+  const {
+    data: prescriptionsData,
+    isLoading: isLoadingPrescriptions,
+    isError: isErrorPrescriptions,
+  } = useQuery(["prescriptions", patientId], () =>
+    getPrescriptions({ token: userToken, patientId: patientId })
   );
+
+  const {
+    data: labData,
+    isLoading: isLabLoading,
+    isError: isLabError,
+  } = useQuery("lab", () => getLabTest({ token: userToken, patientId: patientId}));
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,6 +63,9 @@ const MedicalHistory = () => {
     }
     if (prescriptionsData) {
       console.log("Prescriptions Data:", prescriptionsData);
+    }
+    if (labData) {
+      console.log("Lab Data:", labData);
     }
   }, [recordsData, prescriptionsData]);
 
