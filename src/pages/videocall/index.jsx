@@ -5,13 +5,14 @@ import { useToast } from "@/components/ui/use-toast";
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
 import { selectSchedule } from "@/redux/scheduleSlice";
+import { useNavigate } from "react-router";
 
 function VideoChat() {
   const schedule = useSelector(selectSchedule);
+  const role = useSelector((state) => state.auth.user.role);
+  const navigator = useNavigate();
   const timeToConnect = schedule.duration;
   const token = useSelector((state) => state.auth.token);
-  console.log("Redux schedule: ", schedule);
-  console.log("Token: ", token);
 
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
@@ -344,7 +345,12 @@ function VideoChat() {
           isAudioEnabled={isAudioEnabled}
           toggleVideo={toggleVideo}
           toggleAudio={toggleAudio}
-          leaveCall={leaveCall}
+          leaveCall={() => {
+            leaveCall();
+            navigator(
+              `${role === "doctor" ? "/doctor" : "/patient"}/dashboard`
+            );
+          }}
         />
       </>
     </main>
