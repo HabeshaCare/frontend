@@ -271,7 +271,8 @@ function VideoChat() {
     setCallEnded(true);
     connectionRef.current?.close();
     socket.current?.disconnect();
-    console.log(localStreamRef.current?.srcObject?.getVideoTracks()[0].stop());
+    localStreamRef.current?.srcObject?.getVideoTracks()[0].stop();
+    localStreamRef.current?.srcObject?.getAudioTracks()[0].stop();
 
     resetStates();
   };
