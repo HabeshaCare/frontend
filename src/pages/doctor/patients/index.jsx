@@ -71,9 +71,18 @@ const Patient = () => {
   const [openDialog, setOpenDialog] = useState(null);
   const userId = useSelector((state) => state.auth.user.id);
   const userToken = useSelector((state) => state.auth.token);
-  const { data, isLoading, isError } = useQuery("patient", () =>
+  const { data: patientData, isLoading, isError } = useQuery("patient", () =>
     getPatient({ id: userId, token: userToken })
   );
+
+  const {
+    data: labData,
+    isLoading: isLabLoading,
+    isError: isLabError,
+  } = useQuery("lab", () => getLab({ token: userToken }));
+
+  console.log("lab id from patient", labData?.data[0]?.id);
+  console.log("patient id", userId);
 
   const handleButtonClick = (patient, service) => {
     if (service === "") {
@@ -83,26 +92,26 @@ const Patient = () => {
     }
   };
 
-  const {} = useQuery("lab", () => getLab({ token: userToken }));
-
   const handleCloseDialog = () => {
     setOpenDialog(null);
   };
 
   const handleFormSubmit = (formData) => {
-    // Handle form submission here
     console.log("Form Data:", formData);
-    // Perform your API call or any other actions here
     handleCloseDialog();
   };
+
   const associatedhealthcenter = useSelector(
     (state) => state.doctor.doctorassociatedHealthCenterId
   );
 
   console.log("associatedhealthcenter", associatedhealthcenter);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading data</div>;
+  if (isLoading || isLabLoading) return <div>Loading...</div>;
+  if (isError || isLabError) return <div>Error loading data</div>;
+
+  // Log the lab data
+  console.log("Lab Data:", labData);
 
   return (
     <div className="overflow-hidden">
@@ -145,8 +154,8 @@ const Patient = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data &&
-              data.data.map((patient, index) => (
+            {patientData &&
+              patientData.data.map((patient, index) => (
                 <Content
                   key={index}
                   patient={patient}
@@ -184,7 +193,12 @@ const Patient = () => {
                 <h3 className="font-bold text-lg">
                   Request Laboratory Test for {openDialog.patient.fullname}
                 </h3>
-                <ReqForm />
+                <ReqForm
+                  labId={labData?.data[0]?.id || ""}
+                  patientId={openDialog.patient.id}
+                  requestorId={userId}
+                  onSubmit={handleFormSubmit}
+                />
               </>
             )}
           </DialogContent>
