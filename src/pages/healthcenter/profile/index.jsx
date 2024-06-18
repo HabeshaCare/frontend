@@ -9,14 +9,67 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
-import Picture from "@/components/profile/picture";
+import Picture from "./Picture";
 import healthcenter from "@/public/img/healthcenter.jpg";
 import { Link } from 'react-router-dom';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useDispatch, useSelector } from "react-redux";
+import { selectHealthcenter, updateName as updateHealthCenterName, updateLocation as updateHealthCenterLocation } from "@/redux/healthcenterSlice";
+import { updateFullName, updateGender, updatePhoneNumber } from "@/redux/adminSlice";
+import { useMutation } from "react-query";
+import { updateAdmin, updateHealthCenter } from "./lib";
+import { useToast } from "@/components/ui/use-toast";
+import { FaExternalLinkAlt } from "react-icons/fa";
+
 
 const HealthCenterProfile = () => {
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const [licenseFile, setLicenseFile] = useState(null);
+  const dispatch = useDispatch();
+  const healthCenter = useSelector(selectHealthcenter);
+  const admin = useSelector((state) => state.admin);
+  const token = useSelector((state) => state.auth.token);
+  const { toast } = useToast();
+  const adminId = admin.id;
+  const healthCenterId = healthCenter.id;
+
+  const updateAdminMutation = useMutation((updatedData) => updateAdmin({ token, adminId, updatedData }), {
+    onSuccess: (updatedData) => {
+      console.log("adminUpdated: ", updatedData)
+      if (updatedData)
+        setEditMode(false);
+      toast({
+        title: "Success",
+        description: "Admin updated successfully",
+      })
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "An error occurred",
+      })
+    }
+  });
+
+  const updateHealthCenterMutation = useMutation(({ updatedData, formData }) => updateHealthCenter({ token, healthCenterId, updatedData, formData }), {
+    onSuccess: (updatedData) => {
+      console.log("HealthCenterUpdated: ", updatedData)
+      setEditMode(false);
+      setLicenseFile(null);
+      toast({
+        title: "Success",
+        description: "HealthCenter updated successfully",
+      })
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "An error occurred",
+      })
+    }
+  });
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -25,6 +78,27 @@ const HealthCenterProfile = () => {
   };
   const handleRemoveUpload = () => {
     setLicenseFile(null);
+  };
+
+  const handleSubmit = async () => {
+    const formData = licenseFile ? new FormData() : null;
+    formData?.append("file", licenseFile);
+
+    // Update admin
+    const adminData = {
+      fullname: admin.fullname,
+      phonenumber: admin.phonenumber,
+      gender: admin.gender
+    };
+    updateAdminMutation.mutate(adminData);
+
+    // Update health center
+    const healthCenterData = {
+      name: healthCenter.name,
+      location: healthCenter.location
+    };
+
+    updateHealthCenterMutation.mutate({ updatedData: healthCenterData, formData });
   };
 
   return (
@@ -47,79 +121,90 @@ const HealthCenterProfile = () => {
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
-                <img src={edit} alt="edit SVG" />
+                {!editMode && (<img src={edit} alt="edit SVG" />)}
               </div>
               <div
                 className="text-[#1F555D] cursor-pointer"
                 onClick={() => setEditMode(!editMode)}
               >
-                Edit
+                {editMode ? "Cancel" : "Edit"}
               </div>
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               Health Center Info
             </div>
 
-            <div className={`${editMode && "md:flex justify-around md:mb-4"}`}>
+            <div className={`${!editMode && "md:flex justify-around md:mb-4"}`}>
               <div className="ml-2">
                 <ProfileKey keyName="Health Center Name" />
-                {editMode ? (
-                  <ProfileValue value="Yekatit 22 General Hospital" />
+                {!editMode ? (
+                  <ProfileValue value={healthCenter.name} />
                 ) : (
-                  <Input />
+                  <Input value={healthCenter.name} onChange={(event) => dispatch(updateHealthCenterName(event.target.value))} />
                 )}
               </div>
-
               <div className="ml-2">
                 <ProfileKey keyName="Location" />
-                {editMode ? <ProfileValue value="Addis Ababa" /> : <Input />}
+                {!editMode ? <ProfileValue value={healthCenter.location} /> : <Input value={healthCenter.location} onChange={(event) => dispatch(updateHealthCenterLocation(event.target.value))} />}
               </div>
-
-              <div className={`${editMode && "md:ml-12"} ml-2`}>
+              {!editMode && (<div className={`ml-2`}>
                 <ProfileKey keyName="Email" />
-                {editMode ? (
-                  <ProfileValue value="nigusseyeabsira@gmail.com" />
-                ) : (
-                  <Input />
-                )}
-              </div>
-            </div>
+                <ProfileValue value={admin.email} />
+              </div>)}
 
-            <div className={`${editMode && "md:flex justify-start"}`}>
-              <div className="ml-2 md:ml-16 md:pl-1">
+            </div>
+            <div className={`${!editMode && "md:flex justify-start pl-4 md:mb-4"}`}>
+
+              {!editMode && (<div className="ml-2 md:ml-16 md:pl-1">
                 <ProfileKey keyName="Verification status " />
-                {editMode ? <ProfileValue value="Verified" /> : <Input />}
-              </div>
+                <ProfileValue value={healthCenter.verified ? "Verified" : "Not Verified"} />
+              </div>)}
+
+              {!editMode && (<div className="ml-10 md:ml-16 md:pl-1">
+                <ProfileKey keyName="License Information" />
+                <ProfileValue value={healthCenter.licensePath ? <a href={`http://localhost:5072/${healthCenter.licensePath}`} className="hover:underline hover:cursor-pointer" target="_blank" rel="noreferrer" ><div className="flex flex-row gap-1">View License Info <FaExternalLinkAlt /> </div> </a> : "N/A"} />
+              </div>)}
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               Admin Info
             </div>
 
             <div
-              className={`${editMode && "md:flex justify-between md:mx-16"}`}
+              className={`${!editMode && "md:flex justify-between md:mx-16"}`}
             >
               <div className="ml-2">
                 <ProfileKey keyName="Full Name" />
-                {editMode ? (
-                  <ProfileValue value="Yeabsira Nigusse" />
+                {!editMode ? (
+                  <ProfileValue value={admin.fullname} />
                 ) : (
-                  <Input />
+                  <Input value={admin.fullname} onChange={(event) => dispatch(updateFullName(event.target.value))} />
                 )}
               </div>
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value="+251982314216" /> : <Input />}
+                {!editMode ? <ProfileValue value={admin.phonenumber} /> : <Input value={admin.phonenumber} onChange={(event) => dispatch(updatePhoneNumber(event.target.value))} />}
               </div>
 
               <div className="">
                 <ProfileKey keyName="Gender" />
-                {editMode ? <ProfileValue value="Male" /> : <Input />}
+                {!editMode ? <ProfileValue value={admin.gender === "M" ? "Male" : "Female"} /> : (<Select onValueChange={(value) => dispatch(updateGender(value))}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="--Select--" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Gender</SelectLabel>
+                      <SelectItem value="M">Male</SelectItem>
+                      <SelectItem value="F">Female</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>)}
               </div>
             </div>
 
             <div className="flex justify-center my-6">
-              {!editMode ? (
+              {editMode ? (
                 <label htmlFor="licenseUpload" className="cursor-pointer">
                   <div className="w-64 h-20 flex flex-col font-semibold justify-center items-center border border-solid bg-gray-300 p-4">
                     {licenseFile ? (
@@ -163,11 +248,11 @@ const HealthCenterProfile = () => {
                 </div>
               )}
             </div>
-            {editMode ? (
+            {!editMode ? (
               ""
             ) : (
               <div className="flex justify-center">
-                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28 ">
+                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28" onClick={handleSubmit}>
                   Save
                 </Button>
               </div>

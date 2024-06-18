@@ -4,7 +4,7 @@ import getschedule from "@/lib/schedule/getschedule";
 import ConfirmSchedule from "@/lib/schedule/confirmschedule";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -20,8 +20,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useNavigate } from "react-router-dom";
-
-
+import { addSchedule } from "@/redux/scheduleSlice";
 
 const Content = ({
   fullname,
@@ -34,10 +33,13 @@ const Content = ({
   onConfirm,
   scheduleId,
   meetingUrl,
+  schedule,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleJoin = () => {
+    dispatch(addSchedule(schedule));
     navigate(`/videochat?url=${meetingUrl}`);
   };
 
@@ -104,7 +106,6 @@ const Content = ({
     </>
   );
 };
-
 
 const Appointement = () => {
   const [activeTab, setActiveTab] = useState("Queue");
@@ -196,10 +197,11 @@ const Appointement = () => {
         return (
           <Content
             key={schedule.id}
-            fullname={schedule.scheduler.fullname}
-            imageUrl={schedule.scheduler.imageUrl}
-            gender={schedule.scheduler.gender}
-            phonenumber={schedule.scheduler.phonenumber}
+            schedule={schedule}
+            fullname={schedule.scheduler?.fullname}
+            imageUrl={schedule.scheduler?.imageUrl}
+            gender={schedule.scheduler?.gender}
+            phonenumber={schedule.scheduler?.phonenumber}
             date={date}
             time={time}
             status={status}

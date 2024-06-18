@@ -7,13 +7,12 @@ import { useQuery } from "react-query";
 import { fetchAdminInfo, fetchHealthCenterInfo } from "./requests/lib";
 import { addAdminData } from "@/redux/adminSlice";
 import { useToast } from "@/components/ui/use-toast";
-import { updateHealthcenter } from "@/redux/healthcenterSlice";
 
 const getFirstName = (fullName) => {
   return fullName.split(" ")[0];
 };
 
-const HealthCenterDashboard = () => {
+const SuperAdminDashBoard = () => {
   const [activeLink, setActiveLink] = useState("requests");
   const userData = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
@@ -31,22 +30,6 @@ const HealthCenterDashboard = () => {
     }
   );
 
-  const healthCenterId = data?.institutionId;
-
-  const { data: healthCenterData } = useQuery(
-    "healthCenterInfo",
-    () => fetchHealthCenterInfo({ token, healthCenterId }),
-    {
-      onSuccess: (healthCenterInfo) => {
-        if (healthCenterInfo !== null && healthCenterInfo !== undefined)
-          dispatch(updateHealthcenter(healthCenterInfo));
-      },
-      onError: (error) => {
-        // Handle the error here
-      },
-    }
-  );
-
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
@@ -59,7 +42,7 @@ const HealthCenterDashboard = () => {
         <div className="flex-1 flex flex-col">
           <div className="flex justify-start bg-gray-100 p-4 text-gray-800">
             <div className="text-lg font-semibold">
-              Welcome, {getFirstName(userData.fullname)}
+              Welcome, Super Admin {getFirstName(userData.fullname)}
             </div>
           </div>
           <MainContent activeLink={activeLink} />
@@ -69,4 +52,4 @@ const HealthCenterDashboard = () => {
   );
 };
 
-export default HealthCenterDashboard;
+export default SuperAdminDashBoard;

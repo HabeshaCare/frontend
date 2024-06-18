@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
+import { addSchedule } from "@/redux/scheduleSlice";
 
 const PatientContent = ({
   doctorName,
@@ -9,10 +11,13 @@ const PatientContent = ({
   time,
   status,
   meetingUrl,
+  schedule,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleJoin = () => {
+    dispatch(addSchedule(schedule));
     navigate(`/videochat?url=${meetingUrl}`);
   };
 

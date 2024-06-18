@@ -83,12 +83,7 @@ const Patient = () => {
     }
   };
 
-  const { } = useQuery("lab", () => getLab({ token: userToken }));
-
-  if (labdata) {
-    console.log("labdata", labdata);
-  }
-
+  const {} = useQuery("lab", () => getLab({ token: userToken }));
 
   const handleCloseDialog = () => {
     setOpenDialog(null);
