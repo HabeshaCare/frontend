@@ -51,6 +51,8 @@ const doctorSlice = createSlice({
             state.doctorspecialization = action.payload.doctorspecialization;
             state.doctorhourlyRateInBirr = action.payload.doctorhourlyRateInBirr;
             state.doctoryearOfExperience = action.payload.doctoryearOfExperience;
+            state.doctordescription = action.payload.doctordescription;
+            state.doctorimageUrl = action.payload.doctorimageUrl;
         },
     },
 });
