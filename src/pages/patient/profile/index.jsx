@@ -89,7 +89,6 @@ export const PatientProfile = () => {
     weight: weight,
     dateofbirth: dataofbirth,
     id: id,
-    currentBalance: currentBalance,
   };
   const updatedprofile = useMutation(
     ({ token, data }) => updateProfile(data, token),
@@ -114,7 +113,6 @@ export const PatientProfile = () => {
             patientweight: weight,
             patientheight: hight,
             patientdateOfBirth: dataofbirth,
-            patientcurrentBalance: currentBalance,
           })
         );
       },

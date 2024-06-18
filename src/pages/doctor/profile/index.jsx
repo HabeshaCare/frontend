@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
 import { useSelector } from "react-redux";
@@ -18,7 +18,7 @@ import { updateprofile } from "@/redux/doctorSlice";
 import { updateProfile } from "@/lib/update/updatedoctorprofile";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-
+import getdoctors from "@/lib/profile/getdoctor";
 export const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
@@ -127,7 +127,6 @@ export const DoctorProfile = () => {
             doctorspecialization: specialization,
             doctorhourlyRateInBirr: hourlyRateInBirr,
             doctoryearOfExperience: yearOfExperience,
-            doctorlocation: location,
             doctorlicensePath: licensePath,
             doctordescription: description,
           })
@@ -141,6 +140,37 @@ export const DoctorProfile = () => {
           action: <ToastAction altText="Try again">Try again</ToastAction>,
         });
       },
+    }
+  );
+  const { data, isLoading, isError, refetch } = useQuery(
+    ["doctorProfile", userToken, doctorData?.doctorid],
+    () => getdoctors({ token: userToken, id: doctorData?.doctorid }),
+    {
+      enabled: !!userToken && !!doctorData?.doctorid,
+      onSuccess: (data) => {
+        console.log("doctor data fetched successfully:", data);
+        dispatch(
+          updateprofile({
+            doctorid: id,
+            doctorname: data.data.fullname,
+            doctorphone: data.data.phonenumber,
+            doctoremail: data.data.email,
+            doctorgender: data.data.gender,
+            doctorlocation: data.data.location,
+            doctorspecialization: data.data.specialization,
+            doctorhourlyRateInBirr: data.data.hourlyRateInBirr,
+            doctorlicensePath: data.data.licensePath,
+            patientdateOfBirth: data.data.dateOfBirth,
+            doctoryearOfExperience: data.data.yearOfExperience,
+            doctordescription: data.data.description,
+            doctorimageUrl: data.data.imageUrl
+          })
+        );
+      },
+      onError: (error) => {
+        console.error("Error fetching patient data:", error);
+      },
+      refetchOnMount: true,
     }
   );
 
