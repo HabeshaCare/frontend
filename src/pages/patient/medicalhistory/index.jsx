@@ -7,10 +7,26 @@ import MobileLaboratoryTest from "@/components/medicalhistory/laboratorytest/mob
 import Prescription from "@/components/medicalhistory/prescription/prescription";
 import MobilePrescription from "@/components/medicalhistory/prescription/mobileprescription";
 import MedicalReport from "@/components/medicalhistory/medicalreport/medicalreport";
+import getPrescriptions from "@/lib/medicaldata/getprescriptions";
+import { useSelector } from "react-redux";
+import getRecords from "@/lib/medicaldata/getrecords";
+import { useQuery } from "react-query";
 
 const MedicalHistory = () => {
   const [size, setSize] = useState(window.innerWidth);
   const [activeTab, setActiveTab] = useState("Medical Record");
+  const userToken = useSelector((state) => state.auth.token);
+  const patientId = useSelector((state) => state.auth.user.id);
+
+  const { data: recordsData, isLoading: isLoadingRecords, isError: isErrorRecords } = useQuery(
+    ["records", patientId],
+    () => getRecords({ token: userToken, patientId: patientId})
+  );
+
+  const { data: prescriptionsData, isLoading: isLoadingPrescriptions, isError: isErrorPrescriptions } = useQuery(
+    ["prescriptions", patientId],
+    () => getPrescriptions({ token: userToken, patientId: patientId })
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,6 +43,15 @@ const MedicalHistory = () => {
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
+
+  useEffect(() => {
+    if (recordsData) {
+      console.log("Records Data:", recordsData);
+    }
+    if (prescriptionsData) {
+      console.log("Prescriptions Data:", prescriptionsData);
+    }
+  }, [recordsData, prescriptionsData]);
 
   let content = null;
 
