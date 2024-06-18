@@ -97,14 +97,6 @@ const HealthCenterProfile = () => {
       <div className="md:flex">
         <div className="md:w-3/4 mb-8">
           <div className="flex my-4">
-            <div className="ml-2 mt-2 cursor-pointer">
-              <Link
-                to="/healthcenter/dashboard"
-                className="bg-hover-blue hover:text-blue-500"
-              >
-                <img src={back} alt="back icon" />
-              </Link>
-            </div>
             <div className="mt-1 font-semibold text-2xl font-serif flex justify-center w-full">
               <p>Health Center Profile</p>
             </div>
