@@ -18,6 +18,21 @@ const adminSlice = createSlice({
     name: 'admin',
     initialState,
     reducers: {
+        updatePhoneNumber: (state, action) => {
+            state.phonenumber = action.payload;
+        },
+        updateImageUrl: (state, action) => {
+            state.imageUrl = action.payload;
+        },
+        updateLocation: (state, action) => {
+            state.location = action.payload;
+        },
+        updateFullName: (state, action) => {
+            state.fullname = action.payload;
+        },
+        updateGender: (state, action) => {
+            state.gender = action.payload;
+        },
         addAdminData: (state, action) => {
             const { institutionId, associatedHealthCenterId, verified, id, phonenumber, imageUrl, role, location, email, fullname, gender } = action.payload;
             state.institutionId = institutionId;
@@ -38,5 +53,5 @@ const adminSlice = createSlice({
     },
 });
 const adminReducer = adminSlice.reducer;
-export const {addAdminData, toggleVerification} = adminSlice.actions;
+export const { addAdminData, updateFullName, updateGender, updateImageUrl, updateLocation, updatePhoneNumber, toggleVerification } = adminSlice.actions;
 export default adminReducer;

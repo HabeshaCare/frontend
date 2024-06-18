@@ -14,16 +14,59 @@ import healthcenter from "@/public/img/healthcenter.jpg";
 import { Link } from 'react-router-dom';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
-import { selectHealthcenter } from "@/redux/healthcenterSlice";
+import { selectHealthcenter, updateName as updateHealthCenterName, updateLocation as updateHealthCenterLocation } from "@/redux/healthcenterSlice";
+import { updateFullName, updateGender, updatePhoneNumber } from "@/redux/adminSlice";
+import { useMutation } from "react-query";
+import { updateAdmin, updateHealthCenter } from "./lib";
+import { useToast } from "@/components/ui/use-toast";
 
 const HealthCenterProfile = () => {
   const [editMode, setEditMode] = useState(false);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const [licenseFile, setLicenseFile] = useState(null);
-  const [gender, setSelectedGender] = useState("M");
   const dispatch = useDispatch();
   const healthCenter = useSelector(selectHealthcenter);
   const admin = useSelector((state) => state.admin);
+  const token = useSelector((state) => state.auth.token);
+  const { toast } = useToast();
+  const adminId = admin.id;
+  const healthCenterId = healthCenter.id;
+
+  const updateAdminMutation = useMutation((updatedData) => updateAdmin({ token, adminId, updatedData }), {
+    onSuccess: (updatedData) => {
+      setEditMode(false);
+      toast({
+        title: "Success",
+        message: "Admin updated successfully",
+        type: "success"
+      })
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        message: "An error occurred",
+        type: "error"
+      })
+    }
+  });
+
+  const updateHealthCenterMutation = useMutation(({ updatedData, formData }) => updateHealthCenter({ token, healthCenterId, updatedData, formData }), {
+    onSuccess: () => {
+      setEditMode(false);
+      toast({
+        title: "Success",
+        message: "HealthCenter updated successfully",
+        type: "success"
+      })
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        message: "An error occurred",
+        type: "error"
+      })
+    }
+  });
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -34,6 +77,28 @@ const HealthCenterProfile = () => {
   const handleRemoveUpload = () => {
     setLicenseFile(null);
   };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("file", licenseFile);
+
+    // Update admin
+    const adminData = {
+      fullname: admin.fullname,
+      phonenumber: admin.phonenumber,
+      gender: admin.gender
+    };
+    updateAdminMutation.mutate(adminData);
+
+    // Update health center
+    const healthCenterData = {
+      name: healthCenter.name,
+      location: healthCenter.location
+    };
+
+    updateHealthCenterMutation.mutate({ healthCenterData, formData });
+  };
+
   return (
     <>
       <div className="md:flex">
@@ -73,12 +138,12 @@ const HealthCenterProfile = () => {
                 {!editMode ? (
                   <ProfileValue value={healthCenter.name} />
                 ) : (
-                  <Input value={healthCenter.name ?? ""} />
+                  <Input value={healthCenter.name} onChange={(event) => dispatch(updateHealthCenterName(event.target.value))} />
                 )}
               </div>
               <div className="ml-2">
                 <ProfileKey keyName="Location" />
-                {!editMode ? <ProfileValue value={healthCenter.location} /> : <Input value={healthCenter.location ?? ""} />}
+                {!editMode ? <ProfileValue value={healthCenter.location} /> : <Input value={healthCenter.location} onChange={(event) => dispatch(updateHealthCenterLocation(event.target.value))} />}
               </div>
               {!editMode && (<div className={`ml-2`}>
                 <ProfileKey keyName="Email" />
@@ -103,18 +168,18 @@ const HealthCenterProfile = () => {
                 {!editMode ? (
                   <ProfileValue value={admin.fullname} />
                 ) : (
-                  <Input value={admin.fullname ?? ""} />
+                  <Input value={admin.fullname} onChange={(event) => dispatch(updateFullName(event.target.value))} />
                 )}
               </div>
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {!editMode ? <ProfileValue value={admin.phonenumber} /> : <Input value={admin.phonenumber ?? ""} />}
+                {!editMode ? <ProfileValue value={admin.phonenumber} /> : <Input value={admin.phonenumber} onChange={(event) => dispatch(updatePhoneNumber(event.target.value))} />}
               </div>
 
               <div className="">
                 <ProfileKey keyName="Gender" />
-                {!editMode ? <ProfileValue value={admin.gender === "M" ? "Male" : "Female"} /> : (<Select onValueChange={(value) => setSelectedGender(value)}>
+                {!editMode ? <ProfileValue value={admin.gender === "M" ? "Male" : "Female"} /> : (<Select onValueChange={(value) => dispatch(updateGender(value))}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="--Select--" />
                   </SelectTrigger>
@@ -178,7 +243,7 @@ const HealthCenterProfile = () => {
               ""
             ) : (
               <div className="flex justify-center">
-                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28">
+                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28" onClick={handleSubmit}>
                   Save
                 </Button>
               </div>
