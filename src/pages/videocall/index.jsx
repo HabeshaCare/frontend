@@ -10,6 +10,7 @@ import { useNavigate } from "react-router";
 function VideoChat() {
   const schedule = useSelector(selectSchedule);
   const role = useSelector((state) => state.auth.user.role);
+  const name = useSelector((state) => state.auth.user.fullname);
   const navigate = useNavigate();
   const timeToConnect = schedule.duration * 60 * 1000; // Converting minutes connection time into seconds
   const token = useSelector((state) => state.auth.token);
@@ -19,6 +20,8 @@ function VideoChat() {
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [connectionId, setConnectionId] = useState("");
+
+  console.log("Schedule", schedule);
 
   const { toast } = useToast();
 
@@ -316,7 +319,7 @@ function VideoChat() {
                 : "absolute top-2 left-3 z-10 font-medium text-md mb-2 text-gray-200"
             }
           >
-            {schedule.doctor}
+            {name}
           </h1>
           <video
             playsInline
@@ -332,7 +335,7 @@ function VideoChat() {
         </div>
         <div className="fixed top-0 left-0 right-0 bottom-0">
           <h1 className="absolute top-2 left-3 z-10 font-medium text-md pb-2 text-gray-200">
-            {schedule.scheduler}
+            {schedule.scheduler ?? schedule.doctor}
           </h1>
           <video
             playsInline
