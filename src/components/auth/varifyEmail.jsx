@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import verifyToken from "@/lib/auth/varifyToken";
 import { useMutation } from "react-query";
+import NavBar from "@/components/landingpage/navBar";
 
 const VarifyEmail = () => {
   const location = useLocation();
@@ -22,9 +23,13 @@ const VarifyEmail = () => {
   const handleVerify = () => {
     navigate("/login");
   };
+  const handleResend = () => {
+    navigate("/resendemail");
+  };
 
   return (
     <>
+      <NavBar />
       {urlClicked ? (
         <div>
           {isLoading ? (
@@ -50,7 +55,7 @@ const VarifyEmail = () => {
               <div>
                 <button
                   className="w-32 h-10 text-white bg-[#1F555D]"
-                  onClick={() => handleVerify()}
+                  onClick={() => handleResend()}
                 >
                   Resend Email
                 </button>
@@ -76,6 +81,7 @@ const VarifyEmail = () => {
           >
             <p>Verify</p>
           </a>
+            <button onClick={handleResend}>Resend Email</button>
         </div>
       )}
     </>

@@ -21,7 +21,7 @@ const Home = () => {
   const handleNavigation = () => {
     navigate("/register");
   };
-  
+
   useEffect(() => {
     const handleResize = () => {
       setSize(window.innerWidth);
@@ -64,9 +64,6 @@ const Home = () => {
                   >
                     Register As a Patient
                   </Button>
-                </div>
-                <div className="absolute bottom-0 right-0 font-light mr-8 mb-8">
-                  <Chatbot />
                 </div>
               </div>
             </div>

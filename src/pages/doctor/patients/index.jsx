@@ -1,63 +1,184 @@
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import back from "@/public/icons/back.svg";
+import { useQuery } from "react-query";
+import getPatient from "@/lib/patient/getpatient";
+import { useSelector } from "react-redux";
+import ReqForm from "../form/requestForm";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
-const Content = () => {
+const Content = ({ patient, selectedService, onButtonClick }) => {
+  let buttonText = "Add";
+  switch (selectedService) {
+    case "report":
+      buttonText = "Add Report";
+      break;
+    case "lab":
+      buttonText = "Request Laboratory Test";
+      break;
+    case "prescription":
+      buttonText = "Attach Prescription";
+      break;
+    default:
+      buttonText = "Add";
+  }
+
   return (
-    <>
-      <div className="flex justify-around mt-8">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-lg bg-gray-300"></div>
-          <div className="flex flex-col">
-            <p className="text-left font-bold">David chandler</p>
-            <p className="text-left text-[#B5B5C3]">Male, 32</p>
-          </div>
-        </div>
-        <div>
-          <p className="text-[#5B5B3C]">12345678</p>
-        </div>
-        <div className="text-[#5B5B3C]">22/12/2023</div>
-        {/* <div className="border border-solid flex flex-col items-center h-8 w-24 rounded-2xl bg-red-100 text-red-600">
-          <p>Waiting</p>
-        </div> */}
-        <div>
-          <p className="text-center text-lg font-bold text-[#1F555D]">
-            Hospital
-          </p>
-          <p className="text-[#B5B5C3]">Amin General Hospital</p>
-        </div>
-        <div>
-          <Button className="bg-[#1F555D] text-white w-36 h-10 rounded-3xl hover:bg-blue-300">View Reports</Button>
-        </div>
-      </div>
-    </>
+    <TableRow>
+      <TableCell className="font-medium">{patient.fullname}</TableCell>
+      <TableCell>{patient.phonenumber}</TableCell>
+      <TableCell>
+        <Button
+          className="bg-[#1F555D] text-white w-44 h-10 rounded-3xl hover:bg-blue-300"
+          onClick={() => onButtonClick(patient, selectedService)}
+        >
+          {buttonText}
+        </Button>
+      </TableCell>
+      <TableCell>
+        <Button className="bg-[#1F555D] text-white w-44 h-10 rounded-3xl hover:bg-blue-300">
+          View Report
+        </Button>
+      </TableCell>
+    </TableRow>
   );
 };
 
 const Patient = () => {
+  const [selectedService, setSelectedService] = useState("");
+  const [openDialog, setOpenDialog] = useState(null);
+  const userId = useSelector((state) => state.auth.user.id);
+  const userToken = useSelector((state) => state.auth.token);
+  const { data, isLoading, isError } = useQuery("patient", () =>
+    getPatient({ id: userId, token: userToken })
+  );
+
+  const handleButtonClick = (patient, service) => {
+    if (service === "") {
+      setOpenDialog({ patient: null, service: "default" });
+    } else {
+      setOpenDialog({ patient, service });
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(null);
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading data</div>;
+
   return (
-    <>
-      <div className="flex justify-between items-center h-16 px-4">
-        <div className="ml-2 cursor-pointer">
-          <img src={back} alt="back icon" />
-        </div>
+    <div className="overflow-hidden">
+      <div className="flex justify-center items-center h-16">
         <div className="text-xl font-bold font-serif">My Patients</div>
-        <div>Filter</div>
       </div>
       <div>
         <hr />
       </div>
-      <div className="flex justify-around my-4 text-[#1F555D] text-lg font-bold w-5/6">
-        <div>Patient Name</div>
-        <div className="pl-24">ID</div>
-        <div>Last Visit</div>
-        <div>Method of treatment</div>
+      <div className="mx-8">
+        <Table>
+          <TableCaption>A list of your patients.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-1/4 font-bold text-lg">Patient Name</TableHead>
+              <TableHead className="w-1/4 font-bold text-lg">Phone Number</TableHead>
+              <TableHead className="w-1/4 font-bold text-lg">
+                <Select onValueChange={(value) => setSelectedService(value)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a service" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Services</SelectLabel>
+                      <SelectItem value="report">Add Report</SelectItem>
+                      <SelectItem value="lab">Request Laboratory Test</SelectItem>
+                      <SelectItem value="prescription">Attach Prescription</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </TableHead>
+              <TableHead className="w-1/4 font-bold text-lg">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data &&
+              data.data.map((patient, index) => (
+                <Content
+                  key={index}
+                  patient={patient}
+                  selectedService={selectedService}
+                  onButtonClick={handleButtonClick}
+                />
+              ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={4}></TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
       </div>
-      <Content />
-      <Content />
-      <Content />
-      <Content />
-      <Content />
-    </>
+
+      {openDialog && (
+        <Dialog open onOpenChange={handleCloseDialog}>
+          <DialogContent className="sm:max-w-[425px]">
+            {openDialog.service === "default" && (
+              <>
+                <h3 className="font-bold text-lg">Please choose a service</h3>
+              </>
+            )}
+            {openDialog.service === "report" && (
+              <>
+                <h3 className="font-bold text-lg">Add Report for {openDialog.patient.fullname}</h3>
+                {/* Render your Add Report form here */}
+                <ReqForm />
+              </>
+            )}
+            {openDialog.service === "lab" && (
+              <>
+                <h3 className="font-bold text-lg">Request Laboratory Test for {openDialog.patient.fullname}</h3>
+                {/* Render your Request Laboratory Test form here */}
+                <ReqForm />
+              </>
+            )}
+            {openDialog.service === "prescription" && (
+              <>
+                <h3 className="font-bold text-lg">Attach Prescription for {openDialog.patient.fullname}</h3>
+                {/* Render your Attach Prescription form here */}
+                <ReqForm />
+              </>
+            )}
+          </DialogContent>
+          <DialogFooter>
+            <Button onClick={handleCloseDialog}>Close</Button>
+          </DialogFooter>
+        </Dialog>
+      )}
+    </div>
   );
 };
 

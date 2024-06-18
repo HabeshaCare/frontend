@@ -1,7 +1,7 @@
 import React from "react";
-import Chatbot from "@/components/dashboard/chatbot";
+import Chatbot from "@/components/landingpage/chatbot";
 import MedicalHistory from "@/pages/patient/medicalhistory";
-import Appointment from "@/pages/doctor/appointments";
+import Appointment from "@/pages/patient/appointments";
 // import ProfileInfo from "@/components/profile/profileInfo";
 import PatientProfile from "../profile";
 import Doctors from "../doctors";
