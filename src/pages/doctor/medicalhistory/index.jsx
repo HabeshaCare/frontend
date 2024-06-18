@@ -13,19 +13,19 @@ import getPrescriptions from "@/lib/medicaldata/getprescriptions";
 import getRecords from "@/lib/medicaldata/getrecords";
 import getLabTest from "@/lib/medicaldata/getlabtest";
 import getDoctor from "@/lib/medicaldata/getdoctor";
+import LoadingSpinner from "@/components/loading/loading";
 
-const MedicalHistory = () => {
+const MedicalHistory = ({ patientId }) => {
   const [size, setSize] = useState(window.innerWidth);
   const [activeTab, setActiveTab] = useState("Medical Record");
   const userToken = useSelector((state) => state.auth.token);
-  const patientId = useSelector((state) => state.auth.user.id);
 
   const {
     data: recordsData,
     isLoading: isLoadingRecords,
     isError: isErrorRecords,
   } = useQuery(["records", patientId], () =>
-    getRecords({ token: userToken, patientId: patientId })
+    getRecords({ token: userToken, patientId })
   );
 
   const {
@@ -33,15 +33,15 @@ const MedicalHistory = () => {
     isLoading: isLoadingPrescriptions,
     isError: isErrorPrescriptions,
   } = useQuery(["prescriptions", patientId], () =>
-    getPrescriptions({ token: userToken, patientId: patientId })
+    getPrescriptions({ token: userToken, patientId })
   );
 
   const {
     data: labData,
     isLoading: isLabLoading,
     isError: isLabError,
-  } = useQuery("lab", () =>
-    getLabTest({ token: userToken, patientId: patientId })
+  } = useQuery(["lab", patientId], () =>
+    getLabTest({ token: userToken, patientId })
   );
 
   const doctorsQuery = useQuery(
@@ -85,17 +85,21 @@ const MedicalHistory = () => {
 
   switch (activeTab) {
     case "Medical Report":
-      content = <MedicalReport />;
+      content = isLoadingRecords ? <LoadingSpinner /> : <MedicalReport />;
       break;
     case "Laboratory Test":
-      content = size > 740 ? (
+      content = isLabLoading ? (
+        <LoadingSpinner />
+      ) : size > 740 ? (
         <LaboratoryTest labData={labData?.data} />
       ) : (
         <MobileLaboratoryTest />
       );
       break;
     case "Prescribed Medicine":
-      content = size > 740 ? (
+      content = isLoadingPrescriptions ? (
+        <LoadingSpinner />
+      ) : size > 740 ? (
         <Prescription
           prescriptionsData={prescriptionsData?.data}
           doctorsData={doctorsQuery.data?.map(response => response.data)}
@@ -105,7 +109,9 @@ const MedicalHistory = () => {
       );
       break;
     case "Medical Record":
-      content = size > 740 ? (
+      content = isLoadingRecords ? (
+        <LoadingSpinner />
+      ) : size > 740 ? (
         <MedicalRecord
           recordsData={recordsData?.data}
           doctorsData={doctorsQuery.data?.map(response => response.data)}

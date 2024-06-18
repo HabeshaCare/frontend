@@ -1,5 +1,3 @@
-// Doctors.jsx
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
@@ -11,9 +9,10 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
 import getdoctors from "@/lib/profile/getdoctors";
-import searchDoctors from "@/lib/search/doctorsearch"; // Import the new searchDoctors function
+import searchDoctors from "@/lib/search/doctorsearch";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import LoadingSpinner from "@/components/loading/loading"; // Import the LoadingSpinner component
 
 const Card = ({ doctor }) => {
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -42,7 +41,6 @@ const Card = ({ doctor }) => {
         description: "You have Booked Appointment successfully.",
         action: <ToastAction altText="Continue">Continue</ToastAction>,
       });
-      // Handle success (e.g., show a success message or close the form)
     },
     onError: (error) => {
       console.error("Error scheduling appointment:", error);
@@ -66,7 +64,6 @@ const Card = ({ doctor }) => {
           action: <ToastAction altText="Retry">Retry</ToastAction>,
         });
       }
-      // Handle error (e.g., show an error message)
     },
   });
 
@@ -83,6 +80,7 @@ const Card = ({ doctor }) => {
       doctorId: doctor.id,
     });
   };
+
   const about =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporincididunt ut labore et dolore magna aliqua.";
   const doctorImageUrl = doctor.imageUrl
@@ -263,8 +261,7 @@ const Doctors = () => {
     isError: searchError,
   } = useMutation((searchQuery) => searchDoctors({ token, searchQuery }), {
     onSuccess: (data) => {
-      setDoctors(data.data.map((item) => item.doctor)); // Extract doctor objects
-      // console.log("Search results:", data);
+      setDoctors(data.data.map((item) => item.doctor));
     },
     onError: (error) => {
       console.error("Error searching doctors:", error);
@@ -284,7 +281,11 @@ const Doctors = () => {
   };
 
   if (isLoading || isSearching) {
-    return <div className="flex justify-center items-center">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner /> {/* Use the LoadingSpinner component here */}
+      </div>
+    );
   }
 
   if (isError || searchError) {

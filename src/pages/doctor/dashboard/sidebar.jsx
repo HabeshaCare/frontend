@@ -41,16 +41,15 @@ const Sidebar = ({ onLinkClick }) => {
         >
           Petients
         </button>
-        <button
+        {/* <button
           onClick={() => handleLinkClick("medicalRecords")}
           className={linkClasses("medicalRecords")}
         >
           Medical Records
-        </button>
+        </button> */}
       </div>
     </div>
   );
 };
-
 
 export default Sidebar;

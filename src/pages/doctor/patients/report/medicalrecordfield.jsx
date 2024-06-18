@@ -16,8 +16,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useSelector } from "react-redux";
 
-const ReportForm = ({ onSubmit }) => {
+const ReportForm = ({ onSubmit, patientId }) => {
+  const userId = useSelector((state) => state.auth.user.id);
   const [formData, setFormData] = useState({
+    doctorId: userId,
+    patientId: patientId,
     treatmentMethod: "",
     weight: "",
     height: "",
@@ -38,8 +41,6 @@ const ReportForm = ({ onSubmit }) => {
 
   const sendData = useMutation((data) => sendMedicalRecord(userToken, data), {
     onSuccess: (data) => {
-      console.log("Medical record ID:", data.data.id);
-      console.log("data", data);
       toast({
         title: "Success!",
         description: "Medical data inserted successfully.",

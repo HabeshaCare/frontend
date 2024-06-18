@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ReqForm from "./Labtest/requestForm";
 import CombinedForm from "./report/combinedform";
 import getLab from "@/lib/service/getassciatedlab";
+import MedicalHistory from "../medicalhistory";
 import {
   Select,
   SelectContent,
@@ -25,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import {
   Dialog,
   DialogContent,
@@ -32,7 +34,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const Content = ({ patient, selectedService, onButtonClick }) => {
+const Content = ({ patient, selectedService, onButtonClick, onViewReport }) => {
   let buttonText = "Add";
   switch (selectedService) {
     case "combined":
@@ -58,9 +60,16 @@ const Content = ({ patient, selectedService, onButtonClick }) => {
         </Button>
       </TableCell>
       <TableCell>
-        <Button className="bg-[#1F555D] text-white w-44 h-10 rounded-3xl hover:bg-blue-300">
-          View Report
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" onClick={() => onViewReport(patient.id)}>
+              View Report
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[800px]">
+            <MedicalHistory patientId={patient.id} />
+          </DialogContent>
+        </Dialog>
       </TableCell>
     </TableRow>
   );
@@ -71,9 +80,18 @@ const Patient = () => {
   const [openDialog, setOpenDialog] = useState(null);
   const userId = useSelector((state) => state.auth.user.id);
   const userToken = useSelector((state) => state.auth.token);
-  const { data, isLoading, isError } = useQuery("patient", () =>
+  const { data: patientData, isLoading, isError } = useQuery("patient", () =>
     getPatient({ id: userId, token: userToken })
   );
+
+  const {
+    data: labData,
+    isLoading: isLabLoading,
+    isError: isLabError,
+  } = useQuery("lab", () => getLab({ token: userToken }));
+
+  console.log("lab id from patient", labData?.data[0]?.id);
+  console.log("patient id", userId);
 
   const handleButtonClick = (patient, service) => {
     if (service === "") {
@@ -83,26 +101,26 @@ const Patient = () => {
     }
   };
 
-  const {} = useQuery("lab", () => getLab({ token: userToken }));
-
   const handleCloseDialog = () => {
     setOpenDialog(null);
   };
 
   const handleFormSubmit = (formData) => {
-    // Handle form submission here
     console.log("Form Data:", formData);
-    // Perform your API call or any other actions here
     handleCloseDialog();
   };
+
   const associatedhealthcenter = useSelector(
     (state) => state.doctor.doctorassociatedHealthCenterId
   );
 
   console.log("associatedhealthcenter", associatedhealthcenter);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading data</div>;
+  if (isLoading || isLabLoading) return <div>Loading...</div>;
+  if (isError || isLabError) return <div>Error loading data</div>;
+
+  // Log the lab data
+  console.log("Lab Data:", labData);
 
   return (
     <div className="overflow-hidden">
@@ -145,13 +163,14 @@ const Patient = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data &&
-              data.data.map((patient, index) => (
+            {patientData &&
+              patientData.data.map((patient, index) => (
                 <Content
                   key={index}
                   patient={patient}
                   selectedService={selectedService}
                   onButtonClick={handleButtonClick}
+                  onViewReport={(id) => console.log("View Report clicked for patient id:", id)}
                 />
               ))}
           </TableBody>
@@ -176,7 +195,10 @@ const Patient = () => {
                 <h3 className="font-bold text-lg">
                   Add Report and Prescription for {openDialog.patient.fullname}
                 </h3>
-                <CombinedForm onSubmit={handleFormSubmit} />
+                <CombinedForm
+                  onSubmit={handleFormSubmit}
+                  patientId={openDialog.patient.id}
+                />
               </>
             )}
             {openDialog.service === "lab" && (
@@ -184,7 +206,12 @@ const Patient = () => {
                 <h3 className="font-bold text-lg">
                   Request Laboratory Test for {openDialog.patient.fullname}
                 </h3>
-                <ReqForm />
+                <ReqForm
+                  labId={labData?.data[0]?.id || ""}
+                  patientId={openDialog.patient.id}
+                  requestorId={userId}
+                  onSubmit={handleFormSubmit}
+                />
               </>
             )}
           </DialogContent>

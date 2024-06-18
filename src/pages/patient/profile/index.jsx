@@ -179,7 +179,7 @@ export const PatientProfile = () => {
         phonenumber,
         location,
         nationalId,
-        hight,
+        height: hight,
         weight,
         dataofbirth,
         location,
@@ -199,7 +199,9 @@ export const PatientProfile = () => {
               <p>Personal Profile</p>
             </div>
           </div>
-          <PatientPicture image={imageUrl? "http://localhost:5072/" + imageUrl : user} />
+          <PatientPicture
+            image={imageUrl ? "http://localhost:5072/" + imageUrl : user}
+          />
 
           {isMdScreen ? "" : <CompleteProfile progress={80} />}
           <div
@@ -268,7 +270,7 @@ export const PatientProfile = () => {
                   />
                 )}
               </div>
-              <div>
+              <div className="mr-28">
                 <ProfileKey keyName="Location" />
                 {editMode ? (
                   <ProfileValue value={location} />
@@ -277,18 +279,6 @@ export const PatientProfile = () => {
                     onChange={handleInputChange(setLocation)}
                     placeholder="Enter your location"
                     value={location}
-                  />
-                )}
-              </div>
-              <div>
-                <ProfileKey keyName="Current Balance" />
-                {editMode ? (
-                  <ProfileValue value={currentBalance} />
-                ) : (
-                  <Input
-                    onChange={handleInputChange(setBalance)}
-                    placeholder="Enter your balance"
-                    value={currentBalance}
                   />
                 )}
               </div>

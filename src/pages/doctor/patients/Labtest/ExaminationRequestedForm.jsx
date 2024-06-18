@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-const ExaminationRequestedForm = () => {
+const ExaminationRequestedForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
-   
     specificTests: [],
     additionalTests: {
       cervicalCytology: {
@@ -23,37 +22,32 @@ const ExaminationRequestedForm = () => {
       other: "",
     },
   });
+
   const handleSpecificTestsChange = (e) => {
     const { value, checked } = e.target;
-    if (checked) {
-      setFormData({
-        ...formData,
-        specificTests: [...formData.specificTests, value],
-      });
-    } else {
-      setFormData({
-        ...formData,
-        specificTests: formData.specificTests.filter((test) => test !== value),
-      });
-    }
+    setFormData((prevState) => ({
+      ...prevState,
+      specificTests: checked
+        ? [...prevState.specificTests, value]
+        : prevState.specificTests.filter((test) => test !== value),
+    }));
   };
 
   const handleAdditionalTestsChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
-    setFormData({
-      ...formData,
+    setFormData((prevState) => ({
+      ...prevState,
       additionalTests: {
-        ...formData.additionalTests,
+        ...prevState.additionalTests,
         [name]: newValue,
       },
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    // Add your form submission logic here
+    onSubmit(formData.specificTests); // Only pass the specificTests to parent component
   };
 
   return (
@@ -119,7 +113,6 @@ const ExaminationRequestedForm = () => {
             ))}
           </div>
         </div>
-
         {/* Additional Tests */}
         <div className="mb-4">
           <label className="block font-semibold mb-1">Additional tests:</label>
@@ -140,7 +133,6 @@ const ExaminationRequestedForm = () => {
                 </label>
               </div>
             </div>
-
             {/* Site */}
             <div>
               <label className="block font-semibold">Site:</label>
@@ -157,10 +149,17 @@ const ExaminationRequestedForm = () => {
                 </label>
               </div>
             </div>
-
             {/* Additional fields */}
             {/* Add more additional fields here */}
           </div>
+        </div>
+        <div className="flex justify-center mt-6">
+          <button
+            type="submit"
+            className="bg-[#1F555D] text-white w-44 h-10 rounded-3xl hover:bg-blue-600"
+          >
+            Submit
+          </button>
         </div>
       </form>
     </div>

@@ -11,5 +11,4 @@ const getLab = async ({ token }) => {
     return response.data;
 }
 
-
 export default getLab;

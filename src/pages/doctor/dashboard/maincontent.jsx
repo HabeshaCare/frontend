@@ -41,16 +41,8 @@ const MainContent = ({ activeLink }) => {
           <Appointment />
         </div>
       )}
-      {activeLink === "profile" && (
-        
-          <PatientProfile />
-        
-      )}
-      {activeLink === "medicalRecords" && (
-        <div>
-          <MedicalHistory />
-        </div>
-      )}
+      {activeLink === "profile" && <PatientProfile />}
+
       {activeLink === "petient" && <Patient />}
     </div>
   );

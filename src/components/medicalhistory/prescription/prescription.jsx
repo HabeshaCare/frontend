@@ -1,51 +1,68 @@
 import React from "react";
 
-const Content = () => {
+const Content = ({
+  medicineName,
+  doctorName,
+  doctorSpecialization,
+  timestamp,
+  diagnosis,
+}) => {
   return (
     <>
-      <div className="flex justify-around text-base mt-6">
+      <div className="flex justify-between mx-8 text-base mt-6">
         <div>
-          <div className="text-left font-bold">Metformin</div>
-          <div className="text-left text-[#B5B5C3]">500 mg tablet</div>
+          <div className="text-left font-bold">{medicineName}</div>
+          <div className="text-left text-[#B5B5C3]"></div>
         </div>
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 rounded-lg bg-gray-300"></div>
           <div className="flex flex-col">
-            <p className="text-left font-bold">Dr. Tsedi</p>
-            <p className="text-left text-[#B5B5C3]">Infectious disease</p>
+            <p className="text-left font-bold">{doctorName}</p>
+            <p className="text-left text-[#B5B5C3]">{doctorSpecialization}</p>
           </div>
         </div>
         <div>
-          <p className="font-semibold">Sep 04/2014</p>
-          <p className="text-[#B5B5C3]">5:20PM</p>
+          <p className="font-semibold">
+            {new Date(timestamp).toLocaleDateString()}
+          </p>
+          <p className="text-[#B5B5C3]">
+            {new Date(timestamp).toLocaleTimeString()}
+          </p>
         </div>
-        <div>
-          <p className="font-semibold">Sep 05/2014</p>
-          <p className="text-[#B5B5C3]">11:40PM</p>
-        </div>
-        <div className="text-base font-semibold w-1/6 text-[#5B5B3C]">
-          Take 1 tablet by mouth twice daily by 10 hours gap.
+        <div className="text-base font-semibold text-[#5B5B3C]">
+          {diagnosis}
         </div>
       </div>
     </>
   );
 };
-const Prescription = () => {
+
+const Prescription = ({ prescriptionsData, doctorsData }) => {
   return (
     <>
-      <div className="flex justify-around mt-12 mr-16 text-lg font-bold font-serif text-[#1F555D]">
+      <div className="flex justify-between mt-12 mx-8 text-lg font-bold font-serif text-[#1F555D]">
         <div>Medication Name</div>
         <div>Prescribed By</div>
-        <div>Start Date</div>
-        <div>End Date</div>
-        <div>Description</div>
+        <div>Date</div>
+        <div>Diagnosis</div>
       </div>
-      <Content />
-      <Content />
-      <Content />
-      <Content />
-      <Content />
-      <Content />
+      {prescriptionsData &&
+        doctorsData &&
+        prescriptionsData.map((prescription) => {
+          const doctor = doctorsData.find(
+            (doc) => doc.id === prescription.doctorId
+          );
+          return (
+            <Content
+              key={prescription.id}
+              medicineName={prescription.medicineName}
+              doctorName={doctor?.fullname}
+              doctorSpecialization={doctor?.specialization}
+              timestamp={prescription.timestamp}
+              diagnosis={prescription.diagnosis}
+            />
+          );
+        })}
     </>
   );
 };

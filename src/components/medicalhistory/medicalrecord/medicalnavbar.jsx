@@ -2,7 +2,7 @@ import React from "react";
 
 const MedicalHistoryNavBar = ({ activeTab, handleTabClick }) => {
   return (
-    <div className="flex justify-around items-center font-bold w-full h-24 md:h-16 text-white text-base md:text-lg pt-8 md:pt-0 px-4">
+    <div className="flex justify-between items-center font-bold w-full h-24 md:h-16 text-white text-base md:text-lg pt-8 md:pt-0 px-4">
       <div
         className={`h-full p-2 bg-white text-[#1F555D] md:pt-4 cursor-pointer ${
           activeTab === "Medical Record"
@@ -34,7 +34,7 @@ const MedicalHistoryNavBar = ({ activeTab, handleTabClick }) => {
         Prescribed Medicine
       </div>
 
-      <div
+      {/* <div
         className={`h-full p-2 md:pt-4 bg-white text-[#1F555D] cursor-pointer ${
           activeTab === "Medical Report"
             ? "rounded-t-lg border-b-4 border-[#1F555D]"
@@ -43,7 +43,7 @@ const MedicalHistoryNavBar = ({ activeTab, handleTabClick }) => {
         onClick={() => handleTabClick("Medical Report")}
       >
         Medical Report
-      </div>
+      </div> */}
     </div>
   );
 };
