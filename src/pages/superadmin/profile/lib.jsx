@@ -15,6 +15,8 @@ export const updateAdmin = async ({ token, adminId, updatedData }) => {
 };
 
 export const updateProfilePicture = async ({ token, adminId, formData }) => {
+  console.log("Updating profile picture");
+  console.log("formdata: ", formData);
   try {
     const config = {
       headers: {
@@ -23,13 +25,15 @@ export const updateProfilePicture = async ({ token, adminId, formData }) => {
       },
     };
     const response = await axios.post(
-      `http://localhost:5072/api/admin/${adminId}/upload-profile`,
+      `http://localhost:5072/api/admin/${adminId}/profile/upload-picture`,
       formData,
       config
     );
 
     return response.data.data;
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const updateHealthCenter = async ({
@@ -63,5 +67,7 @@ export const updateHealthCenter = async ({
     }
 
     return response.data.data;
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
