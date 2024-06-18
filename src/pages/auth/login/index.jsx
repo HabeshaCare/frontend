@@ -53,6 +53,9 @@ const Login = () => {
       );
 
       switch (userData.role) {
+        case "SuperAdmin":
+          navigate("/superadmin/dashboard");
+          break;
         case "HealthCenterAdmin":
           navigate("/healthcenter/dashboard");
           break;

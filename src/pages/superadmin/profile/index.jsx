@@ -26,8 +26,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { addAdminData } from "@/redux/adminSlice";
 
 export const AdminProfile = () => {
+  const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const [fullname, setFullname] = useState("");
@@ -50,6 +52,7 @@ export const AdminProfile = () => {
     ({ token, data }) => updateAdmin({ token, adminId, updatedData: data }),
     {
       onSuccess: (updatedData) => {
+        if (updatedData) dispatch(addAdminData(updatedData));
         toast({
           title: "Success!",
           description: "Profile updated successfully.",
@@ -101,9 +104,7 @@ export const AdminProfile = () => {
 
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
-              <div>
-                <img src={edit} alt="edit SVG" />
-              </div>
+              <div>{!editMode && <img src={edit} alt="edit SVG" />}</div>
               <div
                 className="text-[#1F555D] cursor-pointer"
                 onClick={() => setEditMode(!editMode)}
@@ -117,7 +118,7 @@ export const AdminProfile = () => {
             </div>
 
             <div className={`${!editMode && "md:flex justify-around md:mb-4"}`}>
-              <div className="">
+              <div className="ml-2">
                 <ProfileKey keyName="Full Name" />
                 {!editMode ? (
                   <ProfileValue value={adminData?.fullname} />
@@ -130,16 +131,17 @@ export const AdminProfile = () => {
                 )}
               </div>
 
-              <div className="">
-                <ProfileKey keyName="Email" />
-                {!editMode}
-                <ProfileValue value={adminData?.email} />
-              </div>
+              {!editMode && (
+                <div className="ml-2">
+                  <ProfileKey keyName="Email" />
+                  <ProfileValue value={adminData?.email} />
+                </div>
+              )}
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
                 {!editMode ? (
-                  <ProfileValue value={phonenumber} />
+                  <ProfileValue value={adminData?.phonenumber} />
                 ) : (
                   <Input
                     onChange={handleInputChange(setPhonenumber)}
@@ -149,47 +151,48 @@ export const AdminProfile = () => {
                 )}
               </div>
             </div>
-
-            <div className="">
-              <ProfileKey keyName="Gender" />
-              {!editMode ? (
-                <ProfileValue
-                  value={adminData?.gender === "M" ? "Male" : "Female"}
-                />
-              ) : (
-                <Select onValueChange={handleInputChange(setGender)}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="--Select--" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Gender</SelectLabel>
-                      <SelectItem value="M">Male</SelectItem>
-                      <SelectItem value="F">Female</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+            <div className="flex justify-around">
+              <div className="flex flex-col items-center ml-2">
+                <ProfileKey keyName="Gender" />
+                {!editMode ? (
+                  <ProfileValue
+                    value={adminData?.gender === "M" ? "Male" : "Female"}
+                  />
+                ) : (
+                  <Select onValueChange={(value) => setGender(value)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="--Select--" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Gender</SelectLabel>
+                        <SelectItem value="M">Male</SelectItem>
+                        <SelectItem value="F">Female</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
+              <div className="flex flex-col items-center ml-10 md:ml-16 md:pl-1">
+                <ProfileKey keyName="Location" />
+                {!editMode ? (
+                  <ProfileValue value={adminData?.location} />
+                ) : (
+                  <Input
+                    onChange={handleInputChange(setLocation)}
+                    value={location}
+                    placeholder="set location"
+                  />
+                )}
+              </div>
+              {!editMode && (
+                <div className="flex flex-col items-center ml-2">
+                  <ProfileKey keyName="Verification status" />
+                  <ProfileValue
+                    value={adminData?.verified ? "Verified " : "not Verified"}
+                  />
+                </div>
               )}
-            </div>
-            <div className="">
-              <ProfileKey keyName="Location" />
-              {!editMode ? (
-                <ProfileValue value={location} />
-              ) : (
-                <Input
-                  onChange={handleInputChange(setLocation)}
-                  value={location}
-                  placeholder="set location"
-                />
-              )}
-            </div>
-          </div>
-          <div className={`${!editMode && "ml-2 md:flex justify-around"} mt-8`}>
-            <div>
-              <ProfileKey keyName="Verification status" />
-              <ProfileValue
-                value={adminData?.verified ? "Verified " : "not Verified"}
-              />
             </div>
           </div>
 
@@ -206,10 +209,9 @@ export const AdminProfile = () => {
             </div>
           )}
         </div>
-      </div>
-
-      <div className="w-1/3 flex justify-center">
-        {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
+        <div className="w-1/4 flex justify-center">
+          {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
+        </div>
       </div>
     </>
   );

@@ -7,13 +7,12 @@ import { useQuery } from "react-query";
 import { fetchAdminInfo, fetchHealthCenterInfo } from "./requests/lib";
 import { addAdminData } from "@/redux/adminSlice";
 import { useToast } from "@/components/ui/use-toast";
-import { updateHealthcenter } from "@/redux/healthcenterSlice";
 
 const getFirstName = (fullName) => {
   return fullName.split(" ")[0];
 };
 
-const HealthCenterDashboard = () => {
+const SuperAdminDashBoard = () => {
   const [activeLink, setActiveLink] = useState("requests");
   const userData = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
@@ -27,22 +26,6 @@ const HealthCenterDashboard = () => {
       onSuccess: (adminInfo) => {
         if (adminInfo !== null && adminInfo !== undefined)
           dispatch(addAdminData(adminInfo));
-      },
-    }
-  );
-
-  const healthCenterId = data?.institutionId;
-
-  const { data: healthCenterData } = useQuery(
-    "healthCenterInfo",
-    () => fetchHealthCenterInfo({ token, healthCenterId }),
-    {
-      onSuccess: (healthCenterInfo) => {
-        if (healthCenterInfo !== null && healthCenterInfo !== undefined)
-          dispatch(updateHealthcenter(healthCenterInfo));
-      },
-      onError: (error) => {
-        // Handle the error here
       },
     }
   );
@@ -69,4 +52,4 @@ const HealthCenterDashboard = () => {
   );
 };
 
-export default HealthCenterDashboard;
+export default SuperAdminDashBoard;
