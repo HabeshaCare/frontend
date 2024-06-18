@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "react-query";
-import getPatient from "@/lib/patient/getpatient";
+import getPatient from "@/lib/patient/getsharedpatient";
 import { useSelector } from "react-redux";
-import ReqForm from "../form/requestForm";
+import ReqForm from "./Labtest/requestForm";
+import CombinedForm from "./report/combinedform";
+import getLab from "@/lib/service/getassciatedlab";
 import {
   Select,
   SelectContent,
@@ -33,14 +35,11 @@ import {
 const Content = ({ patient, selectedService, onButtonClick }) => {
   let buttonText = "Add";
   switch (selectedService) {
-    case "report":
-      buttonText = "Add Report";
+    case "combined":
+      buttonText = "Add Report and Prescription";
       break;
     case "lab":
       buttonText = "Request Laboratory Test";
-      break;
-    case "prescription":
-      buttonText = "Attach Prescription";
       break;
     default:
       buttonText = "Add";
@@ -52,7 +51,7 @@ const Content = ({ patient, selectedService, onButtonClick }) => {
       <TableCell>{patient.phonenumber}</TableCell>
       <TableCell>
         <Button
-          className="bg-[#1F555D] text-white w-44 h-10 rounded-3xl hover:bg-blue-300"
+          className="bg-[#1F555D] text-white w-52 h-10 rounded-3xl hover:bg-blue-300"
           onClick={() => onButtonClick(patient, selectedService)}
         >
           {buttonText}
@@ -84,9 +83,23 @@ const Patient = () => {
     }
   };
 
+  const {} = useQuery("lab", () => getLab({ token: userToken }));
+
   const handleCloseDialog = () => {
     setOpenDialog(null);
   };
+
+  const handleFormSubmit = (formData) => {
+    // Handle form submission here
+    console.log("Form Data:", formData);
+    // Perform your API call or any other actions here
+    handleCloseDialog();
+  };
+  const associatedhealthcenter = useSelector(
+    (state) => state.doctor.doctorassociatedHealthCenterId
+  );
+
+  console.log("associatedhealthcenter", associatedhealthcenter);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
@@ -104,8 +117,12 @@ const Patient = () => {
           <TableCaption>A list of your patients.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-1/4 font-bold text-lg">Patient Name</TableHead>
-              <TableHead className="w-1/4 font-bold text-lg">Phone Number</TableHead>
+              <TableHead className="w-1/4 font-bold text-lg">
+                Patient Name
+              </TableHead>
+              <TableHead className="w-1/4 font-bold text-lg">
+                Phone Number
+              </TableHead>
               <TableHead className="w-1/4 font-bold text-lg">
                 <Select onValueChange={(value) => setSelectedService(value)}>
                   <SelectTrigger className="w-full">
@@ -114,9 +131,12 @@ const Patient = () => {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Services</SelectLabel>
-                      <SelectItem value="report">Add Report</SelectItem>
-                      <SelectItem value="lab">Request Laboratory Test</SelectItem>
-                      <SelectItem value="prescription">Attach Prescription</SelectItem>
+                      <SelectItem value="combined">
+                        Add Report and Prescription
+                      </SelectItem>
+                      <SelectItem value="lab">
+                        Request Laboratory Test
+                      </SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -151,24 +171,19 @@ const Patient = () => {
                 <h3 className="font-bold text-lg">Please choose a service</h3>
               </>
             )}
-            {openDialog.service === "report" && (
+            {openDialog.service === "combined" && (
               <>
-                <h3 className="font-bold text-lg">Add Report for {openDialog.patient.fullname}</h3>
-                {/* Render your Add Report form here */}
-                <ReqForm />
+                <h3 className="font-bold text-lg">
+                  Add Report and Prescription for {openDialog.patient.fullname}
+                </h3>
+                <CombinedForm onSubmit={handleFormSubmit} />
               </>
             )}
             {openDialog.service === "lab" && (
               <>
-                <h3 className="font-bold text-lg">Request Laboratory Test for {openDialog.patient.fullname}</h3>
-                {/* Render your Request Laboratory Test form here */}
-                <ReqForm />
-              </>
-            )}
-            {openDialog.service === "prescription" && (
-              <>
-                <h3 className="font-bold text-lg">Attach Prescription for {openDialog.patient.fullname}</h3>
-                {/* Render your Attach Prescription form here */}
+                <h3 className="font-bold text-lg">
+                  Request Laboratory Test for {openDialog.patient.fullname}
+                </h3>
                 <ReqForm />
               </>
             )}
