@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useQuery } from "react-query";
 import MedicalHistoryNavBar from "@/components/medicalhistory/medicalrecord/medicalnavbar";
 import MedicalRecord from "@/components/medicalhistory/medicalrecord/medicalrecord";
 import MobileMedicalRecord from "@/components/medicalhistory/medicalrecord/mobilemedicalrecord";
@@ -8,10 +10,9 @@ import Prescription from "@/components/medicalhistory/prescription/prescription"
 import MobilePrescription from "@/components/medicalhistory/prescription/mobileprescription";
 import MedicalReport from "@/components/medicalhistory/medicalreport/medicalreport";
 import getPrescriptions from "@/lib/medicaldata/getprescriptions";
-import { useSelector } from "react-redux";
 import getRecords from "@/lib/medicaldata/getrecords";
-import { useQuery } from "react-query";
 import getLabTest from "@/lib/medicaldata/getlabtest";
+import getDoctor from "@/lib/medicaldata/getdoctor";
 
 const MedicalHistory = () => {
   const [size, setSize] = useState(window.innerWidth);
@@ -39,7 +40,15 @@ const MedicalHistory = () => {
     data: labData,
     isLoading: isLabLoading,
     isError: isLabError,
-  } = useQuery("lab", () => getLabTest({ token: userToken, patientId: patientId}));
+  } = useQuery("lab", () =>
+    getLabTest({ token: userToken, patientId: patientId })
+  );
+
+  const doctorsQuery = useQuery(
+    ["doctors", recordsData?.data.map(record => record.doctorId)],
+    () => Promise.all(recordsData?.data.map(record => getDoctor({ token: userToken, id: record.doctorId }))),
+    { enabled: !!recordsData }
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -67,7 +76,10 @@ const MedicalHistory = () => {
     if (labData) {
       console.log("Lab Data:", labData);
     }
-  }, [recordsData, prescriptionsData]);
+    if (doctorsQuery.data) {
+      console.log("Doctor Data:", doctorsQuery.data);
+    }
+  }, [recordsData, prescriptionsData, labData, doctorsQuery.data]);
 
   let content = null;
 
@@ -76,13 +88,31 @@ const MedicalHistory = () => {
       content = <MedicalReport />;
       break;
     case "Laboratory Test":
-      content = size > 740 ? <LaboratoryTest /> : <MobileLaboratoryTest />;
+      content = size > 740 ? (
+        <LaboratoryTest labData={labData?.data} />
+      ) : (
+        <MobileLaboratoryTest />
+      );
       break;
     case "Prescribed Medicine":
-      content = size > 740 ? <Prescription /> : <MobilePrescription />;
+      content = size > 740 ? (
+        <Prescription
+          prescriptionsData={prescriptionsData?.data}
+          doctorsData={doctorsQuery.data?.map(response => response.data)}
+        />
+      ) : (
+        <MobilePrescription />
+      );
       break;
     case "Medical Record":
-      content = size > 740 ? <MedicalRecord /> : <MobileMedicalRecord />;
+      content = size > 740 ? (
+        <MedicalRecord
+          recordsData={recordsData?.data}
+          doctorsData={doctorsQuery.data?.map(response => response.data)}
+        />
+      ) : (
+        <MobileMedicalRecord />
+      );
       break;
     default:
       content = null;
