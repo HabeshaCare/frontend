@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 function VideoChat() {
   const schedule = useSelector(selectSchedule);
   const role = useSelector((state) => state.auth.user.role);
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const timeToConnect = schedule.duration;
   const token = useSelector((state) => state.auth.token);
 
@@ -271,6 +271,9 @@ function VideoChat() {
     setCallEnded(true);
     connectionRef.current?.close();
     socket.current?.disconnect();
+    if (localStreamRef.current && localStreamRef.current.stop)
+      localStreamRef.current.stop();
+
     resetStates();
   };
 
@@ -347,9 +350,7 @@ function VideoChat() {
           toggleAudio={toggleAudio}
           leaveCall={() => {
             leaveCall();
-            navigator(
-              `${role === "doctor" ? "/doctor" : "/patient"}/dashboard`
-            );
+            navigate(`${role === "doctor" ? "/doctor" : "/patient"}/dashboard`);
           }}
         />
       </>
