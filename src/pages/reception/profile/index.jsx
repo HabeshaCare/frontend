@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
 import Picture from "./Picture";
-import healthcenter from "@/public/img/healthcenter.jpg";
+import doctor from "@/public/img/doctor.png";
 import { Link } from "react-router-dom";
 import {
   Select,
@@ -111,7 +111,14 @@ const HealthCenterProfile = () => {
           </div>
 
           <div className="flex flex-col border border-solid mt-4 md:ml-24">
-            <Picture image={healthcenter} />
+            <Picture
+              image={
+                admin?.imageUrl
+                  ? "http://localhost:5072/" + admin?.imageUrl
+                  : doctor
+              }
+            />
+
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>{!editMode && <img src={edit} alt="edit SVG" />}</div>
