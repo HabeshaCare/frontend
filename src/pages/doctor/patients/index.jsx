@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ReqForm from "./Labtest/requestForm";
 import CombinedForm from "./report/combinedform";
 import getLab from "@/lib/service/getassciatedlab";
+import MedicalHistory from "../medicalhistory";
 import {
   Select,
   SelectContent,
@@ -25,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import {
   Dialog,
   DialogContent,
@@ -32,7 +34,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const Content = ({ patient, selectedService, onButtonClick }) => {
+const Content = ({ patient, selectedService, onButtonClick, onViewReport }) => {
   let buttonText = "Add";
   switch (selectedService) {
     case "combined":
@@ -58,9 +60,16 @@ const Content = ({ patient, selectedService, onButtonClick }) => {
         </Button>
       </TableCell>
       <TableCell>
-        <Button className="bg-[#1F555D] text-white w-44 h-10 rounded-3xl hover:bg-blue-300">
-          View Report
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" onClick={() => onViewReport(patient.id)}>
+              View Report
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[800px]">
+            <MedicalHistory patientId={patient.id} />
+          </DialogContent>
+        </Dialog>
       </TableCell>
     </TableRow>
   );
@@ -161,6 +170,7 @@ const Patient = () => {
                   patient={patient}
                   selectedService={selectedService}
                   onButtonClick={handleButtonClick}
+                  onViewReport={(id) => console.log("View Report clicked for patient id:", id)}
                 />
               ))}
           </TableBody>
