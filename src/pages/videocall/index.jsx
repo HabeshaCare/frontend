@@ -11,7 +11,7 @@ function VideoChat() {
   const schedule = useSelector(selectSchedule);
   const role = useSelector((state) => state.auth.user.role);
   const navigate = useNavigate();
-  const timeToConnect = schedule.duration;
+  const timeToConnect = schedule.duration * 60 * 1000; // Converting minutes connection time into seconds
   const token = useSelector((state) => state.auth.token);
 
   const [callAccepted, setCallAccepted] = useState(false);
@@ -271,8 +271,7 @@ function VideoChat() {
     setCallEnded(true);
     connectionRef.current?.close();
     socket.current?.disconnect();
-    if (localStreamRef.current && localStreamRef.current.stop)
-      localStreamRef.current.stop();
+    console.log(localStreamRef.current?.srcObject?.getVideoTracks()[0].stop());
 
     resetStates();
   };
