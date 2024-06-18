@@ -36,6 +36,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Router>
             <Routes>
+              <Route path="/patient/appointment/chat" element={<VideoChat />} />
               <Route path="/pharmacy/profile" element={<ProtectedRoute requiredRole="PharmacyAdmin"><PharmacyProfile /></ProtectedRoute>} />
               <Route path="/pharmacy/dashboard" element={<ProtectedRoute requiredRole="PharmacyAdmin"><PharmacyDashboard /></ProtectedRoute>} />
 

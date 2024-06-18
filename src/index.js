@@ -17,7 +17,7 @@ root.render(
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <App />
-          <Toaster /> 
+          <Toaster />
         </QueryClientProvider>
       </PersistGate>
     </Provider>
