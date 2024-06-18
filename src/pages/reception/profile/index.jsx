@@ -11,16 +11,31 @@ import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
 import Picture from "./Picture";
 import healthcenter from "@/public/img/healthcenter.jpg";
-import { Link } from 'react-router-dom';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Link } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
-import { selectHealthcenter, updateName as updateHealthCenterName, updateLocation as updateHealthCenterLocation } from "@/redux/healthcenterSlice";
-import { updateFullName, updateGender, updatePhoneNumber } from "@/redux/adminSlice";
+import {
+  selectHealthcenter,
+  updateName as updateHealthCenterName,
+  updateLocation as updateHealthCenterLocation,
+} from "@/redux/healthcenterSlice";
+import {
+  updateFullName,
+  updateGender,
+  updatePhoneNumber,
+} from "@/redux/adminSlice";
 import { useMutation } from "react-query";
 import { updateAdmin, updateHealthCenter } from "./lib";
 import { useToast } from "@/components/ui/use-toast";
 import { FaExternalLinkAlt } from "react-icons/fa";
-
 
 const HealthCenterProfile = () => {
   const [editMode, setEditMode] = useState(false);
@@ -34,41 +49,25 @@ const HealthCenterProfile = () => {
   const adminId = admin.id;
   const healthCenterId = healthCenter.id;
 
-  const updateAdminMutation = useMutation((updatedData) => updateAdmin({ token, adminId, updatedData }), {
-    onSuccess: (updatedData) => {
-      console.log("adminUpdated: ", updatedData)
-      if (updatedData)
-        setEditMode(false);
-      toast({
-        title: "Success",
-        description: "Admin updated successfully",
-      })
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: "An error occurred",
-      })
+  const updateAdminMutation = useMutation(
+    (updatedData) => updateAdmin({ token, adminId, updatedData }),
+    {
+      onSuccess: (updatedData) => {
+        console.log("adminUpdated: ", updatedData);
+        if (updatedData) setEditMode(false);
+        toast({
+          title: "Success",
+          description: "Admin updated successfully",
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Error",
+          description: "An error occurred",
+        });
+      },
     }
-  });
-
-  const updateHealthCenterMutation = useMutation(({ updatedData, formData }) => updateHealthCenter({ token, healthCenterId, updatedData, formData }), {
-    onSuccess: (updatedData) => {
-      console.log("HealthCenterUpdated: ", updatedData)
-      setEditMode(false);
-      setLicenseFile(null);
-      toast({
-        title: "Success",
-        description: "HealthCenter updated successfully",
-      })
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: "An error occurred",
-      })
-    }
-  });
+  );
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -88,17 +87,9 @@ const HealthCenterProfile = () => {
     const adminData = {
       fullname: admin.fullname,
       phonenumber: admin.phonenumber,
-      gender: admin.gender
+      gender: admin.gender,
     };
     updateAdminMutation.mutate(adminData);
-
-    // Update health center
-    const healthCenterData = {
-      name: healthCenter.name,
-      location: healthCenter.location
-    };
-
-    updateHealthCenterMutation.mutate({ updatedData: healthCenterData, formData });
   };
 
   return (
@@ -107,7 +98,10 @@ const HealthCenterProfile = () => {
         <div className="md:w-3/4 mb-8">
           <div className="flex my-4">
             <div className="ml-2 mt-2 cursor-pointer">
-              <Link to='/healthcenter/dashboard' className='bg-hover-blue hover:text-blue-500'>
+              <Link
+                to="/healthcenter/dashboard"
+                className="bg-hover-blue hover:text-blue-500"
+              >
                 <img src={back} alt="back icon" />
               </Link>
             </div>
@@ -120,9 +114,7 @@ const HealthCenterProfile = () => {
             <Picture image={healthcenter} />
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
-              <div>
-                {!editMode && (<img src={edit} alt="edit SVG" />)}
-              </div>
+              <div>{!editMode && <img src={edit} alt="edit SVG" />}</div>
               <div
                 className="text-[#1F555D] cursor-pointer"
                 onClick={() => setEditMode(!editMode)}
@@ -140,30 +132,69 @@ const HealthCenterProfile = () => {
                 {!editMode ? (
                   <ProfileValue value={healthCenter.name} />
                 ) : (
-                  <Input value={healthCenter.name} onChange={(event) => dispatch(updateHealthCenterName(event.target.value))} />
+                  <Input
+                    value={healthCenter.name}
+                    onChange={(event) =>
+                      dispatch(updateHealthCenterName(event.target.value))
+                    }
+                  />
                 )}
               </div>
               <div className="ml-2">
                 <ProfileKey keyName="Location" />
-                {!editMode ? <ProfileValue value={healthCenter.location} /> : <Input value={healthCenter.location} onChange={(event) => dispatch(updateHealthCenterLocation(event.target.value))} />}
+                {!editMode ? (
+                  <ProfileValue value={healthCenter.location} />
+                ) : (
+                  <Input
+                    value={healthCenter.location}
+                    onChange={(event) =>
+                      dispatch(updateHealthCenterLocation(event.target.value))
+                    }
+                  />
+                )}
               </div>
-              {!editMode && (<div className={`ml-2`}>
-                <ProfileKey keyName="Email" />
-                <ProfileValue value={admin.email} />
-              </div>)}
-
+              {!editMode && (
+                <div className={`ml-2`}>
+                  <ProfileKey keyName="Email" />
+                  <ProfileValue value={admin.email} />
+                </div>
+              )}
             </div>
-            <div className={`${!editMode && "md:flex justify-start pl-4 md:mb-4"}`}>
+            <div
+              className={`${!editMode && "md:flex justify-start pl-4 md:mb-4"}`}
+            >
+              {!editMode && (
+                <div className="ml-2 md:ml-16 md:pl-1">
+                  <ProfileKey keyName="Verification status " />
+                  <ProfileValue
+                    value={healthCenter.verified ? "Verified" : "Not Verified"}
+                  />
+                </div>
+              )}
 
-              {!editMode && (<div className="ml-2 md:ml-16 md:pl-1">
-                <ProfileKey keyName="Verification status " />
-                <ProfileValue value={healthCenter.verified ? "Verified" : "Not Verified"} />
-              </div>)}
-
-              {!editMode && (<div className="ml-10 md:ml-16 md:pl-1">
-                <ProfileKey keyName="License Information" />
-                <ProfileValue value={healthCenter.licensePath ? <a href={`http://localhost:5072/${healthCenter.licensePath}`} className="hover:underline hover:cursor-pointer" target="_blank" rel="noreferrer" ><div className="flex flex-row gap-1">View License Info <FaExternalLinkAlt /> </div> </a> : "N/A"} />
-              </div>)}
+              {!editMode && (
+                <div className="ml-10 md:ml-16 md:pl-1">
+                  <ProfileKey keyName="License Information" />
+                  <ProfileValue
+                    value={
+                      healthCenter.licensePath ? (
+                        <a
+                          href={`http://localhost:5072/${healthCenter.licensePath}`}
+                          className="hover:underline hover:cursor-pointer"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <div className="flex flex-row gap-1">
+                            View License Info <FaExternalLinkAlt />{" "}
+                          </div>{" "}
+                        </a>
+                      ) : (
+                        "N/A"
+                      )
+                    }
+                  />
+                </div>
+              )}
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               Admin Info
@@ -177,29 +208,51 @@ const HealthCenterProfile = () => {
                 {!editMode ? (
                   <ProfileValue value={admin.fullname} />
                 ) : (
-                  <Input value={admin.fullname} onChange={(event) => dispatch(updateFullName(event.target.value))} />
+                  <Input
+                    value={admin.fullname}
+                    onChange={(event) =>
+                      dispatch(updateFullName(event.target.value))
+                    }
+                  />
                 )}
               </div>
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {!editMode ? <ProfileValue value={admin.phonenumber} /> : <Input value={admin.phonenumber} onChange={(event) => dispatch(updatePhoneNumber(event.target.value))} />}
+                {!editMode ? (
+                  <ProfileValue value={admin.phonenumber} />
+                ) : (
+                  <Input
+                    value={admin.phonenumber}
+                    onChange={(event) =>
+                      dispatch(updatePhoneNumber(event.target.value))
+                    }
+                  />
+                )}
               </div>
 
               <div className="">
                 <ProfileKey keyName="Gender" />
-                {!editMode ? <ProfileValue value={admin.gender === "M" ? "Male" : "Female"} /> : (<Select onValueChange={(value) => dispatch(updateGender(value))}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="--Select--" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Gender</SelectLabel>
-                      <SelectItem value="M">Male</SelectItem>
-                      <SelectItem value="F">Female</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>)}
+                {!editMode ? (
+                  <ProfileValue
+                    value={admin.gender === "M" ? "Male" : "Female"}
+                  />
+                ) : (
+                  <Select
+                    onValueChange={(value) => dispatch(updateGender(value))}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="--Select--" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Gender</SelectLabel>
+                        <SelectItem value="M">Male</SelectItem>
+                        <SelectItem value="F">Female</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
             </div>
 
@@ -252,7 +305,10 @@ const HealthCenterProfile = () => {
               ""
             ) : (
               <div className="flex justify-center">
-                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28" onClick={handleSubmit}>
+                <Button
+                  className="my-6 bg-[#1F555D] text-white h-10 w-28"
+                  onClick={handleSubmit}
+                >
                   Save
                 </Button>
               </div>
