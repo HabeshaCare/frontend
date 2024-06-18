@@ -32,8 +32,7 @@ const UserContent = ({ userData, onConfirm }) => {
                 <TableCell>{userData?.phonenumber ? userData?.phonenumber : userData?.email ? userData.email : "N/A"}</TableCell>
                 <TableCell>{userData?.gender === "M" ? "Male" : "Female"}</TableCell>
                 <TableCell>{userData?.role}</TableCell>
-                <TableCell> <Button variant="link" target="_blank" href={userData?.licenseUrl} rel="noreferrer" > <div className="flex flex-row gap-1 items-center"> <p>View License Info</p> <FaExternalLinkAlt /></div>
-                </Button></TableCell>
+                <TableCell> <a href={`http://localhost:5072/${userData.licensePath}`} className="hover:underline hover:cursor-pointer" target="_blank" rel="noreferrer" ><div className="flex flex-row gap-1">View License Info <FaExternalLinkAlt /> </div> </a></TableCell>
                 <TableCell>
                     <AlertDialog className="h-8 w-24">
                         <AlertDialogTrigger asChild>

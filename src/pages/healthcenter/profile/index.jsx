@@ -19,6 +19,8 @@ import { updateFullName, updateGender, updatePhoneNumber } from "@/redux/adminSl
 import { useMutation } from "react-query";
 import { updateAdmin, updateHealthCenter } from "./lib";
 import { useToast } from "@/components/ui/use-toast";
+import { FaExternalLinkAlt } from "react-icons/fa";
+
 
 const HealthCenterProfile = () => {
   const [editMode, setEditMode] = useState(false);
@@ -34,36 +36,36 @@ const HealthCenterProfile = () => {
 
   const updateAdminMutation = useMutation((updatedData) => updateAdmin({ token, adminId, updatedData }), {
     onSuccess: (updatedData) => {
-      setEditMode(false);
+      console.log("adminUpdated: ", updatedData)
+      if (updatedData)
+        setEditMode(false);
       toast({
         title: "Success",
-        message: "Admin updated successfully",
-        type: "success"
+        description: "Admin updated successfully",
       })
     },
     onError: (error) => {
       toast({
         title: "Error",
-        message: "An error occurred",
-        type: "error"
+        description: "An error occurred",
       })
     }
   });
 
   const updateHealthCenterMutation = useMutation(({ updatedData, formData }) => updateHealthCenter({ token, healthCenterId, updatedData, formData }), {
-    onSuccess: () => {
+    onSuccess: (updatedData) => {
+      console.log("HealthCenterUpdated: ", updatedData)
       setEditMode(false);
+      setLicenseFile(null);
       toast({
         title: "Success",
-        message: "HealthCenter updated successfully",
-        type: "success"
+        description: "HealthCenter updated successfully",
       })
     },
     onError: (error) => {
       toast({
         title: "Error",
-        message: "An error occurred",
-        type: "error"
+        description: "An error occurred",
       })
     }
   });
@@ -79,8 +81,8 @@ const HealthCenterProfile = () => {
   };
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append("file", licenseFile);
+    const formData = licenseFile ? new FormData() : null;
+    formData?.append("file", licenseFile);
 
     // Update admin
     const adminData = {
@@ -96,7 +98,7 @@ const HealthCenterProfile = () => {
       location: healthCenter.location
     };
 
-    updateHealthCenterMutation.mutate({ healthCenterData, formData });
+    updateHealthCenterMutation.mutate({ updatedData: healthCenterData, formData });
   };
 
   return (
@@ -151,11 +153,18 @@ const HealthCenterProfile = () => {
               </div>)}
 
             </div>
+            <div className={`${!editMode && "md:flex justify-start pl-4 md:mb-4"}`}>
 
-            {!editMode && (<div className="ml-2 md:ml-16 md:pl-1">
-              <ProfileKey keyName="Verification status " />
-              <ProfileValue value={healthCenter.verified ? "Verified" : "Not Verified"} />
-            </div>)}
+              {!editMode && (<div className="ml-2 md:ml-16 md:pl-1">
+                <ProfileKey keyName="Verification status " />
+                <ProfileValue value={healthCenter.verified ? "Verified" : "Not Verified"} />
+              </div>)}
+
+              {!editMode && (<div className="ml-10 md:ml-16 md:pl-1">
+                <ProfileKey keyName="License Information" />
+                <ProfileValue value={healthCenter.licensePath ? <a href={`http://localhost:5072/${healthCenter.licensePath}`} className="hover:underline hover:cursor-pointer" target="_blank" rel="noreferrer" ><div className="flex flex-row gap-1">View License Info <FaExternalLinkAlt /> </div> </a> : "N/A"} />
+              </div>)}
+            </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               Admin Info
             </div>

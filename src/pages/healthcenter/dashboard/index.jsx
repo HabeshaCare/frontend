@@ -28,10 +28,14 @@ const HealthCenterDashboard = () => {
     }
   });
 
-  const { data: healthCenterData } = useQuery("healthCenterInfo", () => fetchHealthCenterInfo(data.institutionId), {
+  const healthCenterId = data.institutionId;
+
+  const { data: healthCenterData } = useQuery("healthCenterInfo", () => fetchHealthCenterInfo({ token, healthCenterId }), {
     onSuccess: (healthCenterInfo) => {
-      if (healthCenterInfo)
+      console.log("HealthCenterId to add: ", data.institutionId)
+      if (healthCenterInfo !== null && healthCenterInfo !== undefined)
         dispatch(updateHealthcenter(healthCenterInfo))
+      console.log("healthCenterInfo on query: ", healthCenterInfo)
     },
     onError: (error) => {
       // Handle the error here

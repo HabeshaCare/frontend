@@ -21,6 +21,8 @@ export const updateAdmin = async ({ token, adminId, updatedData }) => {
 }
 
 export const updateHealthCenter = async ({ token, healthCenterId, updatedData, formData }) => {
+    console.log("healthCenterId: ", healthCenterId)
+    console.log("updatedData: ", updatedData)
     const baseUrl = `http://localhost:5072/api/healthcenter/${healthCenterId}`
     const config = {
         headers: {

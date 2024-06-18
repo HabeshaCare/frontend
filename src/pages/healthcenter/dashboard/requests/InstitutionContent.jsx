@@ -26,8 +26,7 @@ const InstitutionContent = ({ institutionData, onConfirm }) => {
                 <TableCell>{institutionData?.name}</TableCell>
                 <TableCell>{institutionData?.location}</TableCell>
                 <TableCell>{institutionData?.type}</TableCell>
-                <TableCell> <Button variant="link" target="_blank" href={institutionData?.licenseUrl} rel="noreferrer" ><div className="flex flex-row gap-1">View License Info <FaExternalLinkAlt /></div>
-                </Button></TableCell>
+                <TableCell> <a href={`http://localhost:5072/${institutionData.licensePath}`} className="hover:underline hover:cursor-pointer" target="_blank" rel="noreferrer" ><div className="flex flex-row gap-1">View License Info <FaExternalLinkAlt /> </div> </a></TableCell>
                 <TableCell>
                     <AlertDialog className="h-8 w-24">
                         <AlertDialogTrigger asChild>

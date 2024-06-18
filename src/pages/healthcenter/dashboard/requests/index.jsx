@@ -22,7 +22,7 @@ import { getUsers, UpdateInstitutionVerification, UpdateUserVerification, getIns
 
 
 const VerificationRequest = () => {
-    const [activeTab, setActiveTab] = useState("Users");
+    const [activeTab, setActiveTab] = useState("Institutions");
     const token = useSelector((state) => state.auth.token);
     const healthCenterId = useSelector((state) => state.admin.institutionId)
 
