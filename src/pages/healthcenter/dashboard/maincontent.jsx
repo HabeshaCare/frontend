@@ -1,8 +1,8 @@
 import React from "react";
-import Chatbot from "@/components/landingpage/chatbot";
 import VerificationRequest from "./requests";
 import AssociatedUsers from "./associatedUsers";
 import AssociatedInstitutions from "./associatedInstitutions";
+import HealthCenterProfile from "../profile";
 
 const Card = ({ text }) => {
   return (
@@ -14,14 +14,8 @@ const Card = ({ text }) => {
 const MainContent = ({ activeLink }) => {
   return (
     <div className="flex-1 overflow-y-auto">
-      {activeLink === "requests" && (
-        <VerificationRequest />
-      )}
-      {activeLink === "profile" && (
-
-        <>HealthCenter Profile</>
-
-      )}
+      {activeLink === "requests" && <VerificationRequest />}
+      {activeLink === "profile" && <HealthCenterProfile />}
       {activeLink === "institutions" && (
         <div>
           <AssociatedInstitutions />

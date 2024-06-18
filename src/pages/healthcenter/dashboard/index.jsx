@@ -4,9 +4,10 @@ import Sidebar from "./sidebar";
 import MainContent from "./maincontent";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "react-query";
-import { fetchAdminInfo } from "./requests/lib";
+import { fetchAdminInfo, fetchHealthCenterInfo } from "./requests/lib";
 import { addAdminData } from "@/redux/adminSlice";
 import { useToast } from "@/components/ui/use-toast";
+import { updateHealthcenter } from "@/redux/healthcenterSlice";
 
 
 const getFirstName = (fullName) => {
@@ -24,6 +25,16 @@ const HealthCenterDashboard = () => {
     onSuccess: (adminInfo) => {
       if (adminInfo !== null && adminInfo !== undefined)
         dispatch(addAdminData(adminInfo));
+    }
+  });
+
+  const { data: healthCenterData } = useQuery("healthCenterInfo", () => fetchHealthCenterInfo(data.institutionId), {
+    onSuccess: (healthCenterInfo) => {
+      if (healthCenterInfo)
+        dispatch(updateHealthcenter(healthCenterInfo))
+    },
+    onError: (error) => {
+      // Handle the error here
     }
   });
 

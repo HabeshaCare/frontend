@@ -9,14 +9,22 @@ import ProfileValue from "@/components/profile/profileInfo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
-import Picture from "@/components/profile/picture";
+import Picture from "./Picture";
 import healthcenter from "@/public/img/healthcenter.jpg";
 import { Link } from 'react-router-dom';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useDispatch, useSelector } from "react-redux";
+import { selectHealthcenter } from "@/redux/healthcenterSlice";
 
 const HealthCenterProfile = () => {
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const [licenseFile, setLicenseFile] = useState(null);
+  const [gender, setSelectedGender] = useState("M");
+  const dispatch = useDispatch();
+  const healthCenter = useSelector(selectHealthcenter);
+  const admin = useSelector((state) => state.admin);
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -26,7 +34,6 @@ const HealthCenterProfile = () => {
   const handleRemoveUpload = () => {
     setLicenseFile(null);
   };
-
   return (
     <>
       <div className="md:flex">
@@ -47,79 +54,83 @@ const HealthCenterProfile = () => {
             {isMdScreen ? "" : <CompleteProfile progress={80} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
-                <img src={edit} alt="edit SVG" />
+                {!editMode && (<img src={edit} alt="edit SVG" />)}
               </div>
               <div
                 className="text-[#1F555D] cursor-pointer"
                 onClick={() => setEditMode(!editMode)}
               >
-                Edit
+                {editMode ? "Cancel" : "Edit"}
               </div>
             </div>
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               Health Center Info
             </div>
 
-            <div className={`${editMode && "md:flex justify-around md:mb-4"}`}>
+            <div className={`${!editMode && "md:flex justify-around md:mb-4"}`}>
               <div className="ml-2">
                 <ProfileKey keyName="Health Center Name" />
-                {editMode ? (
-                  <ProfileValue value="Yekatit 22 General Hospital" />
+                {!editMode ? (
+                  <ProfileValue value={healthCenter.name} />
                 ) : (
-                  <Input />
+                  <Input value={healthCenter.name ?? ""} />
                 )}
               </div>
-
               <div className="ml-2">
                 <ProfileKey keyName="Location" />
-                {editMode ? <ProfileValue value="Addis Ababa" /> : <Input />}
+                {!editMode ? <ProfileValue value={healthCenter.location} /> : <Input value={healthCenter.location ?? ""} />}
               </div>
-
-              <div className={`${editMode && "md:ml-12"} ml-2`}>
+              {!editMode && (<div className={`ml-2`}>
                 <ProfileKey keyName="Email" />
-                {editMode ? (
-                  <ProfileValue value="nigusseyeabsira@gmail.com" />
-                ) : (
-                  <Input />
-                )}
-              </div>
+                <ProfileValue value={admin.email} />
+              </div>)}
+
             </div>
 
-            <div className={`${editMode && "md:flex justify-start"}`}>
-              <div className="ml-2 md:ml-16 md:pl-1">
-                <ProfileKey keyName="Verification status " />
-                {editMode ? <ProfileValue value="Verified" /> : <Input />}
-              </div>
-            </div>
+            {!editMode && (<div className="ml-2 md:ml-16 md:pl-1">
+              <ProfileKey keyName="Verification status " />
+              <ProfileValue value={healthCenter.verified ? "Verified" : "Not Verified"} />
+            </div>)}
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               Admin Info
             </div>
 
             <div
-              className={`${editMode && "md:flex justify-between md:mx-16"}`}
+              className={`${!editMode && "md:flex justify-between md:mx-16"}`}
             >
               <div className="ml-2">
                 <ProfileKey keyName="Full Name" />
-                {editMode ? (
-                  <ProfileValue value="Yeabsira Nigusse" />
+                {!editMode ? (
+                  <ProfileValue value={admin.fullname} />
                 ) : (
-                  <Input />
+                  <Input value={admin.fullname ?? ""} />
                 )}
               </div>
 
               <div className="ml-2">
                 <ProfileKey keyName="Phone Number" />
-                {editMode ? <ProfileValue value="+251982314216" /> : <Input />}
+                {!editMode ? <ProfileValue value={admin.phonenumber} /> : <Input value={admin.phonenumber ?? ""} />}
               </div>
 
               <div className="">
                 <ProfileKey keyName="Gender" />
-                {editMode ? <ProfileValue value="Male" /> : <Input />}
+                {!editMode ? <ProfileValue value={admin.gender === "M" ? "Male" : "Female"} /> : (<Select onValueChange={(value) => setSelectedGender(value)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="--Select--" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Gender</SelectLabel>
+                      <SelectItem value="M">Male</SelectItem>
+                      <SelectItem value="F">Female</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>)}
               </div>
             </div>
 
             <div className="flex justify-center my-6">
-              {!editMode ? (
+              {editMode ? (
                 <label htmlFor="licenseUpload" className="cursor-pointer">
                   <div className="w-64 h-20 flex flex-col font-semibold justify-center items-center border border-solid bg-gray-300 p-4">
                     {licenseFile ? (
@@ -163,11 +174,11 @@ const HealthCenterProfile = () => {
                 </div>
               )}
             </div>
-            {editMode ? (
+            {!editMode ? (
               ""
             ) : (
               <div className="flex justify-center">
-                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28 ">
+                <Button className="my-6 bg-[#1F555D] text-white h-10 w-28">
                   Save
                 </Button>
               </div>

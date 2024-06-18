@@ -125,3 +125,18 @@ export const fetchAdminInfo = async ({ token, adminId }) => {
     } catch (error) {
     }
 }
+
+export const fetchHealthCenterInfo = async ({ token, healthCenterId }) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    }
+    try {
+        const response = await axios.get(
+            `http://localhost:5072/api/healthcenter/${healthCenterId}`, config
+        );
+        return response.data.data;
+    } catch (error) {
+    }
+}
