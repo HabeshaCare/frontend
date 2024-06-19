@@ -241,6 +241,24 @@ const DoctorProfile = () => {
   const selectedHealthCenterName =
     healthCenters.find((center) => center.id === associatedHealthCenterId)
       ?.name || "N/A";
+      const calculateProfileCompletion = () => {
+        const fields = [
+          fullname,
+          phonenumber,
+          email,
+          gender,
+          location,
+          specialization,
+          yearOfExperience,
+          description,
+          associatedHealthCenterId,
+          imageUrl,
+        ];
+        const filledFields = fields.filter((field) => field !== null && field !== "").length;
+        return (filledFields / fields.length) * 100;
+      };
+    
+      const profileCompletion = calculateProfileCompletion();
 
   return (
     <>
@@ -513,7 +531,7 @@ const DoctorProfile = () => {
         </div>
 
         <div className="w-1/3 flex justify-center">
-          {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
+          {isMdScreen ? <CompleteProfile2 progress={profileCompletion} /> : ""}
         </div>
       </div>
     </>
