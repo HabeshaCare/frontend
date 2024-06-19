@@ -32,10 +32,11 @@ import {
   updateGender,
   updatePhoneNumber,
 } from "@/redux/adminSlice";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { updateAdmin, updateHealthCenter } from "./lib";
 import { useToast } from "@/components/ui/use-toast";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import axios from "axios";
 
 const HealthCenterProfile = () => {
   const [editMode, setEditMode] = useState(false);
@@ -47,7 +48,28 @@ const HealthCenterProfile = () => {
   const token = useSelector((state) => state.auth.token);
   const { toast } = useToast();
   const adminId = admin.id;
-  const healthCenterId = healthCenter.id;
+  const [healthCenterId, setHealthCenterId] = useState("");
+
+  const { data, isLoading, isError } = useQuery(
+    "getHealthCenters",
+    async () => {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        };
+        const response = await axios.get(
+          "http://localhost:5072/api/healthcenter/",
+          config
+        );
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+    }
+  );
 
   const updateAdminMutation = useMutation(
     (updatedData) => updateAdmin({ token, adminId, updatedData }),
@@ -131,12 +153,23 @@ const HealthCenterProfile = () => {
                 {!editMode ? (
                   <ProfileValue value={healthCenter.name} />
                 ) : (
-                  <Input
-                    value={healthCenter.name}
-                    onChange={(event) =>
-                      dispatch(updateHealthCenterName(event.target.value))
-                    }
-                  />
+                  <Select onValueChange={(value) => setHealthCenterId(value)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="--Select--" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Health Centers</SelectLabel>
+                        {data?.map((hc) => {
+                          return (
+                            <SelectItem key={hc.id} value={hc.id}>
+                              {hc.name}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 )}
               </div>
               <div className="ml-2">
@@ -166,7 +199,7 @@ const HealthCenterProfile = () => {
                 <div className="ml-2 md:ml-16 md:pl-1">
                   <ProfileKey keyName="Verification status " />
                   <ProfileValue
-                    value={healthCenter.verified ? "Verified" : "Not Verified"}
+                    value={admin.verified ? "Verified" : "Not Verified"}
                   />
                 </div>
               )}
