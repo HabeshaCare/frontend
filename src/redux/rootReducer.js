@@ -5,6 +5,8 @@ import { patientReducer } from "./patientSlice";
 import adminReducer from "./adminSlice";
 import healthCenterReducer from "./healthcenterSlice";
 import scheduleReducer from "./scheduleSlice";
+import { pharmacyReducer } from "./pharmacySlice";
+import { laboratoryReducer } from "./laboratorySlice";
 
 const appReducer = combineReducers({
   auth: authReducer,
@@ -13,6 +15,8 @@ const appReducer = combineReducers({
   admin: adminReducer,
   healthcenter: healthCenterReducer,
   schedule: scheduleReducer,
+  pharmacy: pharmacyReducer,
+  laboratory: laboratoryReducer,
 });
 
 const rootReducer = (state, action) => {
