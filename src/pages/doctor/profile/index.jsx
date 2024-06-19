@@ -169,6 +169,7 @@ const DoctorProfile = () => {
             doctorlicensePath: licensePath,
             doctordescription: description,
             doctorassociatedHealthCenterId: associatedHealthCenterId,
+            doctorimageUrl:imageUrl
           })
         );
         setEditMode(true);
@@ -232,6 +233,7 @@ const DoctorProfile = () => {
         hourlyRateInBirr,
         description,
         associatedHealthCenterId,
+        
       },
     });
     setEditMode(true);
@@ -511,7 +513,7 @@ const DoctorProfile = () => {
         </div>
 
         <div className="w-1/3 flex justify-center">
-          {isMdScreen ? <CompleteProfile2 progress={100} /> : ""}
+          {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
         </div>
       </div>
     </>
