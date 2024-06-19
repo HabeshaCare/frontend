@@ -53,6 +53,8 @@ const doctorSlice = createSlice({
             state.doctoryearOfExperience = action.payload.doctoryearOfExperience;
             state.doctordescription = action.payload.doctordescription;
             state.doctorimageUrl = action.payload.doctorimageUrl;
+            state.doctorassociatedHealthCenterId = action.payload.doctorassociatedHealthCenterId
+            state.doctorverified = action.payload.doctorverified
         },
     },
 });
