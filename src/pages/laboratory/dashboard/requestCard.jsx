@@ -7,9 +7,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ReqForm from "../../doctor/patients/Labtest/requestForm";
+import ReqForm from "../../doctor/form/requestForm";
+import TestRequestCard from "./cardForm";
+import TestRequestForm from "./resultForm";
 
 const Card = (props) => {
+  const data = props.item;
+  console.log("the data ", data);
+
   return (
     <div className="w-10/12 bg-white rounded-lg shadow-md p-6 mx-auto mb-6 flex items-center justify-between">
       <div className="flex-1">
@@ -28,8 +33,7 @@ const Card = (props) => {
             <DialogHeader>
               <DialogTitle>Result form</DialogTitle>
               <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                <TestRequestForm data={data} />
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
@@ -45,7 +49,7 @@ const Card = (props) => {
             <DialogHeader>
               <DialogTitle>request</DialogTitle>
               <DialogDescription>
-                <ReqForm />
+                <TestRequestCard data={data} />
               </DialogDescription>
             </DialogHeader>
           </DialogContent>

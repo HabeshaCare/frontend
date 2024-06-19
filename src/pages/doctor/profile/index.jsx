@@ -9,17 +9,26 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { FiUpload } from "react-icons/fi";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import DoctorPicture from "@/components/profile/picture";
 import doctor from "@/public/img/doctor.png";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { updateprofile } from "@/redux/doctorSlice";
 import { updateProfile } from "@/lib/update/updatedoctorprofile";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-
-export const DoctorProfile = () => {
+import getdoctors from "@/lib/profile/getdoctor";
+import gethealthcenter from "@/lib/profile/gethealthcenter";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+const DoctorProfile = () => {
   const [editMode, setEditMode] = useState(true);
   const isMdScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const [licenseFile, setLicenseFile] = useState(null);
@@ -38,6 +47,7 @@ export const DoctorProfile = () => {
   const [yearOfExperience, setYearOfExperience] = useState(0);
   const [hourlyRateInBirr, setHourlyRateInBirr] = useState(0);
   const [description, setDescription] = useState("");
+  const [healthCenters, setHealthCenters] = useState([]);
 
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -76,12 +86,14 @@ export const DoctorProfile = () => {
       setImageUrl(doctorimageUrl);
       setDescription(doctordescription);
     }
-  }, [doctorData]);
 
-  const handleInputChange = (setStateFunction) => {
-    return (event) => {
-      setStateFunction(event.target.value);
-    };
+    if (userToken) {
+      fetchHealthCenter({ token: userToken });
+    }
+  }, [doctorData, userToken]);
+
+  const handleInputChange = (setStateFunction) => (event) => {
+    setStateFunction(event.target.value);
   };
 
   const handleFileUpload = (e) => {
@@ -90,24 +102,51 @@ export const DoctorProfile = () => {
       setLicenseFile(file);
     }
   };
+
   const handleRemoveUpload = () => {
     setLicenseFile(null);
   };
 
   const updatedData = {
-    fullname: fullname,
-    gender: gender,
-    email: email,
-    phonenumber: phonenumber,
-    location: location,
-    specialization: specialization,
-    verified: verified,
-    yearOfExperience: yearOfExperience,
-    associatedHealthCenterId: associatedHealthCenterId,
-    hourlyRateInBirr: hourlyRateInBirr,
-    description: description,
+    fullname,
+    gender,
+    email,
+    phonenumber,
+    location,
+    specialization,
+    verified,
+    yearOfExperience,
+    associatedHealthCenterId,
+    hourlyRateInBirr,
+    description,
   };
-  const updatedprofile = useMutation(
+
+  const { mutate: fetchHealthCenter } = useMutation(
+    ({ token }) => gethealthcenter({ token }),
+    {
+      onSuccess: (data) => {
+        console.log("Health center data fetched successfully:", data);
+        if (Array.isArray(data.data)) {
+          setHealthCenters(data.data);
+        }
+        // toast({
+        //   title: "Success!",
+        //   description: "Get health center successfully.",
+        //   action: <ToastAction altText="Continue">Continue</ToastAction>,
+        // });
+      },
+      onError: (error) => {
+        console.error("Error fetching health center data:", error);
+        // toast({
+        //   title: "Uh oh! Something went wrong.",
+        //   description: "There was an error getting health center.",
+        //   action: <ToastAction altText="Try again">Try again</ToastAction>,
+        // });
+      },
+    }
+  );
+
+  const { mutate: updateDoctorProfile } = useMutation(
     ({ token, data }) => updateProfile(data, token),
     {
       onSuccess: (updatedData) => {
@@ -127,14 +166,16 @@ export const DoctorProfile = () => {
             doctorspecialization: specialization,
             doctorhourlyRateInBirr: hourlyRateInBirr,
             doctoryearOfExperience: yearOfExperience,
-            doctorlocation: location,
             doctorlicensePath: licensePath,
             doctordescription: description,
+            doctorassociatedHealthCenterId: associatedHealthCenterId,
+            doctorimageUrl:imageUrl
           })
         );
         setEditMode(true);
       },
       onError: (error) => {
+        console.error("Error updating profile:", error);
         toast({
           title: "Uh oh! Something went wrong.",
           description: "There was an error updating profile.",
@@ -144,8 +185,41 @@ export const DoctorProfile = () => {
     }
   );
 
+  const { data, isLoading, isError, refetch } = useQuery(
+    ["doctorProfile", userToken, doctorData?.doctorid],
+    () => getdoctors({ token: userToken, id: doctorData?.doctorid }),
+    {
+      enabled: !!userToken && !!doctorData?.doctorid,
+      onSuccess: (data) => {
+        console.log("Doctor data fetched successfully:", data);
+        dispatch(
+          updateprofile({
+            doctorid: id,
+            doctorname: data.data.fullname,
+            doctorphone: data.data.phonenumber,
+            doctoremail: data.data.email,
+            doctorgender: data.data.gender,
+            doctorlocation: data.data.location,
+            doctorspecialization: data.data.specialization,
+            doctorhourlyRateInBirr: data.data.hourlyRateInBirr,
+            doctorlicensePath: data.data.licensePath,
+            doctoryearOfExperience: data.data.yearOfExperience,
+            doctordescription: data.data.description,
+            doctorimageUrl: data.data.imageUrl,
+            doctorassociatedHealthCenterId: data.data.associatedHealthCenterId,
+            doctorverified: data.data.verified,
+          })
+        );
+      },
+      onError: (error) => {
+        console.error("Error fetching doctor data:", error);
+      },
+      refetchOnMount: true,
+    }
+  );
+
   const handleSubmit = () => {
-    updatedprofile.mutate({
+    updateDoctorProfile({
       token: userToken,
       data: {
         id,
@@ -158,11 +232,33 @@ export const DoctorProfile = () => {
         yearOfExperience,
         hourlyRateInBirr,
         description,
-        // Add other fields if needed
+        associatedHealthCenterId,
+        
       },
     });
     setEditMode(true);
   };
+  const selectedHealthCenterName =
+    healthCenters.find((center) => center.id === associatedHealthCenterId)
+      ?.name || "N/A";
+      const calculateProfileCompletion = () => {
+        const fields = [
+          fullname,
+          phonenumber,
+          email,
+          gender,
+          location,
+          specialization,
+          yearOfExperience,
+          description,
+          associatedHealthCenterId,
+          imageUrl,
+        ];
+        const filledFields = fields.filter((field) => field !== null && field !== "").length;
+        return (filledFields / fields.length) * 100;
+      };
+    
+      const profileCompletion = calculateProfileCompletion();
 
   return (
     <>
@@ -179,7 +275,7 @@ export const DoctorProfile = () => {
               image={imageUrl ? "http://localhost:5072/" + imageUrl : doctor}
             />
 
-            {isMdScreen ? "" : <CompleteProfile progress={80} />}
+            {isMdScreen ? "" : <CompleteProfile progress={100} />}
             <div className="flex justify-end mr-8 mt-4 gap-2">
               <div>
                 <img src={edit} alt="edit SVG" />
@@ -191,7 +287,7 @@ export const DoctorProfile = () => {
                 Edit
               </div>
             </div>
-            
+
             {/* Bio Section */}
             <div className="text-xl text-[#1F555D] font-semibold font-serif mb-4 pl-8">
               Bio
@@ -254,7 +350,7 @@ export const DoctorProfile = () => {
               </div>
             </div>
 
-            <div className={`${editMode && "md:flex justify-start"}`}>
+            <div className={`${editMode && "md:flex justify-between"}`}>
               <div className="md:ml-8 md:pl-1">
                 <ProfileKey keyName="Gender" />
                 {editMode ? (
@@ -264,6 +360,28 @@ export const DoctorProfile = () => {
                     onChange={handleInputChange(setGender)}
                     value={gender}
                   />
+                )}
+              </div>
+              <div className="mr-2">
+                <ProfileKey keyName="Working Health Center" />
+                {editMode ? (
+                  <ProfileValue value={selectedHealthCenterName} />
+                ) : (
+                  <Select onValueChange={setAssociatedHealthCenterId}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Health Center" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Health Centers</SelectLabel>
+                        {healthCenters.map((center) => (
+                          <SelectItem key={center.id} value={center.id}>
+                            {center.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 )}
               </div>
             </div>
@@ -280,7 +398,7 @@ export const DoctorProfile = () => {
                   <Input
                     onChange={handleInputChange(setSpecialization)}
                     value={specialization}
-                    placeholder="edit your specializaiton"
+                    placeholder="edit your specialization"
                   />
                 )}
               </div>
@@ -320,13 +438,14 @@ export const DoctorProfile = () => {
                     value={verified ? "Verified " : "not Verified"}
                   />
                 ) : (
-                  <Input
-                    onChange={handleInputChange(setVerified)}
-                    value={verified}
-                  />
+                  // <Input
+                  //   onChange={handleInputChange(setVerified)}
+                  //   value={verified}
+                  // />
+                  <></>
                 )}
               </div>
-              <div>
+              {/* <div>
                 <ProfileKey keyName="Working Health center" />
                 {editMode ? (
                   <ProfileValue value="Yekatit 12 General Hospital" />
@@ -337,7 +456,7 @@ export const DoctorProfile = () => {
                     placeholder="change hospital"
                   />
                 )}
-              </div>
+              </div> */}
               <div>
                 <ProfileKey keyName="Year of experience" />
                 {editMode ? (
@@ -413,10 +532,11 @@ export const DoctorProfile = () => {
         </div>
 
         <div className="w-1/3 flex justify-center">
-          {isMdScreen ? <CompleteProfile2 progress={80} /> : ""}
+          {isMdScreen ? <CompleteProfile2 progress={profileCompletion} /> : ""}
         </div>
       </div>
     </>
   );
 };
+
 export default DoctorProfile;

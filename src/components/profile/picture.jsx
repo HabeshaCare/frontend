@@ -66,6 +66,7 @@ const Picture = ({ image }) => {
       </label>
       <div className="w-full max-w-[400px] mx-auto">
         <img
+        
           // Use profilePicture state if available, otherwise fallback to image prop
           src={image}
           alt="doctor img"

@@ -14,6 +14,8 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { assignProfile as doctorAssignProfileAction } from "@/redux/doctorSlice";
 import { assignProfile as patientAssignProfileAction } from "@/redux/patientSlice";
+import { login as pharmacyAssignProfileAction } from "@/redux/pharmacySlice";
+import { login as laboratoryAssignProfileAction } from "@/redux/laboratorySlice";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -60,9 +62,29 @@ const Login = () => {
           navigate("/healthcenter/dashboard");
           break;
         case "PharmacyAdmin":
+          dispatch(
+            pharmacyAssignProfileAction({
+              email: userData.email,
+              id: userData.id,
+              fullname: userData.fullname,
+              phonenumber: userData.phonenumber,
+              gender: userData.gender,
+            })
+          );
+          console.log("added");
           navigate("/pharmacy/dashboard");
           break;
         case "LaboratoryAdmin":
+          dispatch(
+            laboratoryAssignProfileAction({
+              email: userData.email,
+              id: userData.id,
+              fullname: userData.fullname,
+              phonenumber: userData.phonenumber,
+              gender: userData.gender,
+            })
+          );
+          console.log("added");
           navigate("/laboratory/dashboard");
           break;
         case "Reception":
@@ -81,7 +103,6 @@ const Login = () => {
           navigate("/doctor/dashboard");
           break;
         case "Patient":
-          
           dispatch(
             patientAssignProfileAction({
               email: userData.email,
@@ -114,10 +135,7 @@ const Login = () => {
             title: "Account not verified",
             description: "Please verify your account before logging in.",
             action: (
-              <ToastAction
-                altText="Resend Verification"
-                onclick={handleResend}
-              >
+              <ToastAction altText="Resend Verification" onclick={handleResend}>
                 Resend Verification
               </ToastAction>
             ),
@@ -250,7 +268,9 @@ const Login = () => {
                       your previous password and ask email verification.
                     </AlertDialogDescription>
                     <AlertDialogDescription>
-                      <p className="font-bold">Insert your previously registered email</p>
+                      <p className="font-bold">
+                        Insert your previously registered email
+                      </p>
                       {error && <p className="text-red-500">{error}</p>}
                       <input
                         type="email"
@@ -272,7 +292,11 @@ const Login = () => {
                           toast({
                             title: "Uh oh! Something went wrong.",
                             description: "Please insert your email.",
-                            action: <ToastAction altText="Try again">Try again</ToastAction>,
+                            action: (
+                              <ToastAction altText="Try again">
+                                Try again
+                              </ToastAction>
+                            ),
                           });
                         }
                       }}

@@ -38,7 +38,7 @@ const PatientAppointments = () => {
   }
   console.log(data);
 
-  const filteredSchedules = data.data.filter((schedule) => {
+  const filteredSchedules = data.data?.filter((schedule) => {
     if (activeTab === "Waiting") {
       return !schedule.confirmed;
     } else if (activeTab === "Checked") {
@@ -62,7 +62,7 @@ const PatientAppointments = () => {
         <div>Status</div>
       </div>
 
-      {filteredSchedules.map((schedule) => {
+      {filteredSchedules?.map((schedule) => {
         const date = new Date(schedule.from).toLocaleDateString();
         const time = `${new Date(
           schedule.from

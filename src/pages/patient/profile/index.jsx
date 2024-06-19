@@ -89,7 +89,6 @@ export const PatientProfile = () => {
     weight: weight,
     dateofbirth: dataofbirth,
     id: id,
-    currentBalance: currentBalance,
   };
   const updatedprofile = useMutation(
     ({ token, data }) => updateProfile(data, token),
@@ -114,7 +113,7 @@ export const PatientProfile = () => {
             patientweight: weight,
             patientheight: hight,
             patientdateOfBirth: dataofbirth,
-            patientcurrentBalance: currentBalance,
+            patientimageUrl: imageUrl,
           })
         );
       },
@@ -181,7 +180,7 @@ export const PatientProfile = () => {
         nationalId,
         height: hight,
         weight,
-        dataofbirth,
+        dateOfBirth: dataofbirth,
         location,
         currentBalance,
         // Add other fields if needed
@@ -189,6 +188,26 @@ export const PatientProfile = () => {
     });
     setEditMode(true);
   };
+  const calculateProfileCompletion = () => {
+    const fields = [
+      fullname,
+      phonenumber,
+      email,
+      gender,
+      location,
+      hight,
+      nationalId,
+      weight,
+      dataofbirth,
+      imageUrl,
+    ];
+    const filledFields = fields.filter(
+      (field) => field !== null && field !== ""
+    ).length;
+    return (filledFields / fields.length) * 100;
+  };
+
+  const profileCompletion = calculateProfileCompletion();
 
   return (
     <>
@@ -292,10 +311,13 @@ export const PatientProfile = () => {
               <div className={`md:ml-4 ${editMode ? "ml-2" : "md:ml-2"} `}>
                 <ProfileKey keyName="Date of Birth" />
                 {editMode ? (
-                  <ProfileValue value={dataofbirth} />
+                  <ProfileValue
+                    value={new Date(dataofbirth).toLocaleDateString()}
+                  />
                 ) : (
                   <div>
                     <Input
+                      type="date"
                       onChange={handleInputChange(setDateOfBirth)}
                       placeholder="Enter your date of birth"
                       value={dataofbirth}
@@ -359,7 +381,7 @@ export const PatientProfile = () => {
         </div>
 
         <div className="w-1/3 flex justify-center">
-          {isMdScreen ? <CompleteProfile2 progress={70} /> : ""}
+          {isMdScreen ? <CompleteProfile2 progress={profileCompletion} /> : ""}
         </div>
       </div>
     </>
