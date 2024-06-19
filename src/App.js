@@ -28,6 +28,7 @@ import HomePage from "@/pages/homepage";
 import ResendEmail from "@/components/auth/resendEmail";
 import ResetPassword from "@/components/auth/forgetPassword";
 import VideoChat from "./pages/videocall";
+import SuperAdminDashBoard from "./pages/superadmin/dashboard";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,14 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Router>
             <Routes>
+              <Route
+                path="/superadmin/dashboard"
+                element={
+                  <ProtectedRoute requiredRole="SuperAdmin">
+                    <SuperAdminDashBoard />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/pharmacy/profile"
                 element={
