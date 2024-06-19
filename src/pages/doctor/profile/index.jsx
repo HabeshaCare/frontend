@@ -438,10 +438,11 @@ const DoctorProfile = () => {
                     value={verified ? "Verified " : "not Verified"}
                   />
                 ) : (
-                  <Input
-                    onChange={handleInputChange(setVerified)}
-                    value={verified}
-                  />
+                  // <Input
+                  //   onChange={handleInputChange(setVerified)}
+                  //   value={verified}
+                  // />
+                  <></>
                 )}
               </div>
               {/* <div>
